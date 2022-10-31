@@ -1,4 +1,5 @@
 import { read as readFile } from "./read.js"
+import { parseEvent, parseLine } from "./parse.js"
 import * as defaults from "./defaults.js"
 
 var fileName = "examples/plan.acr"
@@ -15,7 +16,6 @@ contextStrings.forEach((c)=>{
     // trim in case of extra whitespace btwn contexts
     contextraws.push(c.trim())
 })
-
 contextraws.forEach((c)=>{
     let ctx = { events : [] }
     // turn txt into array
@@ -25,6 +25,12 @@ contextraws.forEach((c)=>{
     ctx.eventsRaw = c;
 
     ctx.name = ctx.contextRaw.replace(defaults.regex. contextHashMatch, '')
+
+    // 
+    c.forEach((ln) => {
+        ctx.events.push( parseLine(ln, ctx) )
+
+    })
     contexts.push(ctx)
 })
-console.log( "contexts", contexts)
+// console.log( "contexts", contexts)

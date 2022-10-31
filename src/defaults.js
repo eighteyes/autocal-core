@@ -1,11 +1,13 @@
 
-const tokens = {
+const tokenNames = {
     '!': 'Urgent',
     '$': 'Important',
     '^': 'Effortful',
-    '+': 'Fun',
-    '-': 'Painful',
-    '&': 'Required'
+    '+': 'Energizing',
+    '-': 'Draining',
+    '&': 'Required',
+    '>': 'Unblocks',
+    '<': 'Depends On'
 }
 
 const times = {
@@ -14,8 +16,11 @@ const times = {
 
 const regex = {
     contextHashMatch: /^#*./,
-    duration: /\b\d*[mhdw]/
+    duration: /\b\d*[mhdw]/,
+    content: /^([A-Za-z]\w+\s)$/,
+    tag:/(#[.\w]+\s)+/,
+    tokens: new RegExp('[\\'+ Object.keys(tokenNames).join('\\')+']' )
 }
 
 
-export { regex, tokens }
+export { regex, tokenNames }
