@@ -25,17 +25,19 @@ export function parseLine(ln){
     const tagMatches = ln.match(regex.tag);
     const tokenMatches = ln.match(regex.tokens)
 
-    console.log( tokenMatches, regex.tokens)
-
     Array( durationMatches, tagMatches, tokenMatches ).forEach( m => {
         if (m) splitPoints.push(m.index)
     })
 
     let splitIndex = Math.min(...splitPoints)
     
-    let content = ln.slice(0, splitIndex)
+    let content = ln.slice(0, splitIndex).trim()
     let metaRaw = ln.slice(splitIndex)
     let tokensRaw = metaRaw.split(' ')
+
+    if (durationMatches) { duration = durationMatches[0] }
+    if ( tagMatches ) { tags = tagMatches[0].split(' ')}
+    if ( tokenMatches ){}
     
     console.log( {content, metaRaw, tokensRaw, duration, tags, tokens })
 
