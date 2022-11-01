@@ -5,5 +5,5 @@ function readFile ( file ) {
     return input
 }
 export {
-    readFile as read
+    readFile
 }

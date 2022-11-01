@@ -1,11 +1,11 @@
 
-const tokenNames = {
+const effectNames = {
     '!': 'Urgent',
     '$': 'Important',
     '^': 'Effortful',
     '+': 'Energizing',
     '-': 'Draining',
-    '&': 'Required',
+    '*': 'Required',
     '>': 'Unblocks',
     '<': 'Depends On'
 }
@@ -19,8 +19,8 @@ const regex = {
     duration: /\b\d*[mhdw]/,
     content: /^([A-Za-z]\w+\s)$/,
     tag:/(#[.\w]+\s)+/,
-    tokens: new RegExp('[\\'+ Object.keys(tokenNames).join('\\')+']' )
+    tokens: new RegExp('[\\'+ Object.keys(effectNames).join('\\')+']' )
 }
 
 
-export { regex, tokenNames }
+export { regex, effectNames }

@@ -1,4 +1,4 @@
-import {tokenNames, regex} from './defaults.js'
+import { regex} from './defaults.js'
 
 const tokenFns = {
     '!': (e) => {
@@ -18,6 +18,12 @@ export function parseContext(ctx){
 
 export function parseLine(ln){
     let duration, tags, tokens;
+
+    let done = ( ln[0] == 'x' )
+    if ( done ){
+        ln = ln.replace('x ','')
+    }
+
     // start with length, so we have something in place in case of only content
     let splitPoints = [ln.length]
     // cycle through all meta info indices
@@ -33,33 +39,17 @@ export function parseLine(ln){
     
     let content = ln.slice(0, splitIndex).trim()
     let metaRaw = ln.slice(splitIndex)
-    let tokensRaw = metaRaw.split(' ')
+    let metas = metaRaw.split(' ')
+    
 
     if (durationMatches) { duration = durationMatches[0] }
-    if ( tagMatches ) { tags = tagMatches[0].split(' ')}
+    if ( tagMatches ) { tags = tagMatches[0].split(' ') }
     if ( tokenMatches ){}
     
-    console.log( {content, metaRaw, tokensRaw, duration, tags, tokens })
+    let o =  {content, metaRaw, metas, duration, tags, tokens, done }
 
-    // //split txt from meta
-    // let fragments = ln.match(regex.content)
-    // let o = {};
-    // // what is the index where we can split?
-    // if ( !fragments ){
-    //     console.error(fragments)
-    //   throw ln + ' is missing content or meta-information' 
-    // } else {
-    //     // remove matched tags ( regex solution? )
-    //     console.log(fragments)
-    //     fragments = fragments.filter( f => f.indexOf('#') == -1 )
-    //     let finalWord = fragments.pop()
-    //     let splitIndex = ln.lastIndexOf(finalWord) + finalWord.length
-    //     // in case of tag
-    //     let content = ln.slice(0, splitIndex)
-    //     let meta = ln.slice(splitIndex)
+    return o
 
-    //     console.log( content, '\n', meta )
-    // }
 }
 
 
