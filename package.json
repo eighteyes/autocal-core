@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Scheduling engine for AutoCal",
   "main": "src/index.js",
-  "type":"module",
   "scripts": {
     "test": "node tests/index.js"
   },

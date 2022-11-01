@@ -16,7 +16,7 @@ export function parseContext(ctx){
 
 }
 
-export function parseLine(ln){
+export function parseLine(ln, ctx){
     let duration, tags, tokens;
 
     let done = ( ln[0] == 'x' )
