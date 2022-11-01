@@ -5,8 +5,8 @@ import * as defaults from "./defaults.js"
 var fileName = "examples/plan.acr"
 var orderingAlgo = "^+"
 let contextraws: string[] = []
-let contexts =[]
-let events = []
+let contexts: Context[] =[]
+let events: CalEvent[] = []
 
 const output = readFile(fileName)
 
@@ -16,21 +16,25 @@ contextStrings.forEach((c:string)=>{
     // trim in case of extra whitespace btwn contexts
     contextraws.push(c.trim())
 })
-contextraws.forEach((c:string)=>{
-    let ctx = { events : [] }
-    // turn txt into array
+
+contextraws.forEach((c)=>{
+    // split along lines
     let line = c.split('\n')
-    // shift mutates c, divide our raw inputs
-    ctx.contextRaw = line.shift()
-    ctx.name = ctx.contextRaw.replace(defaults.regex. contextHashMatch, '')
+    // shift mutates array
+    let raw : string = line.shift()
+
+    let ctx : Context = { 
+        name: raw.replace(defaults.regex. contextHashMatch, ''),
+        events: [],
+        raw
+    }
     
-    
-    ctx.eventsRaw = line;
     // cycle through every event in the context
-    ctx.eventsRaw.forEach((ln) =>   {
+    line.forEach((ln) =>   {
         ctx.events.push( parseLine(ln, ctx) )
         events.push( parseLine(ln, ctx))
     })
+
     contexts.push(ctx)
 })
 

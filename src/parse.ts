@@ -1,27 +1,19 @@
-import { regex} from './defaults.js'
+import { regex } from './defaults.js'
 
-const tokenFns = {
-    '!': (e) => {
-        let o = {}
-        o[tokenNames[tokenFns['!'].name]] = true;
-        return o;
-    }
-}
-
-export function parseEvent(ln, ctx){
+export function parseEvent(ln: string, ctx: Context) {
 
 }
 
-export function parseContext(ctx){
+export function parseContext(ctx) {
 
 }
 
-export function parseLine(ln, ctx){
+export function parseLine(ln: string, ctx: Context) : CalEvent {
     let duration, tags, tokens;
 
-    let done = ( ln[0] == 'x' )
-    if ( done ){
-        ln = ln.replace('x ','')
+    let done = (ln[0] == 'x')
+    if (done) {
+        ln = ln.replace('x ', '')
     }
 
     // start with length, so we have something in place in case of only content
@@ -31,28 +23,29 @@ export function parseLine(ln, ctx){
     const tagMatches = ln.match(regex.tag);
     const tokenMatches = ln.match(regex.tokens)
 
-    Array( durationMatches, tagMatches, tokenMatches ).forEach( m => {
+    // find earliest match for a meta info blob
+    Array(durationMatches, tagMatches, tokenMatches).forEach(m => {
         if (m) splitPoints.push(m.index)
     })
 
     let splitIndex = Math.min(...splitPoints)
-    
+
     let content = ln.slice(0, splitIndex).trim()
-    let metaRaw = ln.slice(splitIndex)
-    let metas = metaRaw.split(' ')
-    
+    let raw = {
+        meta: ln.slice(splitIndex),
+        metas: ln.slice(splitIndex).split(' '),
+        tokens: tokenMatches.map(t=>t[0]).join('')
+    }
 
     if (durationMatches) { duration = durationMatches[0] }
-    if ( tagMatches ) { tags = tagMatches[0].split(' ') }
-    if ( tokenMatches ){}
-    
-    let o =  {content, metaRaw, metas, duration, tags, tokens, done }
+    if (tagMatches) { tags = tagMatches[0].split(' ') }
+    if (tokenMatches) {tokens = tokenMatches.map(t=>t[0]) }
 
-    return o
+    return { content, raw, duration, tags, tokens, done }
 
 }
 
 
-function parseTokens(ln){
+function parseTokens(ln) {
 
 }
