@@ -25,9 +25,10 @@ const regex = {
     contextHashMatch: /^#*./,
     duration: /\b\d*[mhdw]/,
     content: /^([A-Za-z]\w+\s)$/,
-    tag:/(#[.\w]+\s)+/,
+    tag:/#([.\w]+\S)/g,
     tokens: new RegExp('[\\'+ effects.map(e=>e.symbol).join('\\')+']' )
 }
 
+const orderingAlgo = "^+"
 
-export { regex, effects }
+export { regex, effects, orderingAlgo }

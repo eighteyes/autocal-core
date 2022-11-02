@@ -1,22 +1,21 @@
-# SPARK 45m !^
+# SPARK 45m !^- > #POC
 Call Marcelo RE : Landing Page 1h TH1pm >> #lp
 EZ LP TO CRM 2h #lp > #stream
 Landing Page 2h #lp > #stream
-
 Setup YT Account #stream < #brand > #testobs 2h
 Setup OBS 1h #stream >
 Test OBS 1h #testobs
 x File Handling 2h >
 x Line Parser 2h >
 Tokenizer 2h >
-Basic Events / Context 2h >
+x Basic Events / Context 2h >
 Ordering Engine 2h
 Basic Dependencies 2h 
 Core Runtime 4h < #stream
-Formalize Logic w/ Typescript 3h
-Move to TDD w/ Jest 2h
+x Formalize Logic w/ Typescript 3h
+x Move to TDD w/ Jest 2h
 
-# POC
+# POC > NEXT
 Event / Context Modeling 8h
 Ordering Engine << #order < #sched
 exclusions 1h #order
@@ -32,15 +31,15 @@ TDD / BDD 4h
 REPO 1h
 CLI Package 1h -
 
-# Marketing #brand
+# Marketing
 Make Starter Logo / Mascot Graphics
 Choose Color Scheme
 Write 1 paragraph Copy, title, headline
 
-# Next
+# MVP
 Paypay Integration 4h
 Feature Checkout 8h
 
-
 # Breaks !+
 piano 15m   
+pushups 5m

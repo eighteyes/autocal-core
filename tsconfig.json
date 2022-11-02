@@ -5,5 +5,5 @@
       "target": "es5",
       // "strictNullChecks": true
     },
-    "include": ["./src/**/*"]
+    "include": ["./src/**/*", "./tests/**/*"]
   }
