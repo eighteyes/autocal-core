@@ -26,7 +26,7 @@ const regex = {
     duration: /\b\d*[mhdw]/,
     content: /^([A-Za-z]\w+\s)$/,
     tag:/#([.\w]+\S)/g,
-    tokens: new RegExp('[\\'+ effects.map(e=>e.symbol).join('\\')+']' )
+    tokens: new RegExp('/w[\\'+ effects.map(e=>e.symbol).join('\\')+']/w' )
 }
 
 const orderingAlgo = "^+"

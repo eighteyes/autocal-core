@@ -12,5 +12,6 @@ export const dependencies = {
 }
 
 export const content = {
-    splitBasic: "Call Marcelo RE : Landing Page 1h"
+    splitBasic: "Call Marcelo RE : Landing Page 1h",
+    splitComplex: "Presents 4 Judy & Mark! // (and f) 4h"
 }
