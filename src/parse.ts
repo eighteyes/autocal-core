@@ -43,8 +43,6 @@ export function parseTextIntoContextsAndEvents(input:string) {
 export function parseLine(ln: string, ctx?: Context): CalEvent {
     let duration, tags, tokens; 
 
-    console.log(ln)
-
     let done = (ln[0] == 'x')
     if (done) {
         ln = ln.replace('x ', '')
@@ -56,7 +54,6 @@ export function parseLine(ln: string, ctx?: Context): CalEvent {
     const durationMatches = ln.match(regex.duration);
     const tagMatches = ln.match(regex.tag)
     const tokenMatches = ln.match(regex.tokens)
-    console.log(tagMatches)
 
     // find earliest match for a meta info blob
     Array(durationMatches, tagMatches, tokenMatches).forEach(m => {

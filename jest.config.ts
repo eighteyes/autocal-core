@@ -6,7 +6,7 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.ts?$': 'ts-jest',
   },
-  testPathIgnorePatterns: ['/node_modules/','<rootDir>/tests/']
+  testPathIgnorePatterns: ['/node_modules/','<rootDir>/dist/']
   // setupFilesAfterEnv: ['./tests/bootstrap.ts']
 };
 export default config;
