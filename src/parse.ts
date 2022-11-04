@@ -1,4 +1,4 @@
-import { regex, effectList } from './defaults'
+import { regex, effectList, startWeight } from './defaults'
 
 export function parseEvent(ln: string, ctx: Context) {
 
@@ -44,6 +44,7 @@ export function parseLine(ln: string, ctx?: Context): CalEvent {
     let durations: string[] = []; 
     let tags: string[] = []; 
     let effects: string[] = []; 
+    let integerWeight = startWeight;
 
     let done = (ln[0] == 'x')
     if (done) {
@@ -60,6 +61,8 @@ export function parseLine(ln: string, ctx?: Context): CalEvent {
         effectMatches[0].split('').forEach((e)=>{
             splitPoints.push( ln.indexOf(e) )
             effects.push(e)
+            let eObj = effectList.filter((e1)=>{ return e1.symbol == e })[0]
+            integerWeight += eObj.weight;           
         })
     }
     
@@ -81,14 +84,15 @@ export function parseLine(ln: string, ctx?: Context): CalEvent {
     }
 
     let splitIndex = Math.min(...splitPoints)
-
     let content = ln.slice(0, splitIndex).trim()
+
+
     let raw = {
         meta: ln.slice(splitIndex),
         metas: ln.slice(splitIndex).split(' ')
     }
 
-    return { content, raw, durations, tags, effects, done }
+    return { content, raw, durations, tags, effects, done, integerWeight }
 
 }
 

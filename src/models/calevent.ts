@@ -10,5 +10,13 @@ interface CalEvent {
     effects: string[],
     downstreamTags?: string[],
     upstreamTags?: string[],
-    done: boolean
+    done: boolean,
+    // before we get too far
+    integerWeight?: number,
+    // 0-1 number
+    weight?: number,
+    // integer value for selection
+    energy?: number,
+    // where raw becomes content
+    splitPoint?: number
 }
