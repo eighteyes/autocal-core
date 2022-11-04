@@ -1,16 +1,18 @@
 # SPARK 45m !-> #POC
-Call Marcelo RE : Landing Page 1h TH1pm >> #lp
-EZ LP TO CRM 2h #lp > #stream
-Landing Page 2h #lp > #stream
-Setup YT Account #stream < #brand > #testobs 2h
-Setup OBS 1h #stream >
-Test OBS 1h #testobs
+x Call Marcelo RE : Landing Page 1h TH1pm >> #lp
+x EZ LP TO CRM 2h #lp > #stream
+x Landing Page 2h #lp > #stream
+x Setup YT Account #stream < #brand > #testobs 2h
+x Setup Twitch
+x Setup OBS 1h #stream >
+x Test OBS 1h #testobs
 x File Handling 2h >
 x Line Parser 2h >
 Tokenizer 2h >
 x Basic Events / Context 2h >
-Ordering Engine 2h
-Basic Dependencies 2h 
+Ordering Engine 2h #order
+Activities have weights 3h > #order
+Basic Dependencies 2h > #order
 Core Runtime 4h < #stream
 x Formalize Logic w/ Typescript 3h
 x Move to TDD w/ Jest 2h
@@ -33,16 +35,19 @@ TDD / BDD 4h
 REPO 1h
 CLI Package 1h -
 
-# Marketing
-Make Starter Logo / Mascot Graphics
+# Marketing 15m
+Make Starter Logo / Mascot Graphics #brand
 Choose Color Scheme
 Write 1 paragraph Copy, title, headline
+Look at github for hosting landing page
+Setup GA
 
 # MVP
 Paypay Integration 4h
 Feature Checkout 8h
 
 # Breaks !+
-piano 15m   
+piano {A,A',B,C,C',D,D',E,F,F',G,G'} !$^* 15m
 pushups 5m
-clean 10m
+clean office 10m
+clean bathroom

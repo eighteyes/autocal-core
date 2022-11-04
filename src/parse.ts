@@ -1,4 +1,4 @@
-import { regex } from './defaults'
+import { regex, effectList } from './defaults'
 
 export function parseEvent(ln: string, ctx: Context) {
 
@@ -41,7 +41,9 @@ export function parseTextIntoContextsAndEvents(input:string) {
 }
 
 export function parseLine(ln: string, ctx?: Context): CalEvent {
-    let duration, tags, tokens; 
+    let durations: string[] = []; 
+    let tags: string[] = []; 
+    let effects: string[] = []; 
 
     let done = (ln[0] == 'x')
     if (done) {
@@ -49,32 +51,44 @@ export function parseLine(ln: string, ctx?: Context): CalEvent {
     }
 
     // start with length, so we have something in place in case of only content
-    let splitPoints = [ln.length]
+    let splitPoints = [ln.length];
+    
+    // add effect split points
+    let effectMatches = ln.match(regex.effects)
+    
+    if ( effectMatches ){
+        effectMatches[0].split('').forEach((e)=>{
+            splitPoints.push( ln.indexOf(e) )
+            effects.push(e)
+        })
+    }
+    
     // cycle through all meta info indices
     const durationMatches = ln.match(regex.duration);
-    const tagMatches = ln.match(regex.tag)
-    const tokenMatches = ln.match(regex.tokens)
+    if ( durationMatches ){
+        durationMatches.forEach((d)=>{
+            splitPoints.push( ln.indexOf(d) )
+            durations.push(d)
+        })
+    }
 
-    // find earliest match for a meta info blob
-    Array(durationMatches, tagMatches, tokenMatches).forEach(m => {
-        if (m) splitPoints.push(m.index)
-    })
+    const tagMatches = ln.match(regex.tag)
+    if ( tagMatches ){
+        tagMatches.forEach((t)=>{
+            splitPoints.push( ln.indexOf(t) )
+            tags.push(t.slice(1))
+        })
+    }
 
     let splitIndex = Math.min(...splitPoints)
 
     let content = ln.slice(0, splitIndex).trim()
     let raw = {
         meta: ln.slice(splitIndex),
-        metas: ln.slice(splitIndex).split(' '),
-        // tokens: tokenMatches.map(t=>t[0]).join('')
+        metas: ln.slice(splitIndex).split(' ')
     }
 
-    if (durationMatches) { duration = durationMatches[0] }
-    // regex filters out the # for tag names
-    if (tagMatches) { tags = tagMatches.map(t => t.slice(1)) }
-    if (tokenMatches) { tokens = tokenMatches.map(t => t[0]) }
-
-    return { content, raw, duration, tags, tokens, done }
+    return { content, raw, durations, tags, effects, done }
 
 }
 

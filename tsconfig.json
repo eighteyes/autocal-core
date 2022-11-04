@@ -3,7 +3,8 @@
       "outDir": "./dist",
       "allowJs": true,
       "target": "es5",
-      // "strictNullChecks": true
+      // "strictNullChecks": true,
+      "sourceMap": true
     },
     "include": ["./src/**/*", "./tests/**/*"]
   }

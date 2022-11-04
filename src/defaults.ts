@@ -3,14 +3,15 @@ interface Effect {
     name: string,
     weight: number
 }
-const effects: Effect[] = [
+const effectList: Effect[] = [
     { symbol: "!", name: 'Urgent', weight: 20 },
     { symbol: "$", name: 'Important', weight: 20 },
     { symbol: "^", name: 'Hard', weight: 5 },
-    { symbol: "+", name: 'Energizing', weight: 0 },
-    { symbol: "-", name: 'Draining', weight: 0 },
     { symbol: "*", name: 'Required', weight: 100 },
 ]
+
+// { symbol: "+", name: 'Energizing', weight: 0 },
+// { symbol: "-", name: 'Draining', weight: 0 },
 
 const actions = {
     '>': 'Unblocks',
@@ -23,12 +24,14 @@ const times = {
 
 const regex = {
     contextHashMatch: /^#*./,
-    duration: /\b\d*[mhdw]/,
+    duration: /\b\d*[mhdw]/g,
     content: /^([A-Za-z]\w+\s)$/,
     tag:/#([.\w]+\S)/g,
-    tokens: new RegExp('/w[\\'+ effects.map(e=>e.symbol).join('\\')+']/w' )
+    effects: new RegExp('\\B['+ effectList.map(e=>e.symbol).join("\\") + ']+' , 'g')
 }
+
+// /\s[!\$\^\*]+/g
 
 const orderingAlgo = "^+"
 
-export { regex, effects, orderingAlgo }
+export { regex, effectList, orderingAlgo }

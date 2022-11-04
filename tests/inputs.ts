@@ -11,6 +11,10 @@ export const dependencies = {
 
 }
 
+export const effects = {
+    many: "Very Important 1h !*$^+-"
+}
+
 export const content = {
     splitBasic: "Call Marcelo RE : Landing Page 1h",
     splitComplex: "Presents 4 Judy & Mark! // (and f) 4h"

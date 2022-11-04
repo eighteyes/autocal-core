@@ -1,13 +1,13 @@
 interface CalEvent {
     content: string,
-    duration: string,
+    durations: string[],
     raw?: {
         meta?: string,
         metas?: string[],
-        tokens?: string
+        effects?: string
     },
     tags: string[],
-    tokens: string[],
+    effects: string[],
     downstreamTags?: string[],
     upstreamTags?: string[],
     done: boolean
