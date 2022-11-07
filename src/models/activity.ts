@@ -1,13 +1,13 @@
-interface CalEvent {
+interface Activity {
     content: string,
     durations: string[],
     raw?: {
         meta?: string,
         metas?: string[],
-        effects?: string
+        attributes?: string
     },
     tags: string[],
-    effects: string[],
+    attributes: string[],
     downstreamTags?: string[],
     upstreamTags?: string[],
     done: boolean,

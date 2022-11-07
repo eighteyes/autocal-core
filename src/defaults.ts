@@ -1,13 +1,9 @@
-interface Effect {
-    symbol: string,
-    name: string,
-    weight: number
-}
 
-export const effectList: Effect[] = [
+export const attributeList: Attribute[] = [
     { symbol: "!", name: 'Urgent', weight: 20 },
     { symbol: "$", name: 'Important', weight: 20 },
-    { symbol: "*", name: 'Required', weight: 100 },
+    { symbol: "*", name: 'Required', weight: 40 },
+    { symbol: "`", name: 'Nudge', weight: 2 }
 ]
 
 // { symbol: "+", name: 'Energizing', weight: 0 },
@@ -15,7 +11,9 @@ export const effectList: Effect[] = [
 
 export const actions = {
     '>': 'Unblocks',
-    '<': 'Depends On'
+    '<': 'Depends On',
+    '+': 'Energize',
+    '-': 'Drain'
 }
 
 export const times = {
@@ -27,7 +25,7 @@ export const regex = {
     duration: /\b\d*[mhdw]/g,
     content: /^([A-Za-z]\w+\s)$/,
     tag:/#([.\w]+\S)/g,
-    effects: new RegExp('\\B['+ effectList.map(e=>e.symbol) + ']+' , 'g')
+    attributes: new RegExp('\\B['+ attributeList.map(e=>e.symbol) + ']+' , 'g')
 }
 
 // /\s[!\$\^\*]+/g

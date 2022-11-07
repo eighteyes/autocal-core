@@ -11,9 +11,9 @@ export const dependencies = {
 
 }
 
-export const effects = {
+export const attributes = {
     many: "Very Important 1h !*$^+-",
-    all: "A thing! to do !*$"
+    all: "A thing! to do !*$`"
 }
 
 export const content = {
