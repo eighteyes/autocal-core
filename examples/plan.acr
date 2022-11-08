@@ -8,15 +8,16 @@ x Setup OBS 1h #stream >
 x Test OBS 1h #testobs
 x File Handling 2h >
 x Line Parser 2h >
-Tokenizer 2h >
+x Tokenizer 2h >
 x Basic Events / Context 2h >
 Ordering Engine 2h #order
 Activities have weights 3h > #order
 Basic Dependencies 2h > #order
 Core Runtime 4h < #stream
-Rename to Activity / Attributes 1h
+x Rename to Activity / Attributes 1h
 x Formalize Logic w/ Typescript 3h
 x Move to TDD w/ Jest 2h
+Refactor Context into Class
 
 # POC > NEXT
 Event / Context Modeling 8h

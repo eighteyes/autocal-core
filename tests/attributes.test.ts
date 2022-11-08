@@ -1,4 +1,4 @@
-import { parseLine } from '../src/parse'
+import { parseLine } from '../src/models/contextFn'
 import { attributeList, startWeight } from '../src/defaults'
 import { attributes } from './inputs'
 

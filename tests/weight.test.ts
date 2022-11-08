@@ -1,12 +1,16 @@
-import { Context } from "../src/models/context";
-import { selectActivityUsingWeights } from "../src/models/contextFn";
-import { parseTextIntoContextsAndActivities } from "../src/parse"
-import { context } from "./inputs"
+import { 
+    selectActivityUsingWeights, 
+    processContext, 
+    parseTextIntoContexts 
+} from "../src/models/contextFn";
 
-let ctxs: Context[] = [];
+import { contexts } from "./inputs"
+
+let ctxs = [];
 
 beforeAll(() => {
-    ctxs = parseTextIntoContextsAndActivities(context.long);
+    ctxs = parseTextIntoContexts(contexts.long);
+    ctxs.forEach((c)=>processContext(c))
     // weight distribution
     ctxs.forEach((c) => {
         c.activities.forEach((a) => { a.weight = Math.random() })

@@ -1,7 +1,7 @@
-export class Context {
-    name: string;
-    activities: Activity[];
-    raw?: string;
+export interface Context {
+    name: string,
+    activities: Activity[],
+    raw?: string,
 }
 
 

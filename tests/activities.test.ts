@@ -1,4 +1,4 @@
-import { parseLine } from '../src/parse'
+import { parseLine } from '../src/models/contextFn'
 import { content } from './inputs'
 
 test('Can split content', () => {

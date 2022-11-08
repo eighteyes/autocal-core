@@ -23,7 +23,7 @@ export const content = {
     splitComplex: "Presents 4 Judy & Mark! // (and f) 4h"
 }
 
-export const context = {
+export const contexts = {
     basic: "# Context\nDo Thing !",
     long: "# Context\n" + Array(100).fill(makeTestRef(), 0,100).join('\n')
 }
