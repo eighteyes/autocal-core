@@ -41,7 +41,6 @@ export function processContext(ctx:Context){
     generateWeights(ctx);
 }
 
-
 export function parseLine(ln: string): Activity {
     let durations: string[] = []; 
     let tags: string[] = []; 
@@ -88,6 +87,10 @@ export function parseLine(ln: string): Activity {
     let splitIndex = Math.min(...splitPoints)
     let content = ln.slice(0, splitIndex).trim()
 
+    // deprioritize done acts
+    if (done) {
+        integerWeight = 0
+    }
 
     let raw = {
         meta: ln.slice(splitIndex),
@@ -100,7 +103,7 @@ export function parseLine(ln: string): Activity {
 
 export function generateReferences(ctx: Context) {
     // pull list of content from context
-    let contents: string[] = ctx.activities.map((c) => {
+    ctx.activities.forEach((c) => {
         c.reference = c.content.replace(regex.lettersOnly, '').slice(0, 10).toLowerCase();
         return c.reference;
     })
@@ -108,8 +111,11 @@ export function generateReferences(ctx: Context) {
 }
 
 export function generateWeights(ctx: Context) {
-    ctx.activities.forEach((act)=>{
-        act.weight = Math.min(Math.floor(act.integerWeight/100), 1)    
+    
+    // reverse to apply a slight weighting towards the top of the list
+    ctx.activities.reverse().forEach((c, i)=>{
+        c.integerWeight += i;
+        c.weight = Math.min(c.integerWeight/100, 1)   
     })
 }
 
@@ -133,10 +139,10 @@ export function selectActivityUsingWeights(ctx: Context, count:number = 1) : Act
     let output : Activity[] = [];
 
     for (let i = 0; i < input.length; i++) {
-        const element = input[i];
+        const act = input[i];
         // crux of selection, use weight as % chance
-        if ( Math.random() > element.weight ){
-            output.push( element )
+        if ( !act.done && Math.random() > act.weight ){
+            output.push( act )
         }
         if ( output.length >= count ){
             break;

@@ -17,7 +17,7 @@ Core Runtime 4h < #stream
 x Rename to Activity / Attributes 1h
 x Formalize Logic w/ Typescript 3h
 x Move to TDD w/ Jest 2h
-Refactor Context into Class
+x Refactor Context 
 
 # POC > NEXT
 Event / Context Modeling 8h
