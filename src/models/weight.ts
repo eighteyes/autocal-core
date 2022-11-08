@@ -1,6 +1,6 @@
-class Weight {
+export class Weight {
     weight: number;
-    reference: string;
+    reference: Activity;
     static weights: Weight[] = [];
 
     constructor( weight, reference ) {
@@ -44,5 +44,3 @@ class Weight {
         return output
     }
 }
-
-export { Weight }

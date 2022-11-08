@@ -8,6 +8,7 @@ interface Activity {
     },
     tags: string[],
     attributes: string[],
+    reference?: string,
     downstreamTags?: string[],
     upstreamTags?: string[],
     done: boolean,

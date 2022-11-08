@@ -1,5 +1,7 @@
-interface Context {
-    name: string
-    events: Activity[]
-    raw?: string
+export class Context {
+    name: string;
+    activities: Activity[];
+    raw?: string;
 }
+
+

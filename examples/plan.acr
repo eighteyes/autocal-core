@@ -14,10 +14,9 @@ Ordering Engine 2h #order
 Activities have weights 3h > #order
 Basic Dependencies 2h > #order
 Core Runtime 4h < #stream
+Rename to Activity / Attributes 1h
 x Formalize Logic w/ Typescript 3h
 x Move to TDD w/ Jest 2h
-
-Freya Pickup M-F 4:10pm *
 
 # POC > NEXT
 Event / Context Modeling 8h
@@ -47,7 +46,7 @@ Paypay Integration 4h
 Feature Checkout 8h
 
 # Breaks !+
-piano {A,A',B,C,C',D,D',E,F,F',G,G'} !$^* 15m
+piano !$^* 15m
 pushups 5m
 clean office 10m
 clean bathroom

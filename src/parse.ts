@@ -1,14 +1,14 @@
 import { regex, attributeList, startWeight } from './defaults'
 import { Weight } from './models/weight'
+import { generateReferences, generateWeights } from './models/contextFn'
+import { context } from '../tests/inputs';
+import { Context } from './models/context'
 
-export function parseEvent(ln: string, ctx: Context) {
 
-}
-
-export function parseTextIntoContextsAndEvents(input:string) {
+export function parseTextIntoContextsAndActivities(input:string) {
     let contextraws: string[] = []
     let contexts: Context[] = []
-    let events: Activity[] = []
+    let activities: Activity[] = []
 
     // break input into context blocks
     const contextStrings = input.split('\n\n')
@@ -25,23 +25,30 @@ export function parseTextIntoContextsAndEvents(input:string) {
 
         let ctx: Context = {
             name: raw.replace(regex.contextHashMatch, ''),
-            events: [],
+            activities: [],
             raw
         }
 
+        // TODO: Strip parseLine out from this, process Acts after
         // cycle through every event in the context
         line.forEach((ln) => {
             const e: Activity = parseLine(ln)
-            ctx.events.push(e)
-            events.push(e)
+            ctx.activities.push(e)
+            activities.push(e)
         })
 
+        //
         contexts.push(ctx)
     })
-    return { contexts, events }
+
+    // after all lines are parsed 
+    generateReferences(contexts);
+    generateWeights(contexts);
+
+    return contexts
 }
 
-export function parseLine(ln: string, ctx?: Context): Activity {
+export function parseLine(ln: string): Activity {
     let durations: string[] = []; 
     let tags: string[] = []; 
     let attributes: string[] = []; 
@@ -56,14 +63,14 @@ export function parseLine(ln: string, ctx?: Context): Activity {
     let splitPoints = [ln.length];
     
     // add effect split points
-    let actionMatches = ln.match(regex.attributes)
+    let attributeMatches = ln.match(regex.attributes)
     
-    if ( actionMatches ){
-        actionMatches[0].split('').forEach((e)=>{
+    if ( attributeMatches ){
+        attributeMatches[0].split('').forEach((e)=>{
             splitPoints.push( ln.indexOf(e) )
             attributes.push(e)
             let eObj = attributeList.filter((e1)=>{ return e1.symbol == e })[0]
-            integerWeight += eObj.weight;           
+            integerWeight += eObj.weight;      
         })
     }
     

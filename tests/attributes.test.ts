@@ -14,3 +14,7 @@ test('should weight activities based on attributes', () => {
     },0 ) + startWeight;
     expect(e.integerWeight).toBe(totalWeight)
 });
+
+test('should count multiple attributes when weighting', () => {
+    
+})

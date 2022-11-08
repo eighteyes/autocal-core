@@ -1,37 +1,23 @@
-import { Weight } from '../src/models/weight'
-import { makeRandom } from '../src/utils'
+import { Context } from "../src/models/context";
+import { selectActivityUsingWeights } from "../src/models/contextFn";
+import { parseTextIntoContextsAndActivities } from "../src/parse"
+import { context } from "./inputs"
 
-function makeTestRef(){
-    return Math.random().toString(26).slice(2,8);
-}
-
-function makeTestWeight(){
-    return new Weight( makeRandom(), makeTestRef() )
-}
-
-let testWeights: Weight[] = [];
+let ctxs: Context[] = [];
 
 beforeAll(() => {
-    for (let i = 0; i < 100; i++) {
-        testWeights.push( makeTestWeight() )
-    }
+    ctxs = parseTextIntoContextsAndActivities(context.long);
+    // weight distribution
+    ctxs.forEach((c) => {
+        c.activities.forEach((a) => { a.weight = Math.random() })
+    })
 })
-
-test('should be able to select top weight', () => {
-    const w = new Weight(1000, "abc123")
-    
-    expect(Weight.selectTop()[0]).toMatchObject(w)
-    
-    // reset
-    Weight.weights.pop();
-})
-
-
 
 test('same results will not be generated each time', () => {
+    const c = ctxs[0];
     for (let i = 0; i < 3; i++) {
-        let ws : Weight[] = Weight.selectUsingWeights(3);
-        let ws2 : Weight[] = Weight.selectUsingWeights(3);
+        let ws = selectActivityUsingWeights(c, 3);
+        let ws2 = selectActivityUsingWeights(c, 3);
         expect(ws).not.toMatchObject(ws2)
     }
 })

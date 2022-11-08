@@ -7,3 +7,7 @@ test('Can split content', () => {
     e = parseLine(content.splitComplex)
     expect(e.content).toBe("Presents 4 Judy & Mark! // (and f)")
 })
+
+test('Can generate unique references from similiar strings', ()=>{
+    
+})

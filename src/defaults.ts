@@ -25,7 +25,9 @@ export const regex = {
     duration: /\b\d*[mhdw]/g,
     content: /^([A-Za-z]\w+\s)$/,
     tag:/#([.\w]+\S)/g,
-    attributes: new RegExp('\\B['+ attributeList.map(e=>e.symbol) + ']+' , 'g')
+    attributes: new RegExp('\\B['+ attributeList.map(e=>e.symbol) + ']+' , 'g'),
+    lettersOnly: /[^\w]/g
+
 }
 
 // /\s[!\$\^\*]+/g
