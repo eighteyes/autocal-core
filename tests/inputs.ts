@@ -27,3 +27,8 @@ export const contexts = {
     basic: "# Context\nDo Thing !",
     long: "# Context\n" + Array(100).fill(makeTestRef(), 0,100).join('\n')
 }
+
+export const deps = {
+    may: "# Context\n" + "A thing >\nAnother Thing",
+    mayTags: "# Context\n" + "A thing > #this\nAnother Thing\nThe Thing #this",
+}

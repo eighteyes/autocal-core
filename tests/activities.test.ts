@@ -8,6 +8,8 @@ test('Can split content', () => {
     expect(e.content).toBe("Presents 4 Judy & Mark! // (and f)")
 })
 
-test('Can generate unique references from similiar strings', ()=>{
+test.skip('Can generate unique references from similiar strings', ()=>{
     
 })
+
+test.skip('Can weight content', ()=>{})

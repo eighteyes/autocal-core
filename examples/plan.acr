@@ -12,12 +12,34 @@ x Tokenizer 2h >
 x Basic Events / Context 2h >
 Ordering Engine 2h #order
 Activities have weights 3h > #order
-Basic Dependencies 2h > #order
+Basic Dependencies 2h > #order >
+Flush out target Dependencies
+Shift Selection Between Contexts Using Actions
 Core Runtime 4h < #stream
 x Rename to Activity / Attributes 1h
 x Formalize Logic w/ Typescript 3h
 x Move to TDD w/ Jest 2h
 x Refactor Context 
+Unreverse Weight for Sort Index, should descend. 
+Increase Weight space to 10^3 >
+Fix duration regex from matching words
+Energetics
+
+# Slack
+Express App 2h
+Slack SDK 2h
+SQLite Storage 1h
+Adapter for ACCore 2h 
+Message Action 2h 
+Get n tasks 2h
+CRUD Tasks 4h >> #slack-alpha
+Launch Alpha #slack-alpha 2h >>>
+Divide Userland Storage << #slack-alpha
+Context == Channels 8h 
+Assignments 8h
+Post Acts as Reminder 4h 
+Launch Beta #slack-beta 4h >>>
+
 
 # POC > NEXT
 Event / Context Modeling 8h
@@ -33,14 +55,18 @@ Add Time 2h #sched
 Runtime 4h
 TDD / BDD 4h
 REPO 1h
-CLI Package 1h -
+CLI Package 1h - > #clilaunch
 
-# Marketing 15m
+# Marketing -$ 15m
 Make Starter Logo / Mascot Graphics #brand
 Choose Color Scheme
 Write 1 paragraph Copy, title, headline
 Look at github for hosting landing page
 Setup GA
+Better Landing Page Template 4h
+Beta Invite + Paid $24 - 30 mins assistance for setup. 2h
+CLI Launch on PH #clilaunch
+
 
 # MVP
 Paypay Integration 4h

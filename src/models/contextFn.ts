@@ -1,6 +1,12 @@
 import {regex, startWeight, attributeList } from '../defaults'
 import { Context } from './context'
 
+export function parseComplete(input:string) : Context[] {
+    const ctxs: Context[] = parseTextIntoContexts(input)
+    ctxs.forEach((c) => processContext(c))
+    return ctxs;
+}
+
 export function parseTextIntoContexts(input:string) {
     let contextraws: string[] = []
     let contexts: Context[] = []
@@ -29,7 +35,7 @@ export function parseTextIntoContexts(input:string) {
     return contexts
 }
 
-export function processContext(ctx:Context){
+export function processContext(ctx:Context) : Context{
     // cycle through every event in the context
     ctx.raw.split('\n').forEach((ln) => {
         const e: Activity = parseLine(ln)
@@ -39,6 +45,9 @@ export function processContext(ctx:Context){
     // after all lines are parsed 
     generateReferences(ctx);
     generateWeights(ctx);
+
+    // changes are applied inline, but return anyway
+    return ctx;
 }
 
 export function parseLine(ln: string): Activity {
@@ -46,6 +55,8 @@ export function parseLine(ln: string): Activity {
     let tags: string[] = []; 
     let attributes: string[] = []; 
     let integerWeight = startWeight;
+    let upstreamTags = [];
+    let downstreamTags = [];
 
     let done = (ln[0] == 'x')
     if (done) {
@@ -76,14 +87,38 @@ export function parseLine(ln: string): Activity {
         })
     }
 
+    const dependencyMatch = ln.match(regex.dependencies);
+    if ( dependencyMatch){
+        dependencyMatch.forEach((d) => {
+            const depIndex = ln.indexOf(d) 
+            splitPoints.push( depIndex )
+            // check if a tag is specified
+            if ( ln.slice(depIndex,depIndex + 3).includes('#') ){
+                // where is the tag in the string
+                const depTagIndex = ln.indexOf('#', depIndex)
+                // find end of tag, OR set index to end of string
+                const endTagIndex = ( ln.indexOf(' ', depIndex+2 ) !== -1 ) ? 
+                    ln.indexOf(' ', depIndex+2 ) : 
+                    ln.length; 
+                const tag = ln.slice(depTagIndex+1, endTagIndex)
+                if( d == '<' ) upstreamTags.push(tag);
+                if( d == '>' ) downstreamTags.push(tag);
+            }
+        })
+    }
+
     const tagMatches = ln.match(regex.tag)
     if ( tagMatches ){
         tagMatches.forEach((t)=>{
-            splitPoints.push( ln.indexOf(t) )
+            const tagIndex = ln.indexOf(t);
+            // TODO: skip dependency tags
+            
+            splitPoints.push( tagIndex )
             tags.push(t.slice(1))
         })
     }
 
+    // split out the content from the meta information
     let splitIndex = Math.min(...splitPoints)
     let content = ln.slice(0, splitIndex).trim()
 
@@ -97,7 +132,7 @@ export function parseLine(ln: string): Activity {
         metas: ln.slice(splitIndex).split(' ')
     }
 
-    return { content, raw, durations, tags, attributes, done, integerWeight }
+    return { content, downstreamTags, upstreamTags, raw, durations, tags, attributes, done, integerWeight }
 
 }
 
@@ -113,8 +148,8 @@ export function generateReferences(ctx: Context) {
 export function generateWeights(ctx: Context) {
     
     // reverse to apply a slight weighting towards the top of the list
-    ctx.activities.reverse().forEach((c, i)=>{
-        c.integerWeight += i;
+    ctx.activities.forEach((c, i)=>{
+        c.integerWeight -= i;
         c.weight = Math.min(c.integerWeight/100, 1)   
     })
 }

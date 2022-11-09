@@ -1,14 +1,11 @@
 import { readFile } from "./read"
-import { parseTextIntoContexts, selectActivityUsingWeights } from "./models/contextFn" 
+import { parseComplete, selectActivityUsingWeights } from "./models/contextFn" 
 var fileName = "examples/plan.acr"
 import { Context } from "./models/context";
-import { processContext } from "./models/contextFn"
 
-let contexts: Context[]  = parseTextIntoContexts(
+let contexts: Context[]  = parseComplete(
     readFile(fileName)
 );
-
-contexts.forEach((c)=>processContext(c))
 
 // Output
 console.log(contexts.length, 'contexts found!!')

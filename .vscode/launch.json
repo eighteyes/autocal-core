@@ -17,7 +17,7 @@
                 "${jest.testFile}"
             ],
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
+            "console": "internalConsole",
             "internalConsoleOptions": "neverOpen",
             "disableOptimisticBPs": true,
             "program": "${workspaceFolder}/node_modules/.bin/jest",
@@ -31,7 +31,9 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/src/index.ts",
             "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "console": "internalConsole",
+            "internalConsoleOptions": "neverOpen"
           }
     ]
 }

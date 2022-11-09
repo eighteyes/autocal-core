@@ -26,7 +26,8 @@ export const regex = {
     content: /^([A-Za-z]\w+\s)$/,
     tag:/#([.\w]+\S)/g,
     attributes: new RegExp('\\B['+ attributeList.map(e=>e.symbol) + ']+' , 'g'),
-    lettersOnly: /[^\w]/g
+    lettersOnly: /[^\w]/g,
+    dependencies: /[<>]{1,3}/g
 
 }
 
