@@ -1,5 +1,6 @@
 import {regex, startWeight, attributeList } from '../defaults'
 import { Context } from './context'
+import { generateDependencies } from './dependencies'
 
 export function parseComplete(input:string) : Context[] {
     const ctxs: Context[] = parseTextIntoContexts(input)
@@ -45,6 +46,7 @@ export function processContext(ctx:Context) : Context{
     // after all lines are parsed 
     generateReferences(ctx);
     generateWeights(ctx);
+    generateDependencies(ctx);
 
     // changes are applied inline, but return anyway
     return ctx;
@@ -57,11 +59,17 @@ export function parseLine(ln: string): Activity {
     let integerWeight = startWeight;
     let upstreamTags = [];
     let downstreamTags = [];
+    let upstream = [];
+    let downstream = [];
+    let attachNext = '';
 
     let done = (ln[0] == 'x')
     if (done) {
         ln = ln.replace('x ', '')
     }
+
+    // just in case of whitespace
+    ln = ln.trim()
 
     // start with length, so we have something in place in case of only content
     let splitPoints = [ln.length];
@@ -89,6 +97,10 @@ export function parseLine(ln: string): Activity {
 
     const dependencyMatch = ln.match(regex.dependencies);
     if ( dependencyMatch){
+        // check for trailing dependency token
+        if ( ln.lastIndexOf(dependencyMatch[dependencyMatch.length-1]) == ln.length-1 ){
+            attachNext = dependencyMatch[dependencyMatch.length-1]
+        }
         dependencyMatch.forEach((d) => {
             const depIndex = ln.indexOf(d) 
             splitPoints.push( depIndex )
@@ -110,11 +122,15 @@ export function parseLine(ln: string): Activity {
     const tagMatches = ln.match(regex.tag)
     if ( tagMatches ){
         tagMatches.forEach((t)=>{
-            const tagIndex = ln.indexOf(t);
-            // TODO: skip dependency tags
-            
-            splitPoints.push( tagIndex )
-            tags.push(t.slice(1))
+            // remove leading #
+            t = t.slice(1)
+
+            // skip dependency tags
+            if ( downstreamTags.indexOf(t) == -1 && upstreamTags.indexOf(t) == -1) {
+                const tagIndex = ln.indexOf(t);
+                splitPoints.push( tagIndex )
+                tags.push(t)
+            }
         })
     }
 
@@ -132,7 +148,8 @@ export function parseLine(ln: string): Activity {
         metas: ln.slice(splitIndex).split(' ')
     }
 
-    return { content, downstreamTags, upstreamTags, raw, durations, tags, attributes, done, integerWeight }
+    return { content, downstream, upstream, downstreamTags, upstreamTags, 
+        raw, durations, tags, attributes, done, integerWeight, attachNext }
 
 }
 
@@ -167,6 +184,32 @@ export function sortActivityWeights(ctx:Context){
             if (a.weight === b.weight) return 0;
         }
     )
+}
+
+export function findActivitiesByTags(ctx: Context, tags: string[]) : Activity[]{
+    let acts : Activity[] = [];
+    
+    tags.forEach((t) => { 
+        let matchActs: Activity[] = findActivitiesByTag(ctx, t)
+        matchActs.forEach( (m) => {
+            // don't insert dupes
+            if ( acts.indexOf(m) === -1 ){
+                acts.push( m ) 
+            }
+        })
+    })
+
+    return acts;
+}
+
+export function findActivitiesByTag(ctx: Context, tagName:string) : Activity[]{
+    let acts : Activity[] = [];
+
+    acts = ctx.activities.filter((a)=>{
+        return ( a.tags.includes(tagName) )
+    })
+
+    return acts;
 }
 
 export function selectActivityUsingWeights(ctx: Context, count:number = 1) : Activity[]{

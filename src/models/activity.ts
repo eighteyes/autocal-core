@@ -10,7 +10,11 @@ interface Activity {
     attributes: string[],
     reference?: string,
     downstreamTags?: string[],
+    downstream?: Activity[],
     upstreamTags?: string[],
+    upstream?: Activity[],
+    // < or > 
+    attachNext?: string,
     done: boolean,
     // before we get too far
     integerWeight?: number,
