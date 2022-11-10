@@ -1,3 +1,6 @@
+
+import { Activity, ActivityDependencies } from './activity'
+
 export class Weight {
     weight: number;
     reference: Activity;
