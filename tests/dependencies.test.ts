@@ -35,4 +35,9 @@ test('should capture next intent', () => {
   expect(ctx.activities[1].dependencies.attachNext).toBe('>');
   expect(ctx.activities[3].dependencies.attachNext).toBe('<<');
   expect(ctx.activities[4].dependencies.attachNext).toBe('<');
+  expect(ctx.activities[0].dependencies.required.downstream).toContain(ctx.activities[1]);
+  expect(ctx.activities[1].dependencies.downstream).toContain(ctx.activities[2]);
+  expect(ctx.activities[2].dependencies.required.downstream).toContain(ctx.activities[3]);
+  expect(ctx.activities[3].dependencies.required.upstream).toContain(ctx.activities[4]);
+  expect(ctx.activities[4].dependencies.upstream).toContain(ctx.activities[5]);
 });

@@ -55,7 +55,6 @@ export function processContext(ctx: Context): Context {
 }
 
 export function parseLine(ln: string): Activity {
-  // declare Activty
   let durations: string[] = [];
   let tags: string[] = [];
   let attributes: string[] = [];
@@ -67,8 +66,6 @@ export function parseLine(ln: string): Activity {
     downstream: [],
     attachNext: '',
     required: {
-      upstreamTags: [],
-      downstreamTags: [],
       upstream: [],
       downstream: [],
     },
