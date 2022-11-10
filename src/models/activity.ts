@@ -4,7 +4,8 @@ interface Activity {
     raw?: {
         meta?: string,
         metas?: string[],
-        attributes?: string
+        attributes?: string,
+        input? : string
     },
     tags: string[],
     attributes: string[],

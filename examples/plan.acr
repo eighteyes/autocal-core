@@ -1,4 +1,4 @@
-# SPARK 45m !-> #POC
+# SPARK 45m !- >> #POC
 x Call Marcelo RE : Landing Page 1h TH1pm >> #lp
 x EZ LP TO CRM 2h #lp > #stream
 x Landing Page 2h #lp > #stream
@@ -40,9 +40,9 @@ Divide Userland Storage << #slack-alpha
 Context == Channels 8h 
 Assignments 8h
 Post Acts as Reminder 4h 
-Launch Beta #slack-beta 4h
+Launch Beta !$ #slack-beta 4h
 
-# POC > NEXT
+# POC >> #NEXT
 Event / Context Modeling 8h
 Ordering Engine << #order < #sched
 exclusions 1h #order
@@ -69,7 +69,7 @@ Beta Invite + Paid $24 - 30 mins assistance for setup. 2h
 CLI Launch on PH #clilaunch
 
 
-# MVP
+# MVP #NEXT
 Paypay Integration 4h
 Feature Checkout 8h
 

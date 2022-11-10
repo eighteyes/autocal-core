@@ -13,7 +13,8 @@ beforeAll(() => {
     ctxs.forEach((c)=>processContext(c))
     // weight distribution
     ctxs.forEach((c) => {
-        c.activities.forEach((a) => { a.weight = Math.random() })
+        // start weights around 50
+        c.activities.forEach((a) => { a.weight = Math.random() / 2  })
     })
 })
 
