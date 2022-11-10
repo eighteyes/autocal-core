@@ -1,26 +1,27 @@
 import { Context } from './context'
 import { findActivitiesByTags } from './contextFn';
 import { addDependentActivity } from './activityFn'
+import { Activity, ActivityDependencies } from './activity'
 
 export function generateDependencies(ctx: Context) : Context {
     ctx.activities.forEach((act, i) => {
         // link implicit
-        if ( act.attachNext == '>') {
+        if ( act.dependencies.attachNext == '>') {
             addDependentActivity(act, ctx.activities[i+1])
         }
-         
-        if ( act.attachNext == '<'){
+
+        if ( act.dependencies.attachNext == '<'){
             addDependentActivity(act, ctx.activities[i+1], true)
         }
             
         // link downstream
-        let matchingActs : Activity[] = findActivitiesByTags(ctx, act.downstreamTags)
+        let matchingActs : Activity[] = findActivitiesByTags(ctx, act.dependencies.downstreamTags)
         matchingActs.forEach((ma) => {
              addDependentActivity(act,ma);
         })
         
         // link upstream
-        matchingActs = findActivitiesByTags(ctx, act.upstreamTags)
+        matchingActs = findActivitiesByTags(ctx, act.dependencies.upstreamTags)
         matchingActs.forEach((ma) => {
             addDependentActivity(act, ma, true)
         })

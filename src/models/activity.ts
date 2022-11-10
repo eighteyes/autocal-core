@@ -1,24 +1,18 @@
-interface Activity {
+export interface Activity {
     content: string,
     durations: string[],
     raw?: {
         meta?: string,
         metas?: string[],
         attributes?: string,
-        input? : string
+        input?: string
     },
     tags: string[],
     attributes: string[],
     reference?: string,
 
     //begin dep refactor
-    downstreamTags?: string[],
-    downstream?: Activity[],
-    upstreamTags?: string[],
-    upstream?: Activity[],
-    required?: ActivityRequired,
-    // < or > 
-    attachNext?: string,
+    dependencies: ActivityDependencies,
 
     // end refactor
     done: boolean,
@@ -32,9 +26,15 @@ interface Activity {
     splitPoint?: number
 }
 
-interface ActivityRequired{
-    upstream?: Activity[],
+export interface ActivityDependencies {
+    downstreamTags?: string[],
     downstream?: Activity[],
-    upstreamTags: string[],
-    downstreamTags: string[]
+    upstreamTags?: string[],
+    upstream?: Activity[],
+    required?: ActivityRequired,
+    // < or > 
+    attachNext?: string,
+}
+interface ActivityRequired extends ActivityDependencies {
+
 }
