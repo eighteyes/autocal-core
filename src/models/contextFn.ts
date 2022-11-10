@@ -62,6 +62,10 @@ export function parseLine(ln: string): Activity {
     let upstream = [];
     let downstream = [];
     let attachNext = '';
+    let required = {
+        upstreamTags : [],
+        downstreamTags: []
+    };
 
     let done = (ln[0] == 'x')
     if (done) {
@@ -95,14 +99,15 @@ export function parseLine(ln: string): Activity {
         })
     }
 
-    const dependencyMatch = ln.match(regex.dependencies);
+    let dependencyMatch : string[] = ln.match(regex.dependencies);
+
     if ( dependencyMatch){
         // check for trailing dependency token
         if ( ln.lastIndexOf(dependencyMatch[dependencyMatch.length-1]) == ln.length-1 ){
             attachNext = dependencyMatch[dependencyMatch.length-1]
         }
         dependencyMatch.forEach((d) => {
-            const depIndex = ln.indexOf(d) 
+            const depIndex = ln.indexOf(d)
             splitPoints.push( depIndex )
             // check if a tag is specified
             if ( ln.slice(depIndex,depIndex + 3).includes('#') ){
@@ -117,6 +122,30 @@ export function parseLine(ln: string): Activity {
                 if( d == '>' ) downstreamTags.push(tag);
             }
         })
+    }
+
+    const requiredDependencyMatch = ln.match(regex.requiredDependencies);
+    if ( requiredDependencyMatch ){
+        // trailing dependency token
+        if ( ln.lastIndexOf(requiredDependencyMatch[requiredDependencyMatch.length-1]) == ln.length-1 ){
+            attachNext = requiredDependencyMatch[requiredDependencyMatch.length-1]
+        }
+        requiredDependencyMatch.forEach((rd) => {
+            const depIndex = ln.indexOf(rd) 
+            splitPoints.push( depIndex )
+            // check if a tag is specified
+            if ( ln.slice(depIndex,depIndex + 3).includes('#') ){
+                // where is the tag in the string
+                const depTagIndex = ln.indexOf('#', depIndex)
+                // find end of tag, OR set index to end of string
+                const endTagIndex = ( ln.indexOf(' ', depIndex+2 ) !== -1 ) ? 
+                    ln.indexOf(' ', depIndex+2 ) : 
+                    ln.length; 
+                const tag = ln.slice(depTagIndex+1, endTagIndex)
+                if( rd == '<<' ) required.upstreamTags.push(tag);
+                if( rd == '>>' ) required.downstreamTags.push(tag);
+            }
+            })
     }
 
     const tagMatches = ln.match(regex.tag)
@@ -149,7 +178,7 @@ export function parseLine(ln: string): Activity {
     }
 
     return { content, downstream, upstream, downstreamTags, upstreamTags, 
-        raw, durations, tags, attributes, done, integerWeight, attachNext }
+        raw, durations, tags, attributes, done, integerWeight, required, attachNext }
 
 }
 

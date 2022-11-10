@@ -12,8 +12,10 @@ x Tokenizer 2h >
 x Basic Events / Context 2h >
 Ordering Engine 2h #order
 Activities have weights 3h > #order
-Basic Dependencies 2h > #order >
-Flush out target Dependencies
+Basic Dependencies 2h >> #order > 
+x Flush out target Dependencies > 
+Enforce must Does >> 
+Refactor Activity with dependency object
 Shift Selection Between Contexts Using Actions
 Core Runtime 4h < #stream
 x Rename to Activity / Attributes 1h
@@ -38,8 +40,7 @@ Divide Userland Storage << #slack-alpha
 Context == Channels 8h 
 Assignments 8h
 Post Acts as Reminder 4h 
-Launch Beta #slack-beta 4h >>>
-
+Launch Beta #slack-beta 4h
 
 # POC > NEXT
 Event / Context Modeling 8h

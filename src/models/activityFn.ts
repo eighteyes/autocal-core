@@ -1,4 +1,7 @@
 export function addDependentActivity( act: Activity, dep: Activity, upstream: boolean = false){
+    if ( typeof dep === 'undefined'){
+        throw new Error('Invalid Dependency Added ' + act.content)
+    }
     if ( !upstream ){
         // downstream
         if( act.downstream.indexOf(dep) == -1 ){
