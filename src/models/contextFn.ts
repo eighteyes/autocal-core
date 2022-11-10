@@ -248,7 +248,9 @@ export function selectActivityUsingWeights(ctx: Context, count:number = 1) : Act
     for (let i = 0; i < input.length; i++) {
         const act = input[i];
         // crux of selection, use weight as % chance
-        if ( !act.done && Math.random() < act.weight ){
+        console.log(Math.random() , act.weight);
+        
+        if ( !act.done && Math.random() > act.weight ){
             output.push( act )
         }
         if ( output.length >= count ){
