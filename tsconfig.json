@@ -1,11 +1,14 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist",
-      "allowJs": true,
-      "target": "es5",
-      // "strictNullChecks": true,
-      "sourceMap": true,
-      "moduleResolution": "node"
-    },
-    "include": ["./src/**/*", "./tests/**/*"]
-  }
+  "compilerOptions": {
+    "outDir": "./dist",
+    "allowJs": true,
+    "target": "es5",
+    // "strictNullChecks": true,
+    "sourceMap": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "./src/**/*",
+    "./tests/**/*"
+  ]
+}
