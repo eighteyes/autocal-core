@@ -14,5 +14,5 @@ test('can findActivitiesByTags in a context', ( ) => {
 })
 
 test.todo('should apply attributes from context to activities')
-test.todo('should apply energetics from context to activities')
+test.todo('should apply cyclics from context to activities')
 test.todo('should apply dependencies from context to activities')

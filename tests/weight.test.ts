@@ -21,8 +21,8 @@ beforeAll(() => {
 test('same results will not be generated each time', () => {
     const c = ctxs[0];
     for (let i = 0; i < 3; i++) {
-        let ws = selectActivityUsingWeights(c, 3);
-        let ws2 = selectActivityUsingWeights(c, 3);
+        let ws = selectActivityUsingWeights(c, 10);
+        let ws2 = selectActivityUsingWeights(c, 10);
         expect(ws).not.toMatchObject(ws2)
     }
 })

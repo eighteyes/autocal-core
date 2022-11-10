@@ -1,5 +1,5 @@
 import { parseComplete } from "../src/models/contextFn";
-import { deps, dependencies } from './inputs';
+import { deps } from './inputs';
 
 test('should capture downstream act tags ( > #xyz )', () => {
     const ctxs = parseComplete(deps.mayDownTags)
@@ -13,7 +13,7 @@ test('should capture upstream act tags ( < #xyz )', () => {
     expect(ctxs[0].activities[0].dependencies.upstreamTags).toContain('this')
 })
 
-test('should implicitly include next act when (<>) is at line end', () => {
+test('should implicitly include next act when (<|>) is at line end', () => {
     let ctxs = parseComplete(deps.mayDown)
     expect(ctxs[0].activities[0].dependencies.downstream).toContain(ctxs[0].activities[1])
     ctxs = parseComplete(deps.mayUp)
@@ -27,4 +27,13 @@ test('should link and backlink to dependency activities via tag', ()=>{
     ctx = parseComplete(deps.mayUpTags)[0]
     expect(ctx.activities[0].dependencies.upstream).toContain(ctx.activities[2]);
     expect(ctx.activities[2].dependencies.downstream).toContain(ctx.activities[0]);
+})
+
+test('should capture next intent', () => {
+    let ctx = parseComplete(deps.nextIntent)[0]
+    expect(ctx.activities[0].dependencies.attachNext).toBe('>>')
+    expect(ctx.activities[1].dependencies.attachNext).toBe('>')
+    expect(ctx.activities[3].dependencies.attachNext).toBe('<<')
+    expect(ctx.activities[4].dependencies.attachNext).toBe('<')
+    console.log(ctx)
 })

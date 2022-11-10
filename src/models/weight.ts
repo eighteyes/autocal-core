@@ -1,5 +1,6 @@
 
 import { Activity, ActivityDependencies } from './activity'
+import { integerWeightFactor } from '../defaults';
 
 export class Weight {
     weight: number;
@@ -8,7 +9,7 @@ export class Weight {
 
     constructor( weight, reference ) {
         if ( weight >= 1 ){
-            this.weight = weight/100;
+            this.weight = weight/Math.pow(10, integerWeightFactor);
         }
         this.reference = reference;
         Weight.weights.push(this)

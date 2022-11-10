@@ -1,7 +1,8 @@
-import { regex, startWeight, attributeList } from '../defaults'
+import { regex, startWeight, attributeList, integerWeightFactor } from '../defaults'
 import { Context } from './context'
 import { generateDependencies } from './dependencies'
 import { Activity, ActivityDependencies } from './activity'
+import { positionWeight } from '../defaults'
 
 export function parseComplete(input: string): Context[] {
   const ctxs: Context[] = parseTextIntoContexts(input)
@@ -102,11 +103,12 @@ export function parseLine(ln: string): Activity {
   let dependencyMatch: string[] = ln.match(regex.dependencies);
 
   if (dependencyMatch) {
-    // check for trailing dependency token
-    if (ln.lastIndexOf(dependencyMatch[dependencyMatch.length - 1]) == ln.length - 1) {
-      dependencies.attachNext = dependencyMatch[dependencyMatch.length - 1]
-    }
     dependencyMatch.forEach((d) => {
+      d = d.trim()
+      if ( regex.requiredDependencies.test(d)){
+        // this is required and regex is hard
+        return;
+      }
       const depIndex = ln.indexOf(d)
       splitPoints.push(depIndex)
       // check if a tag is specified
@@ -120,17 +122,17 @@ export function parseLine(ln: string): Activity {
         const tag = ln.slice(depTagIndex + 1, endTagIndex)
         if (d == '<') dependencies.upstreamTags.push(tag);
         if (d == '>') dependencies.downstreamTags.push(tag);
+      } else {
+        // no tag, next inferred
+        dependencies.attachNext = d;
       }
     })
   }
 
   const requiredDependencyMatch = ln.match(regex.requiredDependencies);
   if (requiredDependencyMatch) {
-    // trailing dependency token
-    if (ln.lastIndexOf(requiredDependencyMatch[requiredDependencyMatch.length - 1]) == ln.length - 1) {
-      dependencies.attachNext = requiredDependencyMatch[requiredDependencyMatch.length - 1]
-    }
     requiredDependencyMatch.forEach((rd) => {
+      rd = rd.trim()
       const depIndex = ln.indexOf(rd)
       splitPoints.push(depIndex)
       // check if a tag is specified
@@ -144,6 +146,9 @@ export function parseLine(ln: string): Activity {
         const tag = ln.slice(depTagIndex + 1, endTagIndex)
         if (rd == '<<') dependencies.required.upstreamTags.push(tag);
         if (rd == '>>') dependencies.required.downstreamTags.push(tag);
+      } else {
+        // end of line usage, next inferred
+        dependencies.attachNext = rd;
       }
     })
   }
@@ -196,16 +201,18 @@ export function generateWeights(ctx: Context) {
 
   // reverse to apply a slight weighting towards the top of the list
   ctx.activities.forEach((c, i) => {
-    c.integerWeight -= i;
-    c.weight = Math.min(c.integerWeight / 100, 1)
+    c.integerWeight -= i * positionWeight;
+    
+    // turn integer into float - kinda important to know about
+    c.weight = Math.min( c.integerWeight / Math.pow(10, integerWeightFactor), 1)
   })
 }
 
 export function selectTopSortedActivity(ctx: Context, count: number = 1) {
-  return sortActivityWeights(ctx).slice(0, count)
+  return sortpositionWeights(ctx).slice(0, count)
 }
 
-export function sortActivityWeights(ctx: Context) {
+export function sortpositionWeights(ctx: Context) {
   // inplace sort
   return ctx.activities.sort(
     (a: Activity, b: Activity) => {
@@ -243,7 +250,7 @@ export function findActivitiesByTag(ctx: Context, tagName: string): Activity[] {
 }
 
 export function selectActivityUsingWeights(ctx: Context, count: number = 1): Activity[] {
-  let input: Activity[] = sortActivityWeights(ctx);
+  let input: Activity[] = sortpositionWeights(ctx);
   let output: Activity[] = [];
 
   for (let i = 0; i < input.length; i++) {

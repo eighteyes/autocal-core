@@ -17,11 +17,11 @@ export interface Activity {
     // end refactor
     done: boolean,
     // before we get too far
-    integerWeight?: number,
+    integerWeight?: number, 
     // 0-1 number
     weight?: number,
     // integer value for selection
-    energy?: number,
+    cyclic?: number,
     // where raw becomes content
     splitPoint?: number
 }

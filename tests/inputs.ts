@@ -1,4 +1,4 @@
-import { makeTestRef } from '../src/utils'
+import { makeTestRef } from './utils'
 
 const ctx = '# Context\n'
 
@@ -17,7 +17,7 @@ export const duration = {
 }
 
 export const dependencies = {
-
+   
 }
 
 export const attributes = {
@@ -42,4 +42,12 @@ export const deps = {
     ['no tag > #this','skip','tagged #this'].join('\n'),
     mayUpTags: ctx + 
     ['no tag < #this','skip','tagged #this'].join('\n'),
+    nextIntent: ctx + [
+        'A >>',
+        'B >',
+        'C >>',
+        'E <<',
+        'D <',
+        'CC '
+    ].join('\n')
 }
