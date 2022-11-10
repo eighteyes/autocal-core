@@ -3,14 +3,14 @@ import { deps, dependencies } from './inputs';
 
 test('should capture downstream act tags ( > #xyz )', () => {
   const ctxs = parseComplete(deps.mayDownTags);
-  expect(ctxs[0].activities[0].dependencies).toHaveProperty('downstreamTags');
-  expect(ctxs[0].activities[0].dependencies.downstreamTags).toContain('this');
+  expect(ctxs[0].activities[0].dependencies.tags[0]).toHaveProperty('name', 'this');
+  expect(ctxs[0].activities[0].dependencies.tags[0]).toHaveProperty('downstream', true);
 });
 
 test('should capture upstream act tags ( < #xyz )', () => {
   const ctxs = parseComplete(deps.mayUpTags);
-  expect(ctxs[0].activities[0].dependencies).toHaveProperty('upstreamTags');
-  expect(ctxs[0].activities[0].dependencies.upstreamTags).toContain('this');
+  expect(ctxs[0].activities[0].dependencies.tags[0]).toHaveProperty('name', 'this');
+  expect(ctxs[0].activities[0].dependencies.tags[0]).toHaveProperty('upstream', true);
 });
 
 test('should implicitly include next act when (<|>) is at line end', () => {

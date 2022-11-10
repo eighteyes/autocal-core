@@ -1,7 +1,7 @@
 import { regex, startWeight, attributeList, integerWeightFactor } from '../defaults';
 import { Context } from './context';
 import { generateDependencies } from './dependencies';
-import { Activity, ActivityDependencies } from './activity';
+import { Activity, ActivityDependencies, DependencyTags } from './activity';
 import { positionWeight } from '../defaults';
 
 export function parseComplete(input: string): Context[] {
@@ -60,11 +60,10 @@ export function parseLine(ln: string): Activity {
   let attributes: string[] = [];
   let integerWeight = startWeight;
   let dependencies: ActivityDependencies = {
-    upstreamTags: [],
-    downstreamTags: [],
     upstream: [],
     downstream: [],
     attachNext: '',
+    tags: [],
     required: {
       upstream: [],
       downstream: [],
@@ -110,10 +109,7 @@ export function parseLine(ln: string): Activity {
   if (dependencyMatch) {
     dependencyMatch.forEach((d) => {
       d = d.trim();
-      if (regex.requiredDependencies.test(d)) {
-        // this is required and regex is hard
-        return;
-      }
+
       const depIndex = ln.indexOf(d);
       splitPoints.push(depIndex);
       // check if a tag is specified
@@ -124,34 +120,31 @@ export function parseLine(ln: string): Activity {
         const endTagIndex =
           ln.indexOf(' ', depIndex + 2) !== -1 ? ln.indexOf(' ', depIndex + 2) : ln.length;
         const tag = ln.slice(depTagIndex + 1, endTagIndex);
-        if (d == '<') dependencies.upstreamTags.push(tag);
-        if (d == '>') dependencies.downstreamTags.push(tag);
+        if (d == '<')
+          dependencies.tags.push({
+            name: tag,
+            upstream: true,
+          });
+        if (d == '>')
+          dependencies.tags.push({
+            name: tag,
+            downstream: true,
+          });
+        if (d == '<<')
+          dependencies.tags.push({
+            name: tag,
+            upstream: true,
+            required: true,
+          });
+        if (d == '>>')
+          dependencies.tags.push({
+            name: tag,
+            downstream: true,
+            required: true,
+          });
       } else {
         // no tag, next inferred
         dependencies.attachNext = d;
-      }
-    });
-  }
-
-  const requiredDependencyMatch = ln.match(regex.requiredDependencies);
-  if (requiredDependencyMatch) {
-    requiredDependencyMatch.forEach((rd) => {
-      rd = rd.trim();
-      const depIndex = ln.indexOf(rd);
-      splitPoints.push(depIndex);
-      // check if a tag is specified
-      if (ln.slice(depIndex, depIndex + 3).includes('#')) {
-        // where is the tag in the string
-        const depTagIndex = ln.indexOf('#', depIndex);
-        // find end of tag, OR set index to end of string
-        const endTagIndex =
-          ln.indexOf(' ', depIndex + 2) !== -1 ? ln.indexOf(' ', depIndex + 2) : ln.length;
-        const tag = ln.slice(depTagIndex + 1, endTagIndex);
-        if (rd == '<<') dependencies.required.upstreamTags.push(tag);
-        if (rd == '>>') dependencies.required.downstreamTags.push(tag);
-      } else {
-        // end of line usage, next inferred
-        dependencies.attachNext = rd;
       }
     });
   }
@@ -163,10 +156,7 @@ export function parseLine(ln: string): Activity {
       t = t.slice(1);
 
       // skip dependency tags
-      if (
-        dependencies.downstreamTags.indexOf(t) == -1 &&
-        dependencies.upstreamTags.indexOf(t) == -1
-      ) {
+      if (dependencies.tags.findIndex((tag) => tag.name == t) == -1) {
         const tagIndex = ln.indexOf(t);
         splitPoints.push(tagIndex);
         tags.push(t);
