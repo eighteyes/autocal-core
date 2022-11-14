@@ -1,9 +1,6 @@
-
-import { Activity, ActivityDependencies } from './activity'
+import { Activity } from './activity';
 export interface Context {
-    name: string,
-    activities: Activity[],
-    raw?: string,
+  name: string;
+  activities: Activity[];
+  raw?: string;
 }
-
-

@@ -12,11 +12,14 @@ export interface Activity {
   attributes: string[];
   reference?: string;
 
-  //begin dep refactor
-  dependencies: ActivityDependencies;
+  // dependency is on next line
+  attachNext: string;
 
-  // end refactor
+  links: ActivityLink[];
+
   done: boolean;
+  // can we select this one?
+  available?: boolean;
   // before we get too far
   integerWeight?: number;
   // 0-1 number
@@ -27,17 +30,13 @@ export interface Activity {
   splitPoint?: number;
 }
 
-export interface DependencyTags {
-  name: string;
-  required?: boolean;
+export interface ActivityLink {
+  reference?: Activity;
+  // dependency
+  type: string;
+  // upstream / downstream
   upstream?: boolean;
   downstream?: boolean;
+  required?: boolean;
+  tags?: string[];
 }
-export interface ActivityDependencies {
-  downstream: Activity[];
-  upstream: Activity[];
-  required?: ActivityRequired;
-  tags?: DependencyTags[];
-  attachNext?: string;
-}
-interface ActivityRequired extends ActivityDependencies {}

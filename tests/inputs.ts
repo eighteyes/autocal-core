@@ -33,4 +33,6 @@ export const deps = {
   mayDownTags: ctx + ['no tag > #this', 'skip', 'tagged #this'].join('\n'),
   mayUpTags: ctx + ['no tag < #this', 'skip', 'tagged #this'].join('\n'),
   nextIntent: ctx + ['A >>', 'B >', 'C >>', 'E <<', 'D <', 'CC '].join('\n'),
+  reqTags: ctx + ['A >> #tag', 'B #tag'].join('\n'),
+  reqDoneTags: ctx + ['x A >> #tag', 'B #tag'].join('\n'),
 };

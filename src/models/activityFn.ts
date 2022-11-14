@@ -1,4 +1,5 @@
-import { Activity } from './activity';
+import { Activity, ActivityLink } from './activity';
+import { Context } from './context';
 
 export function addDependentActivity(
   act: Activity,
@@ -10,37 +11,32 @@ export function addDependentActivity(
     throw new Error('Invalid Dependency Added ' + act.content);
   }
 
-  let actDownstreamTarget, depDownstreamTarget, depUpstreamTarget, actUpstreamTarget;
+  let link: ActivityLink = {
+    type: 'dependency-inline-source',
+    reference: dep,
+    upstream: upstream,
+    downstream: !upstream,
+    required: required,
+  };
 
-  if (required) {
-    actDownstreamTarget = act.dependencies.required.downstream;
-    actUpstreamTarget = act.dependencies.required.upstream;
-    depDownstreamTarget = dep.dependencies.required.downstream;
-    depUpstreamTarget = dep.dependencies.required.upstream;
-  } else {
-    actDownstreamTarget = act.dependencies.downstream;
-    actUpstreamTarget = act.dependencies.upstream;
-    depDownstreamTarget = dep.dependencies.downstream;
-    depUpstreamTarget = dep.dependencies.upstream;
-  }
+  act.links.push(link);
 
-  if (!upstream) {
-    // downstream
-    if (actDownstreamTarget.indexOf(dep) == -1) {
-      actDownstreamTarget.push(dep);
-    }
-    // mirror to dep
-    if (depUpstreamTarget.indexOf(act) == -1) {
-      depUpstreamTarget.push(act);
-    }
-  } else {
-    // upstream
-    if (actUpstreamTarget.indexOf(dep) == -1) {
-      actUpstreamTarget.push(dep);
-    }
-    // mirror to dep
-    if (depDownstreamTarget.indexOf(act) == -1) {
-      depDownstreamTarget.push(act);
-    }
-  }
+  // clone object
+  link = Object.assign({}, link);
+
+  // dependency points back to parent act
+  link.upstream = !upstream;
+  link.downstream = upstream;
+  link.reference = act;
+  link.type = 'dependency-inline-dependent';
+
+  dep.links.push(link);
+}
+
+export function getDependencyTags(act: Activity): string[] {
+  return act.links
+    .map((l) => {
+      return l.tags;
+    })
+    .flat();
 }

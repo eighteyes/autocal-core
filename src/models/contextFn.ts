@@ -1,7 +1,7 @@
 import { regex, startWeight, attributeList, integerWeightFactor } from '../defaults';
 import { Context } from './context';
 import { generateDependencies } from './dependencies';
-import { Activity, ActivityDependencies, DependencyTags } from './activity';
+import { Activity, ActivityLink } from './activity';
 import { positionWeight } from '../defaults';
 
 export function parseComplete(input: string): Context[] {
@@ -49,6 +49,7 @@ export function processContext(ctx: Context): Context {
   generateReferences(ctx);
   generateWeights(ctx);
   generateDependencies(ctx);
+  markAvailable(ctx);
 
   // changes are applied inline, but return anyway
   return ctx;
@@ -59,16 +60,9 @@ export function parseLine(ln: string): Activity {
   let tags: string[] = [];
   let attributes: string[] = [];
   let integerWeight = startWeight;
-  let dependencies: ActivityDependencies = {
-    upstream: [],
-    downstream: [],
-    attachNext: '',
-    tags: [],
-    required: {
-      upstream: [],
-      downstream: [],
-    },
-  };
+  let links: ActivityLink[] = [];
+  let available = true;
+  let attachNext = '';
 
   let done = ln[0] == 'x';
   if (done) {
@@ -113,38 +107,38 @@ export function parseLine(ln: string): Activity {
       const depIndex = ln.indexOf(d);
       splitPoints.push(depIndex);
       // check if a tag is specified
-      if (ln.slice(depIndex, depIndex + 3).includes('#')) {
+      if (ln.slice(depIndex, depIndex + 2 + d.length).includes('#')) {
         // where is the tag in the string
         const depTagIndex = ln.indexOf('#', depIndex);
         // find end of tag, OR set index to end of string
         const endTagIndex =
-          ln.indexOf(' ', depIndex + 2) !== -1 ? ln.indexOf(' ', depIndex + 2) : ln.length;
+          ln.indexOf(' ', depIndex + 3) !== -1
+            ? ln.indexOf(' ', depIndex + 2 + d.length)
+            : ln.length;
         const tag = ln.slice(depTagIndex + 1, endTagIndex);
-        if (d == '<')
-          dependencies.tags.push({
-            name: tag,
-            upstream: true,
-          });
-        if (d == '>')
-          dependencies.tags.push({
-            name: tag,
-            downstream: true,
-          });
-        if (d == '<<')
-          dependencies.tags.push({
-            name: tag,
-            upstream: true,
-            required: true,
-          });
-        if (d == '>>')
-          dependencies.tags.push({
-            name: tag,
-            downstream: true,
-            required: true,
-          });
+
+        let linkObj: ActivityLink = {
+          type: 'dependency-tag-notag',
+        };
+
+        if (d === '<>' || d === '><') {
+          console.error('Bad dependency token: ', d);
+        }
+
+        if (d[0] === '<') {
+          linkObj.upstream = true;
+          linkObj.downstream = false;
+        } else if (d[0] === '>') {
+          linkObj.upstream = false;
+          linkObj.downstream = true;
+        }
+
+        linkObj.required = d.length == 2 ? true : false;
+        linkObj.tags = [tag];
+        links.push(linkObj);
       } else {
-        // no tag, next inferred
-        dependencies.attachNext = d;
+        // no tag, next inferred, this dep is made in context scope
+        attachNext = d;
       }
     });
   }
@@ -156,7 +150,14 @@ export function parseLine(ln: string): Activity {
       t = t.slice(1);
 
       // skip dependency tags
-      if (dependencies.tags.findIndex((tag) => tag.name == t) == -1) {
+      if (
+        links
+          .map((l) => {
+            return l.tags;
+          })
+          .flat()
+          .indexOf(t) === -1
+      ) {
         const tagIndex = ln.indexOf(t);
         splitPoints.push(tagIndex);
         tags.push(t);
@@ -179,14 +180,16 @@ export function parseLine(ln: string): Activity {
   };
 
   return {
+    links,
     content,
-    dependencies,
     raw,
     durations,
     tags,
     attributes,
     done,
     integerWeight,
+    available,
+    attachNext,
   };
 }
 
@@ -255,7 +258,7 @@ export function selectActivityUsingWeights(ctx: Context, count: number = 1): Act
     const act = input[i];
     // crux of selection, use weight as % chance
 
-    if (!act.done && Math.random() > act.weight) {
+    if (!act.done && act.available && Math.random() > act.weight) {
       output.push(act);
     }
     if (output.length >= count) {
@@ -264,4 +267,23 @@ export function selectActivityUsingWeights(ctx: Context, count: number = 1): Act
   }
 
   return output;
+}
+
+// call this after dependencies are hydrated with refernce
+function markAvailable(ctx: Context): Context {
+  ctx.activities.forEach((act: Activity) => {
+    act.links.forEach((l: ActivityLink) => {
+      if (l.required) {
+        let ref = l.reference;
+        // expire anything not available
+        if (!act.done) {
+          ref.available = false;
+        } else {
+          ref.available = true;
+        }
+      }
+    });
+  });
+
+  return ctx;
 }

@@ -1,4 +1,7 @@
 # SPARK 45m !- >> #POC
+Ordering Engine 2h #order
+x Activities have weights 3h > #order
+Basic Dependencies 2h >> #order > 
 x Call Marcelo RE : Landing Page 1h TH1pm >> #lp
 x EZ LP TO CRM 2h #lp > #stream >>
 x Landing Page 2h #lp > #stream
@@ -10,24 +13,24 @@ x File Handling 2h >
 x Line Parser 2h >
 x Tokenizer 2h >
 x Basic Events / Context 2h >
-Ordering Engine 2h #order
-x Activities have weights 3h > #order
-x Basic Dependencies 2h >> #order > 
 x Flush out target Dependencies > 
 Enforce must Does >
-Dep Tag refactor
+x Dependency Tag refactor
 Declare Activity in parseLine
 x Refactor Activity with dependency object 30m
-Shift Selection Between Contexts Using Cyclic Actions
 x Rename to Activity / Attributes 1h
 x Formalize Logic w/ Typescript 3h
 x Move to TDD w/ Jest 2h
 x Refactor Context 
 x Unreverse Weight for Sort Index, should descend. 
 x Increase Weight space to 10^3 >
-Fix duration regex from matching words
-Cyclic Sorting
-Core Runtime 4h < #stream
+x Fix duration regex from matching words
+Multiple Attributes impact weight
+Multiple Cyclics are captured
+Refactor Activity.dependencies into links
+Cyclic Sorting 2h >>
+Select from all Contexts 2h
+Modularize Core Runtime 4h < #stream
 
 # Slack
 Express App 2h
@@ -45,6 +48,7 @@ Post Acts as Reminder 4h
 Launch Beta !$ #slack-beta 4h
 
 # POC >> #NEXT
+Recurse Dependency Availability 2h
 Event / Context Modeling 8h
 Ordering Engine << #order < #sched
 exclusions 1h #order
@@ -81,3 +85,20 @@ look at internet 5-10m
 pushups 5m
 clean office 5-10m
 clean bathroom
+
+# Collection
+#vsc Learn window hopping, problem selection
+add content to activity.raws
+weight dependencies optional
+add contentnarst 
+
+error handling 
+
+learn ts overrides 
+
+learn vi 
+
+trim 
+
+support tags of 1 length 
+
