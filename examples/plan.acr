@@ -56,6 +56,8 @@ weight 2h #order
 sort 2h #order
 dependencies 3h #order
 Shake it up baby 4h #order
+Error Handling 2h $
+Add Options for Selection
 Scheduling Engine << #sched
 Add Date 2h #sched
 Add Time 2h #sched
@@ -74,7 +76,6 @@ Better Landing Page Template 4h
 Beta Invite + Paid $24 - 30 mins assistance for setup. 2h
 CLI Launch on PH #clilaunch
 
-
 # MVP #NEXT
 Paypay Integration 4h
 Feature Checkout 8h
@@ -86,19 +87,16 @@ pushups 5m
 clean office 5-10m
 clean bathroom
 
+# Little features 15m
+Support tags of 1 length
+add content to activity
+
+# Learning - 30m
+TS <> features
+VI Movement
+Learn window hopping, problem selection #vsc
+
 # Collection
-#vsc Learn window hopping, problem selection
-add content to activity.raws
-weight dependencies optional
-add contentnarst 
 
-error handling 
 
-learn ts overrides 
-
-learn vi 
-
-trim 
-
-support tags of 1 length 
 
