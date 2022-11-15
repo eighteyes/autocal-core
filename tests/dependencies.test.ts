@@ -3,8 +3,8 @@ import { deps } from './inputs';
 
 test('should not include tag in activity if it is a dependency', () => {
   const ctxs = parseComplete(deps.reqTags);
-  expect(ctxs[0].activities[0].tags).toHaveLength(0);
-  expect(ctxs[0].activities[1].tags).toHaveLength(1);
+  expect(ctxs[0].activities[0].input.tags).toHaveLength(0);
+  expect(ctxs[0].activities[1].input.tags).toHaveLength(1);
 });
 test('should capture downstream act tags ( > #xyz )', () => {
   const ctxs = parseComplete(deps.mayDownTags);

@@ -10,5 +10,5 @@ console.log(contexts.length, 'contexts found!!');
 // console.log(countAllactivities(contexts), 'activities found')
 let cons = selectActivityUsingWeights(contexts[0], 5);
 cons.forEach((c) => {
-  console.log(c.weight, c.content, c);
+  console.log(c.weight, c.input.content, c);
 });

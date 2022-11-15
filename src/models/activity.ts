@@ -1,15 +1,6 @@
 import { dependencies } from '../../tests/inputs';
 export interface Activity {
-  content: string;
-  durations: string[];
-  raw?: {
-    meta?: string;
-    metas?: string[];
-    attributes?: string;
-    input?: string;
-  };
-  tags: string[];
-  attributes: string[];
+  input?: ActivityInput;
   reference?: string;
 
   // dependency is on next line
@@ -26,8 +17,6 @@ export interface Activity {
   weight?: number;
   // integer value for selection
   cyclic?: number;
-  // where raw becomes content
-  splitPoint?: number;
 }
 
 export interface ActivityLink {
@@ -39,4 +28,18 @@ export interface ActivityLink {
   downstream?: boolean;
   required?: boolean;
   tags?: string[];
+}
+
+export interface ActivityInput {
+  meta?: string;
+  metas?: string[];
+  attributes?: string[];
+  cyclics?: string[];
+  durations?: string[];
+  raw?: string;
+  // where raw becomes content
+  splitPoint?: number;
+
+  tags?: string[];
+  content?: string;
 }

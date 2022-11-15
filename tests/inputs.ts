@@ -1,11 +1,16 @@
 import { makeTestRef } from './utils';
 
 const ctx = '# Context\n';
+const ctxa = '# ActContext !$+-\n';
 
 export const tags = {
   single: 'Mow the lawn 1h #yardwork',
   multiple: 'Mow the lawn 1h #yardwork #hardwork',
   ctxMultiple: ctx + ['Thing1 #tag1 #tag2', 'Thing2 #tag2', 'Thing3 #tag3'].join('\n'),
+};
+
+export const cyclics = {
+  basic: 'Test Plus and Minus !+-$',
 };
 
 export const duration = {};
@@ -26,6 +31,7 @@ export const content = {
 export const contexts = {
   basic: '# Context\nDo Thing !',
   long: ctx + Array(100).fill(makeTestRef(), 0, 100).join('\n'),
+  actCtx: ctxa + ['One', 'Two', 'Three'].join('\n'),
 };
 
 export const deps = {

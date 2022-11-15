@@ -25,18 +25,20 @@ x Refactor Context
 x Unreverse Weight for Sort Index, should descend. 
 x Increase Weight space to 10^3 >
 x Fix duration regex from matching words
-Multiple Attributes impact weight
+x Multiple Attributes impact weight
+Process Context for Tags & Attributes
+Contexts share attributes with Activities
 Multiple Cyclics are captured
-Refactor Activity.dependencies into links
+x Refactor Activity dependencies into links 
 Cyclic Sorting 2h >>
 Select from all Contexts 2h
-Modularize Core Runtime 4h < #stream
+Modularize Core Runtime - 4h < #stream
 
-# Slack
+# Slack --
 Express App 2h
 Slack SDK 2h
 SQLite Storage 1h
-Adapter for ACCore 2h 
+Adapter for ACCore + 2h 
 Message Action 2h 
 Get n tasks 2h
 CRUD Tasks 4h >> #slack-alpha
@@ -97,6 +99,5 @@ VI Movement
 Learn window hopping, problem selection #vsc
 
 # Collection
-
-
+link dependencies for contexts 
 

@@ -3,6 +3,8 @@ import { Context } from './context';
 import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink } from './activity';
 import { positionWeight } from '../defaults';
+import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
+import { duration } from '../../tests/inputs';
 
 export function parseComplete(input: string): Context[] {
   const ctxs: Context[] = parseTextIntoContexts(input);
@@ -24,6 +26,7 @@ export function parseTextIntoContexts(input: string) {
   contextraws.forEach((c) => {
     // split along lines
     let line = c.split('\n');
+    let head = line[0].toString();
     // shift mutates array
     let name: string = line.shift().replace(regex.contextHashMatch, '');
 
@@ -31,10 +34,27 @@ export function parseTextIntoContexts(input: string) {
       name,
       activities: [],
       raw: line.join('\n'),
+      input: {},
     };
+
+    // parse context here
+    let attObj = parseAttributes(head);
+    ctx.input.attributes = attObj.attributes;
+
+    let durObj = parseDurations(head);
+    ctx.input.durations = durObj.durations;
+
+    // let depObj = parseDependencies(head);
+
+    let tagObj = parseTags(head);
+    ctx.input.tags = tagObj.tags;
+
+    let cycObj = parseCyclics(head);
+    ctx.input.cyclics = cycObj.cyclics;
 
     contexts.push(ctx);
   });
+
   return contexts;
 }
 
@@ -46,6 +66,7 @@ export function processContext(ctx: Context): Context {
   });
 
   // after all lines are parsed
+  applyContext(ctx);
   generateReferences(ctx);
   generateWeights(ctx);
   generateDependencies(ctx);
@@ -55,14 +76,10 @@ export function processContext(ctx: Context): Context {
   return ctx;
 }
 
+// activities
 export function parseLine(ln: string): Activity {
-  let durations: string[] = [];
-  let tags: string[] = [];
-  let attributes: string[] = [];
   let integerWeight = startWeight;
-  let links: ActivityLink[] = [];
   let available = true;
-  let attachNext = '';
 
   let done = ln[0] == 'x';
   if (done) {
@@ -75,95 +92,32 @@ export function parseLine(ln: string): Activity {
   // start with length, so we have something in place in case of only content
   let splitPoints = [ln.length];
 
-  // add effect split points
-  let attributeMatches = ln.match(regex.attributes);
+  let attributeObj = parseAttributes(ln);
+  let attributes: string[] = attributeObj.attributes;
+  splitPoints.push(...attributeObj.splitPoints);
+  integerWeight += attributeObj.integerWeight;
 
-  if (attributeMatches) {
-    attributeMatches[0].split('').forEach((e) => {
-      splitPoints.push(ln.indexOf(e));
-      attributes.push(e);
-      let eObj = attributeList.filter((e1) => {
-        return e1.symbol == e;
-      })[0];
-      integerWeight += eObj.weight;
-    });
-  }
+  let durationObj = parseDurations(ln);
+  let durations: string[] = durationObj.durations;
+  splitPoints.push(...durationObj.splitPoints);
 
-  // cycle through all meta info indices
-  const durationMatches = ln.match(regex.duration);
-  if (durationMatches) {
-    durationMatches.forEach((d) => {
-      splitPoints.push(ln.indexOf(d));
-      durations.push(d);
-    });
-  }
+  let depObj = parseDependencies(ln);
+  let links = depObj.links;
+  splitPoints.push(...depObj.splitPoints);
+  let attachNext: string = depObj.attachNext;
 
-  let dependencyMatch: string[] = ln.match(regex.dependencies);
+  const excludeTags = links
+    .map((l) => {
+      return l.tags;
+    })
+    .flat();
 
-  if (dependencyMatch) {
-    dependencyMatch.forEach((d) => {
-      d = d.trim();
+  let tagObj = parseTags(ln, excludeTags);
+  let tags: string[] = tagObj.tags;
+  splitPoints.push(...tagObj.splitPoints);
 
-      const depIndex = ln.indexOf(d);
-      splitPoints.push(depIndex);
-      // check if a tag is specified
-      if (ln.slice(depIndex, depIndex + 2 + d.length).includes('#')) {
-        // where is the tag in the string
-        const depTagIndex = ln.indexOf('#', depIndex);
-        // find end of tag, OR set index to end of string
-        const endTagIndex =
-          ln.indexOf(' ', depIndex + 3) !== -1
-            ? ln.indexOf(' ', depIndex + 2 + d.length)
-            : ln.length;
-        const tag = ln.slice(depTagIndex + 1, endTagIndex);
-
-        let linkObj: ActivityLink = {
-          type: 'dependency-tag-notag',
-        };
-
-        if (d === '<>' || d === '><') {
-          console.error('Bad dependency token: ', d);
-        }
-
-        if (d[0] === '<') {
-          linkObj.upstream = true;
-          linkObj.downstream = false;
-        } else if (d[0] === '>') {
-          linkObj.upstream = false;
-          linkObj.downstream = true;
-        }
-
-        linkObj.required = d.length == 2 ? true : false;
-        linkObj.tags = [tag];
-        links.push(linkObj);
-      } else {
-        // no tag, next inferred, this dep is made in context scope
-        attachNext = d;
-      }
-    });
-  }
-
-  const tagMatches = ln.match(regex.tag);
-  if (tagMatches) {
-    tagMatches.forEach((t) => {
-      // remove leading #
-      t = t.slice(1);
-
-      // skip dependency tags
-      if (
-        links
-          .map((l) => {
-            return l.tags;
-          })
-          .flat()
-          .indexOf(t) === -1
-      ) {
-        const tagIndex = ln.indexOf(t);
-        splitPoints.push(tagIndex);
-        tags.push(t);
-      }
-    });
-  }
+  let cycObj = parseCyclics(ln);
+  let cyclics = cycObj.cyclics;
 
   // split out the content from the meta information
   let splitIndex = Math.min(...splitPoints);
@@ -174,18 +128,22 @@ export function parseLine(ln: string): Activity {
     integerWeight = 0;
   }
 
-  let raw = {
+  // input should be the only output on this stage
+  let input = {
     meta: ln.slice(splitIndex),
     metas: ln.slice(splitIndex).split(' '),
+    attributes: attributes,
+    durations: durations,
+    splitPoint: splitIndex,
+    cyclics: cyclics,
+    tags: tags,
+    content: content,
+    raw: ln,
   };
 
   return {
     links,
-    content,
-    raw,
-    durations,
-    tags,
-    attributes,
+    input,
     done,
     integerWeight,
     available,
@@ -196,7 +154,7 @@ export function parseLine(ln: string): Activity {
 export function generateReferences(ctx: Context) {
   // pull list of content from context
   ctx.activities.forEach((c) => {
-    c.reference = c.content.replace(regex.lettersOnly, '').slice(0, 10).toLowerCase();
+    c.reference = c.input.content.replace(regex.lettersOnly, '').slice(0, 10).toLowerCase();
     return c.reference;
   });
 }
@@ -244,7 +202,7 @@ export function findActivitiesByTag(ctx: Context, tagName: string): Activity[] {
   let acts: Activity[] = [];
 
   acts = ctx.activities.filter((a) => {
-    return a.tags.includes(tagName);
+    return a.input.tags.includes(tagName);
   });
 
   return acts;
@@ -283,6 +241,17 @@ function markAvailable(ctx: Context): Context {
         }
       }
     });
+  });
+
+  return ctx;
+}
+
+function applyContext(ctx: Context): Context {
+  ctx.activities.forEach((act) => {
+    act.input.attributes.push(...ctx.input.attributes);
+    act.input.tags.push(...ctx.input.tags);
+    act.input.durations.push(...ctx.input.durations);
+    act.input.cyclics.push(...ctx.input.cyclics);
   });
 
   return ctx;

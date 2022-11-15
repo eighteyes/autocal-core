@@ -8,7 +8,7 @@ export function addDependentActivity(
   required: boolean = false
 ) {
   if (typeof dep === 'undefined') {
-    throw new Error('Invalid Dependency Added ' + act.content);
+    throw new Error('Invalid Dependency Added ' + act.input.content);
   }
 
   let link: ActivityLink = {

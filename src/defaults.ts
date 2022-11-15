@@ -33,6 +33,7 @@ export const regex = {
   lettersOnly: /[^\w]/g,
   dependencies: /[<>]{1,}/g,
   requiredDependencies: /<<|>>/g,
+  cyclics: /\W([\+|\-])\W/g,
 };
 
 // /\s[!\$\^\*]+/g
