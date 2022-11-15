@@ -15,6 +15,7 @@ export const dependencies = {};
 export const attributes = {
   many: 'Very Important 1h !*$^+-',
   all: 'A thing! to do !*$`',
+  multi: 'Super Important !!!',
 };
 
 export const content = {
@@ -35,4 +36,5 @@ export const deps = {
   nextIntent: ctx + ['A >>', 'B >', 'C >>', 'E <<', 'D <', 'CC '].join('\n'),
   reqTags: ctx + ['A >> #tag', 'B #tag'].join('\n'),
   reqDoneTags: ctx + ['x A >> #tag', 'B #tag'].join('\n'),
+  refIncluded: ctx + ['Source >> #tag', 'Target #tag 2h >>>'].join('\n'),
 };
