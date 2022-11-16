@@ -1,0 +1,55 @@
+# Cyclics
+## Seeding Algorithm
+### Balanced
++- = Add Up to Zero
++++--- = Favors Larger Measures
+### Unbalanced Algo
+---+ = Adds up to -2
+
+### Activities
+cyclicStrength = { -2, 1, 0, 3 }
+
+sw = stepWeight = baseValue of a cyclic indicator > +/- = 10
+wm = weightMultiplier = multiple indicators value changed by this factor = 
+d = depth of selected indicator
+cs = cyclic state = 0
+csm = cyclic state multiplier ( negative if cyclic state sign != selected algo step sign )
+bsw = baseStrengthWeight
+ssm = strengthSelection multiplier
+
+
+sw + d*wm - abs(cs)*csm
+base + algodepth*mult - statedepth*multiplier
+
+[+++-] sw = 10 wm = 0 
+[10,10,10]
+[33%,33%,33%] = strength selection probabilities
+[+++-] sw = 10 wm = 1
+[10,20,30]
+[16%,33%,50%]
+
+### Random Walk = Select Cyclic Sign = Stateful
+1. Group all activities for all contexts into sign buckets ( +, 0, - ),
+    1. Within that, distinguish between cyclicStrengths.
+1. Start at 50% ( equal chance ), Answer for Do we do 0, + or -.
+   1.  Carve out space for 0, count up as percentage of total, put in middle of 50% range.
+       1.  0 acts are 20% of total [ 40%-, 20%0, 40%+ ]
+2. Select count of the same value indicator in algorithm. sw + d*wm sw=10 wm=1 csm=5
+    1. [+-] =+ 40% base + 10%sw [ 30%-, 20%0, 50%+ ]
+    1. if successful (+ test, select 1), algorithm advances, cyclic state = 1
+    2. [-+] =- 40% base + 10%sw + 5% [ 55%-, 20%0, 25%+ ]
+    3. if unsuccessful (- test), cyclic state = 2, algo does not advance
+    4. [-+] =- 40% base + 10%sw + 10% [ 60%-, 20%0, 20%+]
+    5. if successful (- test), cyclic state = 1, algo advances
+    6. [+-] =+ 40% base + 10% - 5% [ 35%-, 20%0, 45%+] 
+    
+    wm=0.5 state=0 sw=5
+    1. [+++-] =+ 40% base + 5%sw[0] + 7.5%[1]wm + 10%[2]wm  [ 18.5- 20%0 62.5+ ] 
+    +++ Multiply this by stepWeight. Add stepweight * weightMultiplier. 
+4. Run weighted random walk to select sign bucket.
+### Select cyclic strength = Not Stateful
+5. If algorithm has repeated cyclics, group acts by cyclicStrength and use strength selection probabilities. bsw=10, swm=1
+    1. [+++-] = [ 10%, 20%, 30% ] = 16% - 1 strength, 33% - 2 strength, 50% - 3 strength
+    2. successful selection advances cyclic state by chosen degree
+### Select weighted activity
+6. Select from weighted list of tasks. 
