@@ -118,6 +118,7 @@ export function parseLine(ln: string): Activity {
 
   let cycObj = parseCyclics(ln);
   let cyclicTokens = cycObj.cyclics;
+  let cyclicStrength = cycObj.cyclicStrength;
 
   // split out the content from the meta information
   let splitIndex = Math.min(...splitPoints);
@@ -148,6 +149,7 @@ export function parseLine(ln: string): Activity {
     integerWeight,
     available,
     attachNext,
+    cyclicStrength,
   };
 }
 

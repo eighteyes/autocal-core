@@ -15,6 +15,7 @@ export const cyclics = {
   basic: 'Test Plus and Minus !+-$',
   plusContext: ctxp + ['A', 'B', 'C'].join('\n'),
   justContext: ctxp,
+  weighty: 'Test Lots of +++-',
 };
 
 export const duration = {};

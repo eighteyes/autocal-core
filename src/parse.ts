@@ -114,7 +114,7 @@ export function parseCyclics(ln: string) {
   // only pass through - and +
   cyclics = cyclicMatches
     .join('')
-    .replace(/[^-|^+]/, '')
+    .replace(/[^-|+]*/g, '')
     .trim()
     .split('');
 
@@ -123,5 +123,14 @@ export function parseCyclics(ln: string) {
     return n > 0;
   });
 
-  return { cyclics, splitPoints };
+  // calculate cyclic strength
+  let cyclicStrength = cyclics.reduce((a, b) => {
+    if (b !== '+' && b !== '-') {
+      console.error('Bad cyclic indicator', b, cyclics);
+    }
+    let amt = b == '+' ? 1 : -1;
+    return a + amt;
+  }, 0);
+
+  return { cyclics, splitPoints, cyclicStrength };
 }
