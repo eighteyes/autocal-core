@@ -13,8 +13,8 @@ export const attributeList: Attribute[] = [
 // { symbol: "-", name: 'Draining', weight: 0 },
 
 export const cyclicList: Cyclic[] = [
-  { symbol: '-', name: 'Draining', weight: -1 },
-  { symbol: '+', name: 'Energizing', weight: 1 },
+  { symbol: '-', name: 'Drain', weight: -1 },
+  { symbol: '+', name: 'Boost', weight: 1 },
 ];
 
 export const times = {
@@ -33,7 +33,7 @@ export const regex = {
   lettersOnly: /[^\w]/g,
   dependencies: /[<>]{1,}/g,
   requiredDependencies: /<<|>>/g,
-  cyclics: /\W([\+|\-])\W/g,
+  cyclics: /\W?([\+|\-])\W?/g,
 };
 
 // /\s[!\$\^\*]+/g
@@ -48,3 +48,19 @@ export const positionWeight = 20;
 
 // used to fiill schedules
 export const timeStep = 5;
+
+// how firmly do we adhere to the cyclic algoritm 0 = cyclics aren't considered
+export const algoStrength = 100;
+// how far does the cyclic random walk go before it forces a reverse?
+export const maxCyclicWalk = 5;
+// base value of a cyclic indicator
+export const cyclicStepWeight = 10;
+// how much to increase step weight for algo sign count
+export const cyclicStepWeightMultiplier = 0;
+// how much to revert to mean of cyclic selection, negative if algo sign != state sign
+export const cyclicStateMultiplier = 5;
+// starting point for cyclic strength distribution
+export const baseStrengthWeight = 10;
+// when selecting cyclic strength distribution, how much to favor bigger strengths
+// 1 = more, 0.5 = less, 0 = equal distribution between strengths
+export const strengthSelectionMultiplier = 0;

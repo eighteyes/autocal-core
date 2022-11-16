@@ -14,7 +14,7 @@ x Line Parser 2h >
 x Tokenizer 2h >
 x Basic Events / Context 2h >
 x Flush out target Dependencies > 
-Enforce must Does >
+x Enforce must Does >
 x Dependency Tag refactor
 Declare Activity in parseLine
 x Refactor Activity with dependency object 30m
@@ -26,10 +26,11 @@ x Unreverse Weight for Sort Index, should descend.
 x Increase Weight space to 10^3 >
 x Fix duration regex from matching words
 x Multiple Attributes impact weight
-Process Context for Tags & Attributes
-Contexts share attributes with Activities
-Multiple Cyclics are captured
+x Process Context for Tags & Attributes
+x Contexts share attributes with Activities
+x Multiple Cyclics are captured
 x Refactor Activity dependencies into links 
+Apply Cyclics number to Activity
 Cyclic Sorting 2h >>
 Select from all Contexts 2h
 Modularize Core Runtime - 4h < #stream

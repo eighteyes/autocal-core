@@ -2,6 +2,8 @@ import { makeTestRef } from './utils';
 
 const ctx = '# Context\n';
 const ctxa = '# ActContext !$+-\n';
+const ctxp = '# Plus +\n';
+const ctxm = '# Minus -\n';
 
 export const tags = {
   single: 'Mow the lawn 1h #yardwork',
@@ -11,6 +13,8 @@ export const tags = {
 
 export const cyclics = {
   basic: 'Test Plus and Minus !+-$',
+  plusContext: ctxp + ['A', 'B', 'C'].join('\n'),
+  justContext: ctxp,
 };
 
 export const duration = {};
@@ -43,4 +47,14 @@ export const deps = {
   reqTags: ctx + ['A >> #tag', 'B #tag'].join('\n'),
   reqDoneTags: ctx + ['x A >> #tag', 'B #tag'].join('\n'),
   refIncluded: ctx + ['Source >> #tag', 'Target #tag 2h >>>'].join('\n'),
+};
+
+export const select = {
+  equal:
+    ctx +
+    ['A', 'B', 'C', '', ''].join('\n') +
+    ctxp +
+    ['Ap', 'Bp', 'Cp', '', ''].join('\n') +
+    ctxm +
+    ['Am', 'Bm', 'Cm'].join('\n'),
 };

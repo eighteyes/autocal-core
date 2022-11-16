@@ -12,6 +12,11 @@ test('can findActivitiesByTags in a context', () => {
   expect(fn.findActivitiesByTags(ctxs, ['tag1', 'tag2'])).toHaveLength(2);
 });
 
+test('should apply cyclics to context inputs', () => {
+  let ctxs = fn.parseComplete(inputs.cyclics.plusContext);
+  expect(ctxs[0].input.cyclics).toHaveLength(1);
+});
+
 test('should apply attributes from context to activities', () => {
   let ctxs = fn.parseComplete(inputs.contexts.actCtx);
   expect(ctxs[0].activities[0].input.attributes).toHaveLength(2);

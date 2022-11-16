@@ -117,7 +117,7 @@ export function parseLine(ln: string): Activity {
   splitPoints.push(...tagObj.splitPoints);
 
   let cycObj = parseCyclics(ln);
-  let cyclics = cycObj.cyclics;
+  let cyclicTokens = cycObj.cyclics;
 
   // split out the content from the meta information
   let splitIndex = Math.min(...splitPoints);
@@ -135,7 +135,7 @@ export function parseLine(ln: string): Activity {
     attributes: attributes,
     durations: durations,
     splitPoint: splitIndex,
-    cyclics: cyclics,
+    cyclics: cyclicTokens,
     tags: tags,
     content: content,
     raw: ln,

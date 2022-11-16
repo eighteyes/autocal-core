@@ -15,8 +15,10 @@ export interface Activity {
   integerWeight?: number;
   // 0-1 number
   weight?: number;
-  // integer value for selection
-  cyclic?: number;
+  // integer value for selection = 2
+  cyclicStrength?: number;
+  // { boost: 3, drain: 1 }
+  cyclics?: object;
 }
 
 export interface ActivityLink {

@@ -111,9 +111,11 @@ export function parseCyclics(ln: string) {
     return { cyclics };
   }
 
+  // only pass through - and +
   cyclics = cyclicMatches
     .join('')
     .replace(/[^-|^+]/, '')
+    .trim()
     .split('');
 
   // only pass points that match
