@@ -102,3 +102,7 @@ Learn window hopping, problem selection #vsc
 # Collection
 link dependencies for contexts 
 
+compute weight and cyclics as part of context application 
+
+add signSteps to selectSign algo 
+

@@ -4,7 +4,7 @@ import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink } from './activity';
 import { positionWeight } from '../defaults';
 import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
-import { duration } from '../../tests/inputs';
+import { duration, cyclics } from '../../tests/inputs';
 
 export function parseComplete(input: string): Context[] {
   const ctxs: Context[] = parseTextIntoContexts(input);
@@ -67,6 +67,8 @@ export function processContext(ctx: Context): Context {
 
   // after all lines are parsed
   applyContext(ctx);
+  calculateCyclicWeight(ctx);
+  calculateAttributeWeight(ctx);
   generateReferences(ctx);
   generateWeights(ctx);
   generateDependencies(ctx);
@@ -118,7 +120,6 @@ export function parseLine(ln: string): Activity {
 
   let cycObj = parseCyclics(ln);
   let cyclicTokens = cycObj.cyclics;
-  let cyclicStrength = cycObj.cyclicStrength;
 
   // split out the content from the meta information
   let splitIndex = Math.min(...splitPoints);
@@ -149,7 +150,6 @@ export function parseLine(ln: string): Activity {
     integerWeight,
     available,
     attachNext,
-    cyclicStrength,
   };
 }
 
@@ -256,5 +256,36 @@ function applyContext(ctx: Context): Context {
     act.input.cyclics.push(...ctx.input.cyclics);
   });
 
+  return ctx;
+}
+
+function calculateCyclicWeight(ctx: Context): Context {
+  ctx.activities.forEach((act) => {
+    // calculate things now that context is applied
+    // calculate cyclic strength
+    act.cyclicStrength = act.input.cyclics.reduce((a, b) => {
+      if (b !== '+' && b !== '-') {
+        console.error('Bad cyclic indicator', b, cyclics);
+      }
+      let amt = b == '+' ? 1 : -1;
+      return a + amt;
+    }, 0);
+  });
+
+  return ctx;
+}
+
+function calculateAttributeWeight(ctx: Context): Context {
+  ctx.activities.forEach((act) => {
+    act.integerWeight = startWeight;
+    act.input.attributes.forEach((att) => {
+      // look up weight for this attribute
+      let eObj = attributeList.filter((e1: Attribute) => {
+        return e1.symbol == att;
+      })[0];
+      // add to running total for this activity
+      act.integerWeight += eObj.weight;
+    });
+  });
   return ctx;
 }

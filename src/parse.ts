@@ -13,10 +13,6 @@ export function parseAttributes(ln: string) {
     attributeMatches[0].split('').forEach((e) => {
       splitPoints.push(ln.indexOf(e));
       attributes.push(e);
-      let eObj = attributeList.filter((e1: Attribute) => {
-        return e1.symbol == e;
-      })[0];
-      integerWeight += eObj.weight;
     });
   }
   return { integerWeight, attributes, splitPoints };
@@ -111,6 +107,8 @@ export function parseCyclics(ln: string) {
     return { cyclics };
   }
 
+  let cyclicStrength = 0;
+
   // only pass through - and +
   cyclics = cyclicMatches
     .join('')
@@ -123,14 +121,5 @@ export function parseCyclics(ln: string) {
     return n > 0;
   });
 
-  // calculate cyclic strength
-  let cyclicStrength = cyclics.reduce((a, b) => {
-    if (b !== '+' && b !== '-') {
-      console.error('Bad cyclic indicator', b, cyclics);
-    }
-    let amt = b == '+' ? 1 : -1;
-    return a + amt;
-  }, 0);
-
-  return { cyclics, splitPoints, cyclicStrength };
+  return { cyclics, splitPoints };
 }

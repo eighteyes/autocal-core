@@ -12,10 +12,10 @@ export const tags = {
 };
 
 export const cyclics = {
-  basic: 'Test Plus and Minus !+-$',
+  basic: ctx + 'Test Plus and Minus !+-$',
   plusContext: ctxp + ['A', 'B', 'C'].join('\n'),
   justContext: ctxp,
-  weighty: 'Test Lots of +++-',
+  weighty: ctx + 'Test Lots of +++-',
 };
 
 export const duration = {};
@@ -24,8 +24,8 @@ export const dependencies = {};
 
 export const attributes = {
   many: 'Very Important 1h !*$^+-',
-  all: 'A thing! to do !*$`',
-  multi: 'Super Important !!!',
+  all: ctx + 'A thing! to do !*$`',
+  multi: ctx + 'Super Important !!!',
 };
 
 export const content = {
