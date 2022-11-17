@@ -58,4 +58,11 @@ export const select = {
     ['Ap', 'Bp', 'Cp', '', ''].join('\n') +
     ctxm +
     ['Am', 'Bm', 'Cm'].join('\n'),
+  extrastrength:
+    ctx +
+    ['A', 'B', 'C', '', ''].join('\n') +
+    ctxp +
+    ['Ap +', 'Bp ++', 'Cp +++', '', ''].join('\n') +
+    ctxm +
+    ['Am -', 'Bm --', 'Cm ---'].join('\n'),
 };

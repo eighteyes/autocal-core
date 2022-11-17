@@ -106,3 +106,5 @@ compute weight and cyclics as part of context application
 
 add signSteps to selectSign algo 
 
+make acts unavailable between step 1 and 2 
+
