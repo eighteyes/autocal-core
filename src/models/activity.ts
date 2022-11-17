@@ -19,6 +19,9 @@ export interface Activity {
   cyclicStrength?: number;
   // { boost: 3, drain: 1 }
   cyclics?: object;
+
+  // selected by algo, do not reselect if true, do not persist
+  selected?: boolean;
 }
 
 export interface ActivityLink {

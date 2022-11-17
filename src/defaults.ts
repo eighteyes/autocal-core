@@ -29,7 +29,10 @@ export const regex = {
   duration: /\b\d*[mhdw]/g,
   content: /^([A-Za-z]\w+\s)$/,
   tag: /#([.\w-]+\S)/g,
-  attributes: new RegExp('\\B[' + attributeList.map((e) => e.symbol) + ']+', 'g'),
+  attributes: new RegExp(
+    '\\B[' + attributeList.map((e) => e.symbol) + ']+',
+    'g'
+  ),
   lettersOnly: /[^\w]/g,
   dependencies: /[<>]{1,}/g,
   requiredDependencies: /<<|>>/g,
@@ -66,4 +69,4 @@ export const cyclicStateMultiplier = 5;
 export const baseStrengthWeight = 10;
 // when selecting cyclic strength distribution, how much to favor bigger strengths
 // <1 = favor smaller, >1 = more, 0 = equal distribution between strengths
-export const strengthSelectionMultiplier = 5;
+export const strengthSelectionMultiplier = 2;

@@ -1,7 +1,7 @@
 # SPARK 45m !- >> #POC
 Ordering Engine 2h #order
 x Activities have weights 3h > #order
-Basic Dependencies 2h >> #order > 
+x Basic Dependencies 2h >> #order > 
 x Call Marcelo RE : Landing Page 1h TH1pm >> #lp
 x EZ LP TO CRM 2h #lp > #stream >>
 x Landing Page 2h #lp > #stream
@@ -16,7 +16,6 @@ x Basic Events / Context 2h >
 x Flush out target Dependencies > 
 x Enforce must Does >
 x Dependency Tag refactor
-Declare Activity in parseLine
 x Refactor Activity with dependency object 30m
 x Rename to Activity / Attributes 1h
 x Formalize Logic w/ Typescript 3h
@@ -30,13 +29,13 @@ x Process Context for Tags & Attributes
 x Contexts share attributes with Activities
 x Multiple Cyclics are captured
 x Refactor Activity dependencies into links 
-Apply Cyclics number to Activity
-Cyclic Sorting 2h >>
-Select from all Contexts 2h
+x Apply Cyclics number to Activity
+x Cyclic Sorting 2h >>
+x Select from all Contexts 2h
 Modularize Core Runtime - 4h < #stream
 
 # Slack 
-Express App 2h
+Express App $ 2h
 Slack SDK 2h
 SQLite Storage 1h
 Adapter for ACCore + 2h 
@@ -50,7 +49,7 @@ Assignments 8h
 Post Acts as Reminder 4h 
 Launch Beta !$ #slack-beta 4h
 
-# POC >> #NEXT 
+# POC - >> #NEXT 
 Recurse Dependency Availability 2h
 Event / Context Modeling 8h
 Ordering Engine << #order < #sched
@@ -69,14 +68,14 @@ TDD / BDD 4h
 REPO 1h
 CLI Package 1h - > #clilaunch
 
-# Marketing $ 15m
+# Marketing $-- 15m
 Make Starter Logo / Mascot Graphics #brand
 Choose Color Scheme
 Write 1 paragraph Copy, title, headline
 Look at github for hosting landing page
 Setup GA
 Better Landing Page Template 4h
-Beta Invite + Paid $24 - 30 mins assistance for setup. 2h
+Beta Invite / Pay with 30 mins assistance for setup. 2h
 CLI Launch on PH #clilaunch
 
 # MVP #NEXT
@@ -105,9 +104,11 @@ meditate 15m
 guitar + 15m
 snack ++ 10m 
 
-# Little features 15m
+# Little features 1h
 Support tags of 1 length
 add content to activity
+make defaults into config object 
+Declare Activity in parseLine
 
 # Learning + 30m
 TS <> features
@@ -121,7 +122,6 @@ compute weight and cyclics as part of context application
 
 add signSteps to selectSign algo 
 
-make acts unavailable between step 1 and 2 
 
-make defaults into config object 
+clear cyclic from content 
 

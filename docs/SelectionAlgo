@@ -55,6 +55,7 @@ base + algodepth*mult - statedepth*multiplier
     3. If a sign is selected that does NOT match the current step in the selection sequence? Do equal distribution, b/c sequence does not apply.
 ### Select weighted activity
 6. Select from weighted list of tasks. 
+    1. if random < weight = pass
 
 
 By Strength = { -2, -1, 0, +1, +2 }

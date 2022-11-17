@@ -231,9 +231,14 @@ export function selectActivitiesUsingWeights(
     const act = input[i];
     // crux of selection, use weight as % chance
 
-    if (!act.done && act.available && Math.random() > act.weight) {
+    if (
+      !act.done &&
+      !act.selected &&
+      act.available &&
+      Math.random() > act.weight
+    ) {
       //expire so we don't reselect
-      act.available = false;
+      act.selected = true;
       output.push(act);
     }
     if (output.length >= count) {
