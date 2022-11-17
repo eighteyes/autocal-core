@@ -1,14 +1,19 @@
 import { readFile } from './read';
-import { parseComplete, selectActivityUsingWeights } from './models/contextFn';
+import {
+  parseComplete,
+  selectActivitiesUsingWeights,
+} from './models/contextFn';
 var fileName = 'examples/plan.acr';
 import { Context } from './models/context';
+import { doSelection } from './selection';
+
+// point to TS in errors
+require('source-map-support').install();
 
 let contexts: Context[] = parseComplete(readFile(fileName));
 
-// Output
-console.log(contexts.length, 'contexts found!!');
-// console.log(countAllactivities(contexts), 'activities found')
-let cons = selectActivityUsingWeights(contexts[0], 5);
-cons.forEach((c) => {
-  console.log(c.weight, c.input.content, c);
+let result = doSelection(contexts, 5);
+console.log('Output');
+result.forEach((act) => {
+  console.log(act.input.content);
 });

@@ -35,7 +35,7 @@ Cyclic Sorting 2h >>
 Select from all Contexts 2h
 Modularize Core Runtime - 4h < #stream
 
-# Slack --
+# Slack 
 Express App 2h
 Slack SDK 2h
 SQLite Storage 1h
@@ -50,7 +50,7 @@ Assignments 8h
 Post Acts as Reminder 4h 
 Launch Beta !$ #slack-beta 4h
 
-# POC >> #NEXT
+# POC >> #NEXT 
 Recurse Dependency Availability 2h
 Event / Context Modeling 8h
 Ordering Engine << #order < #sched
@@ -69,7 +69,7 @@ TDD / BDD 4h
 REPO 1h
 CLI Package 1h - > #clilaunch
 
-# Marketing -$ 15m
+# Marketing $ 15m
 Make Starter Logo / Mascot Graphics #brand
 Choose Color Scheme
 Write 1 paragraph Copy, title, headline
@@ -84,17 +84,32 @@ Paypay Integration 4h
 Feature Checkout 8h
 
 # Breaks !+
-piano !$^* 15m
+piano + 15m
 look at internet 5-10m
 pushups 5m
 clean office 5-10m
-clean bathroom
+clean bathroom 15m
+read article 10m
+read chapter 10m
+meditate 15m
+guitar + 15m
+snack ++ 10m 
+piano + 15m
+look at internet 5-10m
+pushups 5m
+clean office 5-10m
+clean bathroom 15m
+read article 10m
+read chapter 10m
+meditate 15m
+guitar + 15m
+snack ++ 10m 
 
 # Little features 15m
 Support tags of 1 length
 add content to activity
 
-# Learning - 30m
+# Learning + 30m
 TS <> features
 VI Movement
 Learn window hopping, problem selection #vsc
@@ -107,4 +122,6 @@ compute weight and cyclics as part of context application
 add signSteps to selectSign algo 
 
 make acts unavailable between step 1 and 2 
+
+make defaults into config object 
 

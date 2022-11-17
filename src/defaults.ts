@@ -36,9 +36,12 @@ export const regex = {
   cyclics: /\W?([\+|\-])\W?/g,
 };
 
-// /\s[!\$\^\*]+/g
+export interface Config {
+  cyclicSelectionAlg: string;
+}
 
-export const orderingAlgo = '+-';
+// more of a sequence
+export const orderingAlgo = '+++---';
 // may want to increase for more granularity
 export const integerWeightFactor = 4;
 // split in the middle
@@ -62,5 +65,5 @@ export const cyclicStateMultiplier = 5;
 // starting point for cyclic strength distribution
 export const baseStrengthWeight = 10;
 // when selecting cyclic strength distribution, how much to favor bigger strengths
-// 1 = more, 0.5 = less, 0 = equal distribution between strengths
-export const strengthSelectionMultiplier = 0;
+// <1 = favor smaller, >1 = more, 0 = equal distribution between strengths
+export const strengthSelectionMultiplier = 5;

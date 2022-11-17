@@ -19,11 +19,11 @@ test('can select a strength using an algorithm', () => {
   let ctxs = parseComplete(inputs.select.extrastrength);
   let strengths = [];
   for (let i = 0; i <= 10; i++) {
-    let { strength } = selectStrengthGroup(ctxs, '---+++');
+    let { strength } = selectStrengthGroup(ctxs, '---+++', '-');
     strengths.push(strength);
   }
   // de dupe
   let strengthsSet = new Set(strengths);
-  console.log(strengths);
+  // -2 and -3 from algo, no -1 in inputs
   expect(strengthsSet.size).toEqual(2);
 });

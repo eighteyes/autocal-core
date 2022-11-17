@@ -1,9 +1,20 @@
-import { regex, startWeight, attributeList, integerWeightFactor } from '../defaults';
+import {
+  regex,
+  startWeight,
+  attributeList,
+  integerWeightFactor,
+} from '../defaults';
 import { Context } from './context';
 import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink } from './activity';
 import { positionWeight } from '../defaults';
-import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
+import {
+  parseAttributes,
+  parseDurations,
+  parseTags,
+  parseDependencies,
+  parseCyclics,
+} from '../parse';
 import { duration, cyclics } from '../../tests/inputs';
 
 export function parseComplete(input: string): Context[] {
@@ -81,7 +92,7 @@ export function processContext(ctx: Context): Context {
 // activities
 export function parseLine(ln: string): Activity {
   let integerWeight = startWeight;
-  let available = true;
+  let available = false;
 
   let done = ln[0] == 'x';
   if (done) {
@@ -156,7 +167,10 @@ export function parseLine(ln: string): Activity {
 export function generateReferences(ctx: Context) {
   // pull list of content from context
   ctx.activities.forEach((c) => {
-    c.reference = c.input.content.replace(regex.lettersOnly, '').slice(0, 10).toLowerCase();
+    c.reference = c.input.content
+      .replace(regex.lettersOnly, '')
+      .slice(0, 10)
+      .toLowerCase();
     return c.reference;
   });
 }
@@ -171,13 +185,9 @@ export function generateWeights(ctx: Context) {
   });
 }
 
-export function selectTopSortedActivity(ctx: Context, count: number = 1) {
-  return sortpositionWeights(ctx).slice(0, count);
-}
-
-export function sortpositionWeights(ctx: Context) {
+export function sortActivityByWeight(acts: Activity[]) {
   // inplace sort
-  return ctx.activities.sort((a: Activity, b: Activity) => {
+  return acts.sort((a: Activity, b: Activity) => {
     if (a.weight < b.weight) return 1;
     if (a.weight > b.weight) return -1;
     if (a.weight === b.weight) return 0;
@@ -210,8 +220,11 @@ export function findActivitiesByTag(ctx: Context, tagName: string): Activity[] {
   return acts;
 }
 
-export function selectActivityUsingWeights(ctx: Context, count: number = 1): Activity[] {
-  let input: Activity[] = sortpositionWeights(ctx);
+export function selectActivitiesUsingWeights(
+  acts: Activity[],
+  count: number = 1
+): Activity[] {
+  let input: Activity[] = sortActivityByWeight(acts);
   let output: Activity[] = [];
 
   for (let i = 0; i < input.length; i++) {
@@ -219,6 +232,8 @@ export function selectActivityUsingWeights(ctx: Context, count: number = 1): Act
     // crux of selection, use weight as % chance
 
     if (!act.done && act.available && Math.random() > act.weight) {
+      //expire so we don't reselect
+      act.available = false;
       output.push(act);
     }
     if (output.length >= count) {
@@ -239,7 +254,7 @@ function markAvailable(ctx: Context): Context {
         if (!act.done) {
           ref.available = false;
         } else {
-          ref.available = true;
+          ref.available = false;
         }
       }
     });

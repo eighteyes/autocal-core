@@ -30,6 +30,7 @@ base + algodepth*mult - statedepth*multiplier
 
 ### Random Walk = Select Cyclic Sign = Stateful
 1. Group all activities for all contexts into sign buckets ( +, 0, - ),
+    1. Distribute selection according to size of bucket.
     1. Within that, distinguish between cyclicStrengths.
 1. Start at 50% ( equal chance ), Answer for Do we do 0, + or -.
    1.  Carve out space for 0, count up as percentage of total, put in middle of 50% range.
@@ -51,5 +52,11 @@ base + algodepth*mult - statedepth*multiplier
 5. If algorithm has repeated cyclics, group acts by cyclicStrength and use strength selection probabilities. bsw=10, swm=1
     1. [+++-] = [ 10%, 20%, 30% ] = 16% - 1 strength, 33% - 2 strength, 50% - 3 strength
     2. successful selection advances cyclic state by chosen degree
+    3. If a sign is selected that does NOT match the current step in the selection sequence? Do equal distribution, b/c sequence does not apply.
 ### Select weighted activity
 6. Select from weighted list of tasks. 
+
+
+By Strength = { -2, -1, 0, +1, +2 }
+By Sign = { -, 0, + }
+Weights = { ---, --, - }
