@@ -1,5 +1,5 @@
-# SPARK 45m !- >> #POC
-Ordering Engine 2h #order
+# SPARK 45m !- >> #POC >> #Slack
+x Ordering Engine 2h #order
 x Activities have weights 3h > #order
 x Basic Dependencies 2h >> #order > 
 x Call Marcelo RE : Landing Page 1h TH1pm >> #lp
