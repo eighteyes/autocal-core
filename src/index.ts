@@ -15,5 +15,11 @@ let contexts: Context[] = parseComplete(readFile(fileName));
 let result = doSelection(contexts, 5);
 console.log('Output');
 result.forEach((act) => {
-  console.log(act.input.content, act.cyclicStrength);
+  console.log(act.input.contextName, act.input.content, act.cyclicStrength);
 });
+
+function select(text: string = readFile(fileName), config: object = {}) {
+  return doSelection(parseComplete(text));
+}
+
+export { select };

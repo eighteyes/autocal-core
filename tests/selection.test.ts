@@ -6,8 +6,11 @@ import { selectSignGroup, selectStrengthGroup } from '../src/selection';
 test('can select a sign using an algorithm', () => {
   let ctxs = parseComplete(inputs.select.equal);
   let signs = [];
+  let algo: string = '+-'.repeat(10);
   for (let i = 0; i <= 10; i++) {
-    let { sign } = selectSignGroup(ctxs, orderingAlgo);
+    let { sign } = selectSignGroup(ctxs, algo);
+    // advance algo
+    algo = algo.split('').slice(1).join('');
     signs.push(sign);
   }
   // de dupe

@@ -7,6 +7,7 @@ import {
 } from './defaults';
 import { selectActivitiesUsingWeights } from './models/contextFn';
 import { cyclicStepWeight, cyclicStepWeightMultiplier } from './defaults';
+import { canBeSelected } from './models/activityFn';
 
 // run selection process
 export function doSelection(
@@ -17,6 +18,8 @@ export function doSelection(
   // selecting from list
   let finalActs: Activity[] = [];
   let sequence = orderingAlgo.repeat(5);
+  // for debugging
+  let strengths = [];
 
   // iterate through selection sequence steps
   for (let i = 0; i < count; i++) {
@@ -30,9 +33,10 @@ export function doSelection(
 
     console.log(str.weights, str.seed);
     console.log('Strength', str.strength);
+    strengths.push(str.strength);
 
-    // if match, chop off n from sequence
-    if (signs.sign == sequence[0]) {
+    // if match, chop off n from sequence, move on if 0
+    if (signs.sign == sequence[0] || signs.sign === '0') {
       sequence = sequence.slice(Math.abs(parseInt(str.strength)));
     }
 
@@ -47,19 +51,21 @@ export function doSelection(
 
     ctxs.forEach((c) => {
       c.activities.forEach((act) => {
-        if (act.available) {
+        if (canBeSelected(act)) {
           selectedActs.push(act);
-          // console.log(act.input.content);
         }
       });
     });
+
+    console.log('');
     finalActs.push(...selectActivitiesUsingWeights(selectedActs));
   }
+  console.log('ST: ', strengths);
 
   return finalActs;
 }
 
-// step 1 in selection, figure out what sign
+// step 1 in selection, figure out what sign to use
 export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
   const { bySign } = groupActivityByCyclic(ctxs);
   let values: { [index: string]: number } = {};
@@ -67,9 +73,9 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
   let weights: { [index: string]: number } = {};
   let sign = '';
 
-  // get values from act size
+  // get values from context size
   for (const key in bySign) {
-    if (Object.prototype.hasOwnProperty.call(bySign, key)) {
+    if (bySign[key]) {
       const acts = bySign[key];
       values[key] = acts.length;
       total += acts.length;
@@ -86,20 +92,25 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
     // = step weight + multi * signsteps = 10 + i*5
     let amtToAdd = cyclicStepWeight + signSteps * cyclicStepWeightMultiplier;
     values[seqStep] += amtToAdd;
-    // remove from others
-    for (const k in values) {
-      if (k !== seqStep) {
-        // proportionate amount to decrease
-        values[k] -= Math.ceil(amtToAdd / (Object.keys(values).length - 1));
-      }
-    }
+    // remove this amount from others
+    // for (const k in values) {
+    //   if (k !== seqStep) {
+    //     // proportionate amount to decrease
+    //     values[k] -= Math.ceil(amtToAdd / (Object.keys(values).length - 1));
+    //   }
+    // }
   }
 
-  // calculate weights by size distribution
+  // add up total of values for distribution
+  let valueTotal = Object.values(values).reduce((a: number, b: number) => {
+    return a + b;
+  }, 0);
+
+  // calculate weights by relative size distribution with algo applied
   for (const key in values) {
-    if (Object.prototype.hasOwnProperty.call(values, key)) {
+    if (values[key]) {
       const amt = values[key];
-      weights[key] = amt / total;
+      weights[key] = amt / valueTotal;
     }
   }
 
@@ -113,7 +124,7 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
     // add value to total to check against for pass
     weightTotal += weights[key];
     if (seed < weightTotal) {
-      // all the object obnoxiousness above is for this
+      // all the object obnoxiousness above is for this, could use a tuple
       sign = key;
       break;
     }

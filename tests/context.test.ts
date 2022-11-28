@@ -29,3 +29,7 @@ test('apply cyclics from context to activities', () => {
 });
 
 test.todo('apply dependencies from context to activities');
+
+test('can render a context', () => {
+  const c = fn.renderContext(fn.parseComplete(inputs.contexts.actCtx)[0]);
+});

@@ -6,7 +6,8 @@ import {
 } from '../defaults';
 import { Context } from './context';
 import { generateDependencies } from './dependencies';
-import { Activity, ActivityLink } from './activity';
+import { Activity, ActivityLink, ActivityInput } from './activity';
+import { render } from './activityFn';
 import { positionWeight } from '../defaults';
 import {
   parseAttributes,
@@ -28,7 +29,11 @@ export function parseTextIntoContexts(input: string) {
   let contexts: Context[] = [];
 
   // break input into context blocks
-  const contextStrings = input.split('\n\n');
+  const contextStrings = input.split('\n\n').filter((c) => {
+    // no empty strings
+    return c.trim().length !== 0;
+  });
+
   contextStrings.forEach((c: string) => {
     // trim in case of extra whitespace btwn contexts
     contextraws.push(c.trim());
@@ -63,6 +68,8 @@ export function parseTextIntoContexts(input: string) {
     let cycObj = parseCyclics(head);
     ctx.input.cyclics = cycObj.cyclics;
 
+    ctx.input.raw = head;
+
     contexts.push(ctx);
   });
 
@@ -70,27 +77,31 @@ export function parseTextIntoContexts(input: string) {
 }
 
 export function processContext(ctx: Context): Context {
+  // console.log('Processing', ctx.name);
+
   // cycle through every event in the context
   ctx.raw.split('\n').forEach((ln) => {
-    const e: Activity = parseLine(ln);
+    const e: Activity = parseLine(ln, ctx);
     ctx.activities.push(e);
   });
 
-  // after all lines are parsed
-  applyContext(ctx);
-  calculateCyclicWeight(ctx);
-  calculateAttributeWeight(ctx);
-  generateReferences(ctx);
-  generateWeights(ctx);
-  generateDependencies(ctx);
-  markAvailable(ctx);
+  if (ctx.activities.length > 0) {
+    // after all lines are parsed
+    applyContext(ctx);
+    calculateCyclicWeight(ctx);
+    calculateAttributeWeight(ctx);
+    generateReferences(ctx);
+    generateWeights(ctx);
+    generateDependencies(ctx);
+    findBlockers(ctx);
+  }
 
   // changes are applied inline, but return anyway
   return ctx;
 }
 
 // activities
-export function parseLine(ln: string): Activity {
+export function parseLine(ln: string, ctx?: Context): Activity {
   let integerWeight = startWeight;
   let available = false;
 
@@ -142,7 +153,7 @@ export function parseLine(ln: string): Activity {
   }
 
   // input should be the only output on this stage
-  let input = {
+  let input: ActivityInput = {
     meta: ln.slice(splitIndex),
     metas: ln.slice(splitIndex).split(' '),
     attributes: attributes,
@@ -153,6 +164,10 @@ export function parseLine(ln: string): Activity {
     content: content,
     raw: ln,
   };
+
+  if (ctx) {
+    input.contextName = ctx.name;
+  }
 
   return {
     links,
@@ -176,9 +191,9 @@ export function generateReferences(ctx: Context) {
 }
 
 export function generateWeights(ctx: Context) {
-  // reverse to apply a slight weighting towards the top of the list
   ctx.activities.forEach((c, i) => {
-    c.integerWeight -= i * positionWeight;
+    // reverse to apply a slight weighting towards the top of the list
+    if (!c.done) c.integerWeight -= i * positionWeight;
 
     // turn integer into float - kinda important to know about
     c.weight = Math.min(c.integerWeight / Math.pow(10, integerWeightFactor), 1);
@@ -250,16 +265,21 @@ export function selectActivitiesUsingWeights(
 }
 
 // call this after dependencies are hydrated with refernce
-function markAvailable(ctx: Context): Context {
+function findBlockers(ctx: Context): Context {
   ctx.activities.forEach((act: Activity) => {
     act.links.forEach((l: ActivityLink) => {
       if (l.required) {
+        if (!l.reference) {
+          console.error('Tagged dependency', l.tags, 'does not exist.');
+          return;
+        }
         let ref = l.reference;
-        // expire anything not available
-        if (!act.done) {
-          ref.available = false;
+        // expire anything downstream not available
+        // availability is determined as part of selection
+        if (!act.done && l.downstream) {
+          ref.blocked = true;
         } else {
-          ref.available = false;
+          ref.blocked = false;
         }
       }
     });
@@ -308,4 +328,11 @@ function calculateAttributeWeight(ctx: Context): Context {
     });
   });
   return ctx;
+}
+
+export function renderContext(ctx: Context) {
+  let acts = ctx.activities.map((a) => {
+    return render(a);
+  });
+  return ctx.input.raw + '\n' + acts.join('');
 }

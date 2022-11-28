@@ -1,4 +1,4 @@
-# SPARK 45m !- >> #POC >> #Slack
+# SPARK 45m !!-& >> #POC >> #Slack
 x Ordering Engine 2h #order
 x Activities have weights 3h > #order
 x Basic Dependencies 2h >> #order > 
@@ -32,18 +32,38 @@ x Refactor Activity dependencies into links
 x Apply Cyclics number to Activity
 x Cyclic Sorting 2h >>
 x Select from all Contexts 2h
-Modularize Core Runtime - 4h < #stream
+x string output from object
+make defaults into config object 2h >> 
+[[Modularize Core Runtime]] 4h !!!! >> #bolt
 
-# Slack 
-Express App $ 2h
-Slack SDK 2h
-SQLite Storage 1h
-Adapter for ACCore + 2h 
+# Extra Sparks -
+Links/Tags apply from context
+Support url in activity #url-on-content
+Emoji Support in Cyclic Selection !! ++
+xfer attribute weight to downstream tasks. rule. if dependent is important, antecedent is important 
+
+# Slack #slack !
+Render Activity >> #bk
+Context Selection >> #bk
+Edit act 8h >> #bk
+Delete Act 2h >> #bk
+Settings 4h >> #bk
+Block Kit Home Screen #bk !
+Add act to context 4h << #cmds
+Design Commands / Actions / Messages 4h #cmds
+Slack Bolt App $ 2h #bolt
+SQLite Storage 1h >
+SQLite Adapter 2h >
+Storage Modal #storage
+Service for ACCore + 2h 
 Message Action 2h 
 Get n tasks 2h
+Get task for time window << #sched
 CRUD Tasks 4h >> #slack-alpha
 Launch Alpha #slack-alpha 2h >>>
 Divide Userland Storage << #slack-alpha
+
+# Slack Beta << #slack-alpha
 Context == Channels 8h 
 Assignments 8h
 Post Acts as Reminder 4h 
@@ -51,77 +71,66 @@ Launch Beta !$ #slack-beta 4h
 
 # POC - >> #NEXT 
 Recurse Dependency Availability 2h
-Event / Context Modeling 8h
-Ordering Engine << #order < #sched
-exclusions 1h #order
-weight 2h #order
-sort 2h #order
-dependencies 3h #order
-Shake it up baby 4h #order
 Error Handling 2h $
-Add Options for Selection
-Scheduling Engine << #sched
+Integrate Scheduling Engine << #sched
 Add Date 2h #sched
 Add Time 2h #sched
+Need way to de-prioritize / not select things
 Runtime 4h
-TDD / BDD 4h
+Flush out Tests 4h
 REPO 1h
 CLI Package 1h - > #clilaunch
 
 # Marketing $-- 15m
 Make Starter Logo / Mascot Graphics #brand
 Choose Color Scheme
-Write 1 paragraph Copy, title, headline
-Look at github for hosting landing page
-Setup GA
-Better Landing Page Template 4h
+x Write 1 paragraph Copy, title, headline
+x Look at github for hosting landing page
+x Setup GA
+x Landing Page Copy #writing 1h 3x
+Better Landing Page Template !$ 4h
+React Component w/ AC integration demoing slack blocks
 Beta Invite / Pay with 30 mins assistance for setup. 2h
 CLI Launch on PH #clilaunch
 
 # MVP #NEXT
 Paypay Integration 4h
 Feature Checkout 8h
+Refactor code organization 2h
 
-# Breaks !+
+# v1 #persistance #cli
+Move Activity between Context #trello
+Add Activity to Context ! 
+
+# Breaks !!+
 piano + 15m
-look at internet 5-10m
+look at internet 10m
 pushups 5m
-clean office 5-10m
+clean office 10m
 clean bathroom 15m
 read article 10m
 read chapter 10m
-meditate 15m
-guitar + 15m
-snack ++ 10m 
-piano + 15m
-look at internet 5-10m
-pushups 5m
-clean office 5-10m
-clean bathroom 15m
-read article 10m
-read chapter 10m
-meditate 15m
+meditate ++ 15m
 guitar + 15m
 snack ++ 10m 
 
-# Little features 1h
+# Refactorings $ 1h
 Support tags of 1 length
-add content to activity
-make defaults into config object 
-Declare Activity in parseLine
+x add contentname to activity.links
+Declare Activity in parseLine, use TS classes
+Merge Activity and Cyclics, multidimensional !!
+regex for durations should handle ranges
 
-# Learning + 30m
+# lol features
+Implement repeats. `x8 activity x8` = `infinite` done
+
+# Learning +!! 30m
 TS <> features
 VI Movement
 Learn window hopping, problem selection #vsc
 
 # Collection
-link dependencies for contexts 
-
-compute weight and cyclics as part of context application 
-
+apply weights to downstream dependencies
 add signSteps to selectSign algo 
-
-
-clear cyclic from content 
-
+clear cyclic tokens from content 
+support rule only events #storage >> #crud 

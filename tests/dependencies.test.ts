@@ -54,14 +54,14 @@ test('capture next intent', () => {
   expect(ctx.activities[5].links[0].reference).toBe(ctx.activities[4]);
 });
 
-test('make required implicit dependencies unavailable', () => {
+test('make required implicit dependencies blocked', () => {
   const ctxs = parseComplete(deps.nextIntent);
-  expect(ctxs[0].activities[1].available).toBe(false);
+  expect(ctxs[0].activities[1].blocked).toBe(true);
 });
 
-test('make required dependencies by tag unavailable', () => {
+test('make required dependencies by tag blocked', () => {
   let ctxs = parseComplete(deps.reqTags);
-  expect(ctxs[0].activities[1].available).toBe(false);
+  expect(ctxs[0].activities[1].blocked).toBe(true);
   ctxs = parseComplete(deps.reqDoneTags);
-  expect(ctxs[0].activities[1].available).toBe(true);
+  expect(ctxs[0].activities[1].blocked).toBe(false);
 });

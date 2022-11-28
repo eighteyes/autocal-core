@@ -8,7 +8,8 @@ const ctxm = '# Minus -\n';
 export const tags = {
   single: 'Mow the lawn 1h #yardwork',
   multiple: 'Mow the lawn 1h #yardwork #hardwork',
-  ctxMultiple: ctx + ['Thing1 #tag1 #tag2', 'Thing2 #tag2', 'Thing3 #tag3'].join('\n'),
+  ctxMultiple:
+    ctx + ['Thing1 #tag1 #tag2', 'Thing2 #tag2', 'Thing3 #tag3'].join('\n'),
 };
 
 export const cyclics = {

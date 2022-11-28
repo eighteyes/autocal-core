@@ -44,7 +44,7 @@ export interface Config {
 }
 
 // more of a sequence
-export const orderingAlgo = '+++---';
+export const orderingAlgo = '--++--';
 // may want to increase for more granularity
 export const integerWeightFactor = 4;
 // split in the middle

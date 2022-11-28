@@ -11,6 +11,8 @@ export interface Activity {
   done: boolean;
   // can we select this one?
   available?: boolean;
+  // blocked by dependencies
+  blocked?: boolean;
   // before we get too far
   integerWeight?: number;
   // 0-1 number
@@ -47,4 +49,5 @@ export interface ActivityInput {
 
   tags?: string[];
   content?: string;
+  contextName?: string;
 }
