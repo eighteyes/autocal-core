@@ -1,4 +1,4 @@
-# SPARK 45m !!-& >> #POC >> #Slack
+# SPARK 45m !!--& >> #POC >> #Slack
 x Ordering Engine 2h #order
 x Activities have weights 3h > #order
 x Basic Dependencies 2h >> #order > 
@@ -41,6 +41,7 @@ Links/Tags apply from context
 Support url in activity #url-on-content
 Emoji Support in Cyclic Selection !! ++
 xfer attribute weight to downstream tasks. rule. if dependent is important, antecedent is important 
+Option for no random
 
 # Slack #slack !
 Render Activity >> #bk
@@ -69,7 +70,7 @@ Assignments 8h
 Post Acts as Reminder 4h 
 Launch Beta !$ #slack-beta 4h
 
-# POC - >> #NEXT 
+# POC - #POC >> #NEXT 
 Recurse Dependency Availability 2h
 Error Handling 2h $
 Integrate Scheduling Engine << #sched

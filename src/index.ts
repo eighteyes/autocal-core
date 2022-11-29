@@ -14,7 +14,10 @@ let contexts: Context[] = parseComplete(readFile(fileName));
 
 let result = doSelection(contexts, 5);
 console.log('Output');
-result.forEach((act) => {
+result.forEach((act, i) => {
+  if (i == 0) {
+    console.log(act);
+  }
   console.log(act.input.contextName, act.input.content, act.cyclicStrength);
 });
 

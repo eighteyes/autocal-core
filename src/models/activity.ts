@@ -1,7 +1,7 @@
 import { dependencies } from '../../tests/inputs';
 export interface Activity {
   input?: ActivityInput;
-  reference?: string;
+  txtref?: string;
 
   // dependency is on next line
   attachNext: string;

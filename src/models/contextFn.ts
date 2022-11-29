@@ -21,6 +21,11 @@ import { duration, cyclics } from '../../tests/inputs';
 export function parseComplete(input: string): Context[] {
   const ctxs: Context[] = parseTextIntoContexts(input);
   ctxs.forEach((c) => processContext(c));
+
+  // after we have all contexts, process dependencies
+  generateDependencies(ctxs);
+  findBlockers(ctxs);
+
   return ctxs;
 }
 
@@ -53,24 +58,7 @@ export function parseTextIntoContexts(input: string) {
       input: {},
     };
 
-    // parse context here
-    let attObj = parseAttributes(head);
-    ctx.input.attributes = attObj.attributes;
-
-    let durObj = parseDurations(head);
-    ctx.input.durations = durObj.durations;
-
-    // let depObj = parseDependencies(head);
-
-    let tagObj = parseTags(head);
-    ctx.input.tags = tagObj.tags;
-
-    let cycObj = parseCyclics(head);
-    ctx.input.cyclics = cycObj.cyclics;
-
-    ctx.input.raw = head;
-
-    contexts.push(ctx);
+    contexts.push({ ...ctx, ...parseLine(head) });
   });
 
   return contexts;
@@ -90,10 +78,8 @@ export function processContext(ctx: Context): Context {
     applyContext(ctx);
     calculateCyclicWeight(ctx);
     calculateAttributeWeight(ctx);
-    generateReferences(ctx);
+    generateTextReference(ctx);
     generateWeights(ctx);
-    generateDependencies(ctx);
-    findBlockers(ctx);
   }
 
   // changes are applied inline, but return anyway
@@ -130,6 +116,7 @@ export function parseLine(ln: string, ctx?: Context): Activity {
   splitPoints.push(...depObj.splitPoints);
   let attachNext: string = depObj.attachNext;
 
+  // don't include link tags in act tags
   const excludeTags = links
     .map((l) => {
       return l.tags;
@@ -179,24 +166,30 @@ export function parseLine(ln: string, ctx?: Context): Activity {
   };
 }
 
-export function generateReferences(ctx: Context) {
+export function generateTextReference(ctx: Context) {
   // pull list of content from context
   ctx.activities.forEach((c) => {
-    c.reference = c.input.content
+    c.txtref = c.input.content
       .replace(regex.lettersOnly, '')
       .slice(0, 10)
       .toLowerCase();
-    return c.reference;
+    return c.txtref;
   });
 }
 
 export function generateWeights(ctx: Context) {
+  let adjustedIndex = 0;
   ctx.activities.forEach((c, i) => {
-    // reverse to apply a slight weighting towards the top of the list
-    if (!c.done) c.integerWeight -= i * positionWeight;
+    // apply a slight weighting towards the top of the list
+    c.integerWeight -= adjustedIndex * positionWeight;
 
-    // turn integer into float - kinda important to know about
+    // turn integer into float - important to know about
     c.weight = Math.min(c.integerWeight / Math.pow(10, integerWeightFactor), 1);
+
+    // we don't want to discount done tasks
+    if (!c.done) {
+      adjustedIndex++;
+    }
   });
 }
 
@@ -209,11 +202,14 @@ export function sortActivityByWeight(acts: Activity[]) {
   });
 }
 
-export function findActivitiesByTags(ctx: Context, tags: string[]): Activity[] {
+export function findActivitiesByTags(
+  ctxs: Context[],
+  tags: string[]
+): Activity[] {
   let acts: Activity[] = [];
 
   tags.forEach((t) => {
-    let matchActs: Activity[] = findActivitiesByTag(ctx, t);
+    let matchActs: Activity[] = findActivitiesByTag(ctxs, t);
     matchActs.forEach((m) => {
       // don't insert dupes
       if (acts.indexOf(m) === -1) {
@@ -225,12 +221,20 @@ export function findActivitiesByTags(ctx: Context, tags: string[]): Activity[] {
   return acts;
 }
 
-export function findActivitiesByTag(ctx: Context, tagName: string): Activity[] {
+// look through all contexts to return matching activities
+export function findActivitiesByTag(
+  ctxs: Context[],
+  tagName: string
+): Activity[] {
   let acts: Activity[] = [];
 
-  acts = ctx.activities.filter((a) => {
-    return a.input.tags.includes(tagName);
-  });
+  acts = ctxs
+    .map((ctx) => {
+      return ctx.activities.filter((a) => {
+        return a.input.tags.includes(tagName);
+      });
+    })
+    .flat();
 
   return acts;
 }
@@ -265,31 +269,34 @@ export function selectActivitiesUsingWeights(
 }
 
 // call this after dependencies are hydrated with refernce
-function findBlockers(ctx: Context): Context {
-  ctx.activities.forEach((act: Activity) => {
-    act.links.forEach((l: ActivityLink) => {
-      if (l.required) {
-        if (!l.reference) {
-          console.error('Tagged dependency', l.tags, 'does not exist.');
-          return;
+function findBlockers(ctxs: Context[]): Context[] {
+  ctxs.forEach((ctx) => {
+    ctx.activities.forEach((act: Activity) => {
+      act.links.forEach((l: ActivityLink) => {
+        if (l.required) {
+          if (!l.reference) {
+            console.error('Tagged dependency', l.tags, 'has no reference.');
+            return;
+          }
+          let ref = l.reference;
+          // expire anything downstream not available
+          // availability is determined as part of selection
+          if (!act.done && l.downstream) {
+            ref.blocked = true;
+          } else {
+            ref.blocked = false;
+          }
         }
-        let ref = l.reference;
-        // expire anything downstream not available
-        // availability is determined as part of selection
-        if (!act.done && l.downstream) {
-          ref.blocked = true;
-        } else {
-          ref.blocked = false;
-        }
-      }
+      });
     });
   });
 
-  return ctx;
+  return ctxs;
 }
 
 function applyContext(ctx: Context): Context {
   ctx.activities.forEach((act) => {
+    act.links = [...act.links, ...ctx.links];
     act.input.attributes.push(...ctx.input.attributes);
     act.input.tags.push(...ctx.input.tags);
     act.input.durations.push(...ctx.input.durations);

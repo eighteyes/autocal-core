@@ -1,4 +1,9 @@
-import { regex, startWeight, attributeList, integerWeightFactor } from './defaults';
+import {
+  regex,
+  startWeight,
+  attributeList,
+  integerWeightFactor,
+} from './defaults';
 import { ActivityLink } from './models/activity';
 
 export function parseAttributes(ln: string) {
@@ -49,11 +54,14 @@ export function parseDependencies(ln: string) {
         // where is the tag in the string
         const depTagIndex = ln.indexOf('#', depIndex);
         // find end of tag, OR set index to end of string
-        const endTagIndex = ln.indexOf(' ', depIndex + 3) !== -1 ? ln.indexOf(' ', depIndex + 2 + d.length) : ln.length;
+        const endTagIndex =
+          ln.indexOf(' ', depIndex + 3) !== -1
+            ? ln.indexOf(' ', depIndex + 2 + d.length)
+            : ln.length;
         const tag = ln.slice(depTagIndex + 1, endTagIndex);
 
         let linkObj: ActivityLink = {
-          type: 'dependency-tag-notag',
+          type: 'dependency-tagged',
         };
 
         if (d === '<>' || d === '><') {

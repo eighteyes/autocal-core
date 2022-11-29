@@ -8,6 +8,7 @@ import {
 import { selectActivitiesUsingWeights } from './models/contextFn';
 import { cyclicStepWeight, cyclicStepWeightMultiplier } from './defaults';
 import { canBeSelected } from './models/activityFn';
+import { logWeights } from './utils';
 
 // run selection process
 export function doSelection(
@@ -22,21 +23,17 @@ export function doSelection(
   let strengths = [];
 
   // iterate through selection sequence steps
+
   for (let i = 0; i < count; i++) {
-    console.log(sequence);
     let selectedActs: Activity[] = [];
     let signs = selectSignGroup(ctxs, sequence);
-    console.log('Sign', signs.sign, 'weight', signs.weights, signs.seed);
 
     //expire non signs
     let str = selectStrengthGroup(ctxs, sequence, signs.sign);
-
-    console.log(str.weights, str.seed);
-    console.log('Strength', str.strength);
     strengths.push(str.strength);
 
-    // if match, chop off n from sequence, move on if 0
-    if (signs.sign == sequence[0] || signs.sign === '0') {
+    // if match, chop off n from sequence
+    if (signs.sign == sequence[0]) {
       sequence = sequence.slice(Math.abs(parseInt(str.strength)));
     }
 
@@ -44,9 +41,8 @@ export function doSelection(
       str.group.forEach((act: Activity) => {
         act.available = true;
       });
-      console.log('Made Available', str.group.length);
     } else {
-      console.log('No Activities for ', str.strength);
+      console.debug('No Activities for ', str.strength);
     }
 
     ctxs.forEach((c) => {
@@ -57,10 +53,23 @@ export function doSelection(
       });
     });
 
-    console.log('');
+    // console.log('');
     finalActs.push(...selectActivitiesUsingWeights(selectedActs));
+
+    if (process.env.NODE_ENV !== 'test') {
+      console.debug(sequence);
+      console.debug('🎲', signs.seed.toFixed(4));
+      logWeights(signs.weights);
+      console.debug('Selected Sign: ', signs.sign);
+
+      console.debug('🎲', str.seed.toFixed(4));
+      logWeights(str.weights);
+      console.debug('Selected Str:', str.strength);
+      console.log('ST: ', strengths);
+
+      console.debug('Activities Available', str.group.length);
+    }
   }
-  console.log('ST: ', strengths);
 
   return finalActs;
 }
