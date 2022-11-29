@@ -71,7 +71,7 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
   let values: { [index: string]: number } = {};
   let total = 0;
   let weights: { [index: string]: number } = {};
-  let sign = '';
+  let sign = '0';
 
   // get values from context size
   for (const key in bySign) {
@@ -86,8 +86,9 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
   let seqStep = algo[0];
   let signSteps = 0;
 
+  // does the ctx have this sequence step?
   // how many repetitions of seqStep? more means to favor this seqstep
-  while (algo[signSteps] === seqStep) {
+  while (bySign[seqStep] && algo[signSteps] === seqStep) {
     signSteps++;
     // = step weight + multi * signsteps = 10 + i*5
     let amtToAdd = cyclicStepWeight + signSteps * cyclicStepWeightMultiplier;

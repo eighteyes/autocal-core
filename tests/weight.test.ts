@@ -5,6 +5,7 @@ import {
 } from '../src/models/contextFn';
 import { Context } from '../src/models/context';
 import { contexts } from './inputs';
+import { doSelection } from '../src/selection';
 
 let ctxs: Context[] = [];
 
@@ -21,10 +22,10 @@ beforeAll(() => {
 });
 
 test('same results will not be generated each time', () => {
-  const c = ctxs[0].activities;
+  const c = ctxs;
   for (let i = 0; i < 3; i++) {
-    let ws = selectActivitiesUsingWeights(c, 10);
-    let ws2 = selectActivitiesUsingWeights(c, 10);
+    let ws = doSelection(c, 10);
+    let ws2 = doSelection(c, 10);
     expect(ws).not.toMatchObject(ws2);
   }
 });
