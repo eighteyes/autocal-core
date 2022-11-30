@@ -7,6 +7,9 @@ var fileName = 'examples/plan.acr';
 import { Context } from './models/context';
 import { doSelection } from './selection';
 
+import * as config from '../src/config';
+console.log(config);
+
 // point to TS in errors
 require('source-map-support').install();
 

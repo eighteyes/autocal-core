@@ -1,5 +1,5 @@
 import * as inputs from './inputs';
-import { orderingAlgo } from '../src/config';
+import config from '../src/config';
 import { parseComplete } from '../src/models/contextFn';
 import { selectSignGroup, selectStrengthGroup } from '../src/selection';
 
@@ -8,7 +8,7 @@ test('can select a sign using an algorithm', () => {
   let signs = [];
   let algo: string = '+-'.repeat(10);
   for (let i = 0; i <= 10; i++) {
-    let { sign } = selectSignGroup(ctxs, algo);
+    let { sign } = selectSignGroup(ctxs, algo, config);
     // advance algo
     algo = algo.split('').slice(1).join('');
     signs.push(sign);
@@ -22,7 +22,7 @@ test('can select a strength using an algorithm', () => {
   let ctxs = parseComplete(inputs.select.extrastrength);
   let strengths = [];
   for (let i = 0; i <= 10; i++) {
-    let { strength } = selectStrengthGroup(ctxs, '---+++', '-');
+    let { strength } = selectStrengthGroup(ctxs, '---+++', '-', config);
     strengths.push(strength);
   }
   // de dupe

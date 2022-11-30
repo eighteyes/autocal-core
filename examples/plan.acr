@@ -40,7 +40,8 @@ make defaults into config object 2h >>
 Links/Tags apply from context
 Support url in activity #url-on-content
 Emoji Support in Cyclic Selection !! ++
-xfer attribute weight to downstream tasks. rule. if dependent is important, antecedent is important 
+add attribute weight to downstream tasks. rule. if dependent is important, antecedent is important
+in selection, abstract sequence / sign / steps into state object
 x Option for no random
 
 # Slack #slack !

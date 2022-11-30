@@ -1,16 +1,8 @@
 import { Context } from './models/context';
 import { Activity } from './models/activity';
-import {
-  baseStrengthWeight,
-  strengthSelectionMultiplier,
-  orderingAlgo,
-} from './config';
+import config from './config';
+import { Config } from './interfaces/config';
 import { selectActivitiesUsingWeights } from './models/contextFn';
-import {
-  cyclicStepWeight,
-  cyclicStepWeightMultiplier,
-  options,
-} from './config';
 import { canBeSelected } from './models/activityFn';
 import { logWeights } from './utils';
 
@@ -18,11 +10,11 @@ import { logWeights } from './utils';
 export function doSelection(
   ctxs: Context[],
   count: number = 1,
-  config?: object
+  cfg: Config = config
 ) {
   // selecting from list
   let finalActs: Activity[] = [];
-  let sequence = orderingAlgo.repeat(5);
+  let sequence = cfg.orderingAlgo.repeat(5);
   // for debugging
   let strengths = [];
 
@@ -30,10 +22,10 @@ export function doSelection(
 
   for (let i = 0; i < count; i++) {
     let selectedActs: Activity[] = [];
-    let signs = selectSignGroup(ctxs, sequence);
+    let signs = selectSignGroup(ctxs, sequence, cfg);
 
     //expire non signs
-    let str = selectStrengthGroup(ctxs, sequence, signs.sign);
+    let str = selectStrengthGroup(ctxs, sequence, signs.sign, cfg);
     strengths.push(str.strength);
 
     // if match, chop off n from sequence
@@ -83,7 +75,7 @@ export function doSelection(
 }
 
 // step 1 in selection, figure out what sign to use
-export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
+export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
   const { bySign } = groupActivityByCyclic(ctxs);
   let values: { [index: string]: number } = {};
   let total = 0;
@@ -108,7 +100,8 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
   while (bySign[seqStep] && algo[signSteps] === seqStep) {
     signSteps++;
     // = step weight + multi * signsteps = 10 + i*5
-    let amtToAdd = cyclicStepWeight + signSteps * cyclicStepWeightMultiplier;
+    let amtToAdd =
+      cfg.cyclicStepWeight + signSteps * cfg.cyclicStepWeightMultiplier;
     values[seqStep] += amtToAdd;
     // remove this amount from others
     // for (const k in values) {
@@ -152,7 +145,7 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
     console.error('No sign selected', seed, weights);
   }
 
-  if (options.randomSelection == false) {
+  if (config.randomSelection == false) {
     // override for deterministic operation
     sign = seqStep;
   }
@@ -165,7 +158,7 @@ export function selectStrengthGroup(
   ctxs: Context[],
   algo: string,
   selectedSign: string,
-  state: number = 0
+  cfg: Config
 ) {
   //   let byStrength: { [index: string]: Activity[] };
   let { byStrength } = groupActivityByCyclic(ctxs);
@@ -184,7 +177,8 @@ export function selectStrengthGroup(
     while (algo[signSteps] === selectedSign) {
       signSteps++;
       // assign values as we go
-      let val = baseStrengthWeight + signSteps * strengthSelectionMultiplier;
+      let val =
+        cfg.baseStrengthWeight + signSteps * cfg.strengthSelectionMultiplier;
       // --- or +++ or ***
       algoKey = seqSign.repeat(signSteps);
       values[algoKey] = val;
@@ -234,7 +228,7 @@ export function selectStrengthGroup(
     }
   }
 
-  if (options.randomSelection == false) {
+  if (config.randomSelection == false) {
     strengthTarget = convertAlgoKeyToStrength(algoKey);
   }
 

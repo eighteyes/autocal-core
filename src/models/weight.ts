@@ -1,5 +1,5 @@
 import { Activity } from './activity';
-import { integerWeightFactor } from '../config';
+import config from '../config';
 
 export class Weight {
   weight: number;
@@ -8,7 +8,7 @@ export class Weight {
 
   constructor(weight: number, reference: Activity) {
     if (weight >= 1) {
-      this.weight = weight / Math.pow(10, integerWeightFactor);
+      this.weight = weight / Math.pow(10, config.integerWeightFactor);
     }
     this.reference = reference;
     Weight.weights.push(this);

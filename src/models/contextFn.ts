@@ -1,15 +1,8 @@
-import {
-  regex,
-  startWeight,
-  attributeList,
-  integerWeightFactor,
-  options,
-} from '../config';
+import config from '../config';
 import { Context } from './context';
 import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink, ActivityInput } from './activity';
 import { render, canBeSelected } from './activityFn';
-import { positionWeight } from '../config';
 import {
   parseAttributes,
   parseDurations,
@@ -50,7 +43,7 @@ export function parseTextIntoContexts(input: string) {
     let line = c.split('\n');
     let head = line[0].toString();
     // shift mutates array
-    let name: string = line.shift().replace(regex.contextHashMatch, '');
+    let name: string = line.shift().replace(config.regex.contextHashMatch, '');
 
     let ctx: Context = {
       name,
@@ -89,7 +82,7 @@ export function processContext(ctx: Context): Context {
 
 // activities
 export function parseLine(ln: string, ctx?: Context): Activity {
-  let integerWeight = startWeight;
+  let integerWeight = config.startWeight;
   let available = false;
 
   let done = ln[0] == 'x';
@@ -171,7 +164,7 @@ export function generateTextReference(ctx: Context) {
   // pull list of content from context
   ctx.activities.forEach((c) => {
     c.txtref = c.input.content
-      .replace(regex.lettersOnly, '')
+      .replace(config.regex.lettersOnly, '')
       .slice(0, 10)
       .toLowerCase();
     return c.txtref;
@@ -182,10 +175,13 @@ export function generateWeights(ctx: Context) {
   let adjustedIndex = 0;
   ctx.activities.forEach((c, i) => {
     // apply a slight weighting towards the top of the list
-    c.integerWeight -= adjustedIndex * positionWeight;
+    c.integerWeight -= adjustedIndex * config.positionWeight;
 
     // turn integer into float - important to know about
-    c.weight = Math.min(c.integerWeight / Math.pow(10, integerWeightFactor), 1);
+    c.weight = Math.min(
+      c.integerWeight / Math.pow(10, config.integerWeightFactor),
+      1
+    );
 
     // we don't want to discount done tasks
     if (!c.done) {
@@ -252,7 +248,7 @@ export function selectActivitiesUsingWeights(
     // crux of selection, use weight as % chance
 
     if (
-      options.randomSelection &&
+      config.randomSelection &&
       canBeSelected(act) &&
       Math.random() > act.weight
     ) {
@@ -324,10 +320,10 @@ function calculateCyclicWeight(ctx: Context): Context {
 
 function calculateAttributeWeight(ctx: Context): Context {
   ctx.activities.forEach((act) => {
-    act.integerWeight = startWeight;
+    act.integerWeight = config.startWeight;
     act.input.attributes.forEach((att) => {
       // look up weight for this attribute
-      let eObj = attributeList.filter((e1: Attribute) => {
+      let eObj = config.attributeList.filter((e1: Attribute) => {
         return e1.symbol == att;
       })[0];
       // add to running total for this activity

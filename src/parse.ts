@@ -1,9 +1,4 @@
-import {
-  regex,
-  startWeight,
-  attributeList,
-  integerWeightFactor,
-} from './config';
+import config from './config';
 import { ActivityLink } from './models/activity';
 
 export function parseAttributes(ln: string) {
@@ -12,7 +7,7 @@ export function parseAttributes(ln: string) {
   let splitPoints: number[] = [];
 
   // add effect split points
-  let attributeMatches = ln.match(regex.attributes);
+  let attributeMatches = ln.match(config.regex.attributes);
 
   if (attributeMatches) {
     attributeMatches[0].split('').forEach((e) => {
@@ -27,7 +22,7 @@ export function parseDurations(ln: string) {
   let durations: string[] = [];
   let splitPoints: number[] = [];
   // cycle through all meta info indices
-  const durationMatches = ln.match(regex.duration);
+  const durationMatches = ln.match(config.regex.duration);
   if (durationMatches) {
     durationMatches.forEach((d) => {
       splitPoints.push(ln.indexOf(d));
@@ -41,7 +36,7 @@ export function parseDependencies(ln: string) {
   let attachNext: string;
   let links: ActivityLink[] = [];
   let splitPoints: number[] = [];
-  let dependencyMatch: string[] = ln.match(regex.dependencies);
+  let dependencyMatch: string[] = ln.match(config.regex.dependencies);
 
   if (dependencyMatch) {
     dependencyMatch.forEach((d) => {
@@ -91,7 +86,7 @@ export function parseDependencies(ln: string) {
 export function parseTags(ln: string, exclude: string[] = []) {
   let tags: string[] = [];
   let splitPoints: number[] = [];
-  const tagMatches = ln.match(regex.tag);
+  const tagMatches = ln.match(config.regex.tag);
   if (tagMatches) {
     tagMatches.forEach((t) => {
       // remove leading #
@@ -109,7 +104,7 @@ export function parseTags(ln: string, exclude: string[] = []) {
 }
 
 export function parseCyclics(ln: string) {
-  const cyclicMatches = ln.match(regex.cyclics);
+  const cyclicMatches = ln.match(config.regex.cyclics);
   let cyclics: string[] = [];
   if (!cyclicMatches) {
     return { cyclics };
