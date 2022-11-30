@@ -18,7 +18,12 @@ result.forEach((act, i) => {
   if (i == 0) {
     console.log(act);
   }
-  console.log(act.input.contextName, act.input.content, act.cyclicStrength);
+  console.log(
+    act.input.contextName,
+    act.input.content,
+    act.cyclicStrength,
+    act.weight
+  );
 });
 
 function select(text: string = readFile(fileName), config: object = {}) {

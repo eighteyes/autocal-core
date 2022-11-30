@@ -1,5 +1,5 @@
 import * as inputs from './inputs';
-import { orderingAlgo } from '../src/defaults';
+import { orderingAlgo } from '../src/config';
 import { parseComplete } from '../src/models/contextFn';
 import { selectSignGroup, selectStrengthGroup } from '../src/selection';
 

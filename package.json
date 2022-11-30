@@ -4,7 +4,7 @@
   "description": "Scheduling engine for AutoCal",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watch --silent",
     "debugtest": "jest --watch --detect-open-handles",
     "start": "tsc-watch --onSuccess \"node dist/src/.\""
   },

@@ -3,12 +3,13 @@ import {
   startWeight,
   attributeList,
   integerWeightFactor,
-} from '../defaults';
+  options,
+} from '../config';
 import { Context } from './context';
 import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink, ActivityInput } from './activity';
-import { render } from './activityFn';
-import { positionWeight } from '../defaults';
+import { render, canBeSelected } from './activityFn';
+import { positionWeight } from '../config';
 import {
   parseAttributes,
   parseDurations,
@@ -153,7 +154,7 @@ export function parseLine(ln: string, ctx?: Context): Activity {
   };
 
   if (ctx) {
-    input.contextName = ctx.name;
+    input.contextName = ctx.input.content;
   }
 
   return {
@@ -251,12 +252,11 @@ export function selectActivitiesUsingWeights(
     // crux of selection, use weight as % chance
 
     if (
-      !act.done &&
-      !act.selected &&
-      act.available &&
+      options.randomSelection &&
+      canBeSelected(act) &&
       Math.random() > act.weight
     ) {
-      //expire so we don't reselect
+      //so we don't reselect
       act.selected = true;
       output.push(act);
     }

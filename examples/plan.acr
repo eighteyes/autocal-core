@@ -1,4 +1,4 @@
-# SPARK 45m !!--& >> #POC >> #Slack
+# SPARK 45m !!--& >> #POC > #Slack
 x Ordering Engine 2h #order
 x Activities have weights 3h > #order
 x Basic Dependencies 2h >> #order > 
@@ -41,7 +41,7 @@ Links/Tags apply from context
 Support url in activity #url-on-content
 Emoji Support in Cyclic Selection !! ++
 xfer attribute weight to downstream tasks. rule. if dependent is important, antecedent is important 
-Option for no random
+x Option for no random
 
 # Slack #slack !
 Render Activity >> #bk
@@ -64,7 +64,7 @@ CRUD Tasks 4h >> #slack-alpha
 Launch Alpha #slack-alpha 2h >>>
 Divide Userland Storage << #slack-alpha
 
-# Slack Beta << #slack-alpha
+# Slack Beta << #slack
 Context == Channels 8h 
 Assignments 8h
 Post Acts as Reminder 4h 
@@ -82,7 +82,7 @@ Flush out Tests 4h
 REPO 1h
 CLI Package 1h - > #clilaunch
 
-# Marketing $-- 15m
+# Marketing - 15m << #slack 
 Make Starter Logo / Mascot Graphics #brand
 Choose Color Scheme
 x Write 1 paragraph Copy, title, headline
@@ -94,14 +94,14 @@ React Component w/ AC integration demoing slack blocks
 Beta Invite / Pay with 30 mins assistance for setup. 2h
 CLI Launch on PH #clilaunch
 
-# MVP #NEXT
+# MVP #NEXT >> #v1
 Paypay Integration 4h
 Feature Checkout 8h
 Refactor code organization 2h
 
-# v1 #persistance #cli
+# v1 #v1 #persistance #cli
 Move Activity between Context #trello
-Add Activity to Context ! 
+Add Activity to Context Command ! 
 
 # Breaks !!+
 piano + 15m
@@ -121,6 +121,7 @@ x add contentname to activity.links
 Declare Activity in parseLine, use TS classes
 Merge Activity and Cyclics, multidimensional !!
 regex for durations should handle ranges
+Handle improper algo determination ( -4 ---- when no act exists )
 
 # lol features
 Implement repeats. `x8 activity x8` = `infinite` done
@@ -133,5 +134,5 @@ Learn window hopping, problem selection #vsc
 # Collection
 apply weights to downstream dependencies
 add signSteps to selectSign algo 
-clear cyclic tokens from content 
-support rule only events #storage >> #crud 
+clear cyclic tokens from content string
+make util for logging activities for debugging

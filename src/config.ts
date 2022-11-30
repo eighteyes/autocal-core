@@ -1,5 +1,8 @@
 export const options = {
   applyPositionWeight: true,
+
+  // 0 tasks must be explicitly in the algo if false
+  randomSelection: true,
 };
 
 export const attributeList: Attribute[] = [
@@ -26,7 +29,7 @@ export const times = {
 
 export const regex = {
   contextHashMatch: /^#*./,
-  duration: /\b\d*[mhdw]/g,
+  duration: /\b\d*[mhdw]\b/g,
   content: /^([A-Za-z]\w+\s)$/,
   tag: /#([.\w-]+\S)/g,
   attributes: new RegExp(

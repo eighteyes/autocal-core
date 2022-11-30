@@ -4,9 +4,13 @@ import {
   baseStrengthWeight,
   strengthSelectionMultiplier,
   orderingAlgo,
-} from './defaults';
+} from './config';
 import { selectActivitiesUsingWeights } from './models/contextFn';
-import { cyclicStepWeight, cyclicStepWeightMultiplier } from './defaults';
+import {
+  cyclicStepWeight,
+  cyclicStepWeightMultiplier,
+  options,
+} from './config';
 import { canBeSelected } from './models/activityFn';
 import { logWeights } from './utils';
 
@@ -43,6 +47,7 @@ export function doSelection(
       });
     } else {
       console.debug('No Activities for ', str.strength);
+      break;
     }
 
     ctxs.forEach((c) => {
@@ -67,7 +72,10 @@ export function doSelection(
       console.debug('Selected Str:', str.strength);
       console.log('ST: ', strengths);
 
-      console.debug('Activities Available', str.group.length);
+      console.debug(
+        'Activities Available',
+        str.group.filter(canBeSelected).length
+      );
     }
   }
 
@@ -144,6 +152,11 @@ export function selectSignGroup(ctxs: Context[], algo: string, state = 0) {
     console.error('No sign selected', seed, weights);
   }
 
+  if (options.randomSelection == false) {
+    // override for deterministic operation
+    sign = seqStep;
+  }
+
   return { group: bySign[sign], sign, weights, seed };
 }
 
@@ -163,6 +176,7 @@ export function selectStrengthGroup(
   let values: { [index: string]: number } = {};
   let weights: { [index: string]: number } = {};
   let total = 0;
+  let algoKey: string;
 
   // sequence matches selection
   // value according to depth
@@ -171,7 +185,9 @@ export function selectStrengthGroup(
       signSteps++;
       // assign values as we go
       let val = baseStrengthWeight + signSteps * strengthSelectionMultiplier;
-      values[seqSign.repeat(signSteps)] = val;
+      // --- or +++ or ***
+      algoKey = seqSign.repeat(signSteps);
+      values[algoKey] = val;
       total += val;
     }
 
@@ -209,15 +225,7 @@ export function selectStrengthGroup(
     // add value to total to check against for pass
     weightTotal += weights[key];
     if (seed <= weightTotal) {
-      // convert key ( +++ ) to weight ( 3 ) --- = -3
-      if (key.indexOf('0') !== -1) {
-        strengthTarget = '0';
-      } else {
-        const sign =
-          key.indexOf('-') !== -1 ? '-' : key.indexOf('+') !== -1 ? '+' : '';
-        strengthTarget = sign + key.length;
-      }
-
+      strengthTarget = convertAlgoKeyToStrength(key);
       if (!byStrength.hasOwnProperty(strengthTarget)) {
         // no acts available for this strength
         continue;
@@ -226,12 +234,29 @@ export function selectStrengthGroup(
     }
   }
 
+  if (options.randomSelection == false) {
+    strengthTarget = convertAlgoKeyToStrength(algoKey);
+  }
+
   return {
     group: byStrength[strengthTarget],
     strength: strengthTarget,
     weights,
     seed,
   };
+}
+
+function convertAlgoKeyToStrength(key: string): string {
+  let strengthTarget: string;
+  // convert key ( +++ ) to weight ( 3 ) --- = -3
+  if (key.indexOf('0') !== -1) {
+    strengthTarget = '0';
+  } else {
+    const sign =
+      key.indexOf('-') !== -1 ? '-' : key.indexOf('+') !== -1 ? '+' : '';
+    strengthTarget = sign + key.length;
+  }
+  return strengthTarget;
 }
 
 export function groupActivityByCyclic(ctxs: Context[]) {

@@ -67,3 +67,7 @@ export const select = {
     ctxm +
     ['Am -', 'Bm --', 'Cm ---'].join('\n'),
 };
+
+export const edgeCases = {
+  one: 'make defaults into config object 2h >>',
+};

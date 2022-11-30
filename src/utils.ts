@@ -1,6 +1,8 @@
 export function logWeights(object: { [index: string]: number }) {
+  let log = [];
   for (const key in object) {
     const element = object[key];
-    console.debug(key, element.toFixed(3));
+    log.push([key, element.toFixed(2)].join(':'));
   }
+  console.debug(log.join(' '));
 }

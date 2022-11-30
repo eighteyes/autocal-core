@@ -1,5 +1,5 @@
 import { parseComplete, parseLine } from '../src/models/contextFn';
-import { attributeList, startWeight } from '../src/defaults';
+import { attributeList, startWeight } from '../src/config';
 import { attributes } from './inputs';
 
 test('collect raw attributes', () => {

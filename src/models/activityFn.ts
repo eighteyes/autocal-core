@@ -42,7 +42,7 @@ export function getDependencyTags(act: Activity): string[] {
 }
 
 export function canBeSelected(act: Activity): boolean {
-  return !act.done && !act.blocked && act.available;
+  return !act.done && !act.blocked && !act.selected && act.available;
 }
 
 export function render(act: Activity): string {

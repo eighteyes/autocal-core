@@ -3,7 +3,7 @@ import {
   startWeight,
   attributeList,
   integerWeightFactor,
-} from './defaults';
+} from './config';
 import { ActivityLink } from './models/activity';
 
 export function parseAttributes(ln: string) {

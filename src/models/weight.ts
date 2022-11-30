@@ -1,5 +1,5 @@
 import { Activity } from './activity';
-import { integerWeightFactor } from '../defaults';
+import { integerWeightFactor } from '../config';
 
 export class Weight {
   weight: number;
