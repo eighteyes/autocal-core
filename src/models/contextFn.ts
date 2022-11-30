@@ -38,7 +38,7 @@ export function parseTextIntoContexts(input: string) {
     contextraws.push(c.trim());
   });
 
-  contextraws.forEach((c) => {
+  contextraws.forEach((c, i) => {
     // split along lines
     let line = c.split('\n');
     let head = line[0].toString();
@@ -50,6 +50,7 @@ export function parseTextIntoContexts(input: string) {
       activities: [],
       raw: line.join('\n'),
       input: {},
+      id: i.toString(),
     };
 
     contexts.push({ ...ctx, ...parseLine(head) });
@@ -62,8 +63,9 @@ export function processContext(ctx: Context): Context {
   // console.log('Processing', ctx.name);
 
   // cycle through every event in the context
-  ctx.raw.split('\n').forEach((ln) => {
+  ctx.raw.split('\n').forEach((ln, i) => {
     const e: Activity = parseLine(ln, ctx);
+    e.id = i.toString();
     ctx.activities.push(e);
   });
 
@@ -80,7 +82,7 @@ export function processContext(ctx: Context): Context {
   return ctx;
 }
 
-// activities
+// tokenizer for activities and contexts
 export function parseLine(ln: string, ctx?: Context): Activity {
   let integerWeight = config.startWeight;
   let available = false;

@@ -29,7 +29,7 @@ let config: Config = {
   },
 
   // more of a sequence
-  orderingAlgo: '--++--',
+  orderingAlgo: '-+',
   integerWeightFactor: 4,
   startWeight: 0,
   positionWeight: 20,

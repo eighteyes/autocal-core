@@ -1,5 +1,6 @@
 import { dependencies } from '../../tests/inputs';
 export interface Activity {
+  id?: string;
   input?: ActivityInput;
   txtref?: string;
 

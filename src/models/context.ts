@@ -2,6 +2,7 @@ import { Activity, ActivityInput, ActivityLink } from './activity';
 
 export interface Context {
   name: string;
+  id?: string;
   activities: Activity[];
   links?: ActivityLink[];
   raw?: string;
