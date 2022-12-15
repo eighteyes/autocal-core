@@ -1,7 +1,7 @@
 import { Context } from './models/context';
 import { Activity } from './models/activity';
 import config from './config';
-import { Config } from './interfaces/config';
+import { Config } from './types/config';
 import { selectActivitiesUsingWeights } from './models/contextFn';
 import { canBeSelected } from './models/activityFn';
 import { logWeights } from './utils';
@@ -14,13 +14,14 @@ export function doSelection(
 ) {
   // selecting from list
   let finalActs: Activity[] = [];
-  let sequence = cfg.orderingAlgo.repeat(5);
+  let sequence = cfg.orderingAlgo.repeat(100);
   // for debugging
   let strengths = [];
 
   // iterate through selection sequence steps
 
   for (let i = 0; i < count; i++) {
+    console.log('Start: ', sequence.slice(0, 6));
     let selectedActs: Activity[] = [];
     let signs = selectSignGroup(ctxs, sequence, cfg);
 

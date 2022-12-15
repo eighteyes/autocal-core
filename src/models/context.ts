@@ -9,4 +9,7 @@ export interface Context {
   // stores text - parseline only into input
   input?: ActivityInput;
   tags?: string[];
+
+  // used in text selection
+  index?: number;
 }

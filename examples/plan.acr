@@ -33,39 +33,85 @@ x Apply Cyclics number to Activity
 x Cyclic Sorting 2h >>
 x Select from all Contexts 2h
 x string output from object
-make defaults into config object 2h >> 
-[[Modularize Core Runtime]] 4h !!!! >> #bolt
+x make defaults into config object 2h >> 
+x Modularize Core Runtime 4h !!!!
 
 # Extra Sparks -
 Links/Tags apply from context
 Support url in activity #url-on-content
 Emoji Support in Cyclic Selection !! ++
 add attribute weight to downstream tasks. rule. if dependent is important, antecedent is important
-in selection, abstract sequence / sign / steps into state object
+in selection code, abstract sequence / sign / steps into state object
 x Option for no random
+dependencies work between contexts
+Support gtgt at line start for linking !!!
+Support : for explicit split point
+Add in progress to line start
+Check if dependencies work with multiple activities tagged.
+
 
 # Slack #slack !
-Render Activity >> #bk
-Context Selection >> #bk
-Edit act 8h >> #bk
-Delete Act 2h >> #bk
-Settings 4h >> #bk
-Block Kit Home Screen #bk !
-Add act to context 4h << #cmds
-Design Commands / Actions / Messages 4h #cmds
-Slack Bolt App $ 2h #bolt
-SQLite Storage 1h >
-SQLite Adapter 2h >
-Storage Modal #storage
-Service for ACCore + 2h 
-Message Action 2h 
-Get n tasks 2h
-Get task for time window << #sched
-CRUD Tasks 4h >> #slack-alpha
-Launch Alpha #slack-alpha 2h >>>
+Action Handlers #action >> #action-refactor >> #crud
+Text Blocks ! #block << #ctxact
+= x Render Activity
+= x Context Selection
+= Edit Act 8h
+= Delete Act 2h
+Action Blocks ! #block #action
+= Back Button
+= Action Input
+Design Commands / Actions / Messages 4h
+Design Home Screen Interface 2h << #block << #action
+Design User Communication Interface #message 2h
+Activity Selection #block
+Activity Edit #block
+Activity Edit Handler #action
+Context Selection #block
+Context Edit via Input #block
+Context Edit Handler #action
+Home Screen: Activity Show
+Home Screen: Activity Edit
+Home: Render View All
+Get Started Text #block
+Get Started Handler #action
+Implement Add Content Input / Action
+x Get All #action
+Persistance Layer + Adapter SQLLite #db >> #crud
+Move actions into handlers #action-refactor >> #bolt
+Load handlers on start >> #bolt
+Provider for AutoCal 2h #ac > #db
+Slack Interfaces #screens
+= Home, Contexts & Activities #ctxact
+= Help #block
+= Settings Screen 4h #config
+Slack Modals #modals
+= Edit Raw !! #raw-modal
+Message Action 2h #action 
+= x n tasks 2h
+= ordered selection 2h
+= algo selection 2h < #config
+= n hours to fill << #sched
+= add context << #crud << #ac >> #tx
+= add activity >> #txt
+= edit activity >> #raw-modal
+Inputs #txt #action
+= Add Context
+= Add Activity
+Slack AutoCal Gateway Alpha $! #bolt >> #slack-alpha
+CRUD Tasks 4h >> #slack-alpha #crud 
 Divide Userland Storage << #slack-alpha
+Launch Alpha #slack-alpha 2h >>>
+
+# Slack Beta
+Modularize Storage into Distinct Module
+
+# CLI
+Add act to context 4h << #cmds
+Move Activity between Context #trello
+Archive
 
 # Slack Beta << #slack
+Get task for time window << #sched
 Context == Channels 8h 
 Assignments 8h
 Post Acts as Reminder 4h 
@@ -84,6 +130,7 @@ REPO 1h
 CLI Package 1h - > #clilaunch
 
 # Marketing - 15m << #slack 
+Research Product Hunt Success 1h
 Make Starter Logo / Mascot Graphics #brand
 Choose Color Scheme
 x Write 1 paragraph Copy, title, headline
@@ -95,14 +142,10 @@ React Component w/ AC integration demoing slack blocks
 Beta Invite / Pay with 30 mins assistance for setup. 2h
 CLI Launch on PH #clilaunch
 
-# MVP #NEXT >> #v1
+# MVP #NEXT
 Paypay Integration 4h
 Feature Checkout 8h
 Refactor code organization 2h
-
-# v1 #v1 #persistance #cli
-Move Activity between Context #trello
-Add Activity to Context Command ! 
 
 # Breaks !!+
 piano + 15m

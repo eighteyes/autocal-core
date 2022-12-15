@@ -3,13 +3,7 @@ import { Context } from './context';
 import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink, ActivityInput } from './activity';
 import { render, canBeSelected } from './activityFn';
-import {
-  parseAttributes,
-  parseDurations,
-  parseTags,
-  parseDependencies,
-  parseCyclics,
-} from '../parse';
+import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
 import { duration, cyclics } from '../../tests/inputs';
 
 export function parseComplete(input: string): Context[] {
@@ -50,7 +44,7 @@ export function parseTextIntoContexts(input: string) {
       activities: [],
       raw: line.join('\n'),
       input: {},
-      id: i.toString(),
+      index: i,
     };
 
     contexts.push({ ...ctx, ...parseLine(head) });
@@ -167,6 +161,7 @@ export function generateTextReference(ctx: Context) {
   ctx.activities.forEach((c) => {
     c.txtref = c.input.content
       .replace(config.regex.lettersOnly, '')
+      .replace(config.regex.vowels, '')
       .slice(0, 10)
       .toLowerCase();
     return c.txtref;
@@ -180,10 +175,7 @@ export function generateWeights(ctx: Context) {
     c.integerWeight -= adjustedIndex * config.positionWeight;
 
     // turn integer into float - important to know about
-    c.weight = Math.min(
-      c.integerWeight / Math.pow(10, config.integerWeightFactor),
-      1
-    );
+    c.weight = Math.min(c.integerWeight / Math.pow(10, config.integerWeightFactor), 1);
 
     // we don't want to discount done tasks
     if (!c.done) {
@@ -201,10 +193,7 @@ export function sortActivityByWeight(acts: Activity[]) {
   });
 }
 
-export function findActivitiesByTags(
-  ctxs: Context[],
-  tags: string[]
-): Activity[] {
+export function findActivitiesByTags(ctxs: Context[], tags: string[]): Activity[] {
   let acts: Activity[] = [];
 
   tags.forEach((t) => {
@@ -221,10 +210,7 @@ export function findActivitiesByTags(
 }
 
 // look through all contexts to return matching activities
-export function findActivitiesByTag(
-  ctxs: Context[],
-  tagName: string
-): Activity[] {
+export function findActivitiesByTag(ctxs: Context[], tagName: string): Activity[] {
   let acts: Activity[] = [];
 
   acts = ctxs
@@ -238,10 +224,7 @@ export function findActivitiesByTag(
   return acts;
 }
 
-export function selectActivitiesUsingWeights(
-  acts: Activity[],
-  count: number = 1
-): Activity[] {
+export function selectActivitiesUsingWeights(acts: Activity[], count: number = 1): Activity[] {
   let input: Activity[] = sortActivityByWeight(acts);
   let output: Activity[] = [];
 
@@ -249,11 +232,7 @@ export function selectActivitiesUsingWeights(
     const act = input[i];
     // crux of selection, use weight as % chance
 
-    if (
-      config.randomSelection &&
-      canBeSelected(act) &&
-      Math.random() > act.weight
-    ) {
+    if (config.randomSelection && canBeSelected(act) && Math.random() > act.weight) {
       //so we don't reselect
       act.selected = true;
       output.push(act);

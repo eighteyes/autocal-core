@@ -1,9 +1,9 @@
-import { Config } from './interfaces/config';
+import { Config } from './types/config';
 
 let config: Config = {
   applyPositionWeight: true,
 
-  // 0 tasks must be explicitly in the algo if false
+  // 0 tasks must be explicitly in the algo if false - doesn't work
   randomSelection: true,
 
   attributeList: [
@@ -56,6 +56,7 @@ let regex = {
     'g'
   ),
   lettersOnly: /[^\w]/g,
+  vowels: /[aeiou]/g,
   dependencies: /[<>]{1,}/g,
   requiredDependencies: /<<|>>/g,
   cyclics: /\W?([\+|\-])\W?/g,

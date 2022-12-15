@@ -25,6 +25,9 @@ export interface Activity {
 
   // selected by algo, do not reselect if true, do not persist
   selected?: boolean;
+
+  // used for selection in text interfaces
+  index?: number;
 }
 
 export interface ActivityLink {
