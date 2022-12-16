@@ -1,6 +1,7 @@
 import { readFile } from './read';
 import { parseComplete, selectActivitiesUsingWeights } from './models/contextFn';
 import { Context } from './models/context';
+import { Activity } from './models/activity';
 import { doSelection } from './selection';
 
 import config from '../src/config';
@@ -42,7 +43,7 @@ function getContextNames(text: string = readFile(fileName), id: boolean = false)
   });
 }
 
-function getActivitiesForContext(text: string = readFile(fileName), contextId: string) {
+function getActivitiesForContext(text: string = readFile(fileName), contextId: string): Activity[] {
   let ctxs = parseComplete(text);
 
   return ctxs.filter((c) => {
@@ -50,7 +51,21 @@ function getActivitiesForContext(text: string = readFile(fileName), contextId: s
   })[0].activities;
 }
 
-function getAll(text: string = readFile(fileName)) {
+function getActivityListForContext(text: string = readFile(fileName), contextId: string): string[] {
+  let ctxs: Context[] = parseComplete(text);
+
+  let output: string[] = ctxs.map((c: Context) => {
+    if (c.index == parseInt(contextId)) {
+      return c.activities.map((a: Activity) => {
+        return a.input.content;
+      });
+    }
+  })[0];
+
+  return output;
+}
+
+function getPlanListFromText(text: string = readFile(fileName)): string[][] {
   let ctxs = parseComplete(text);
 
   let out: string[][] = [];
@@ -68,5 +83,17 @@ function getAll(text: string = readFile(fileName)) {
   return out;
 }
 
+export function defaultPlan(): string {
+  return readFile(fileName);
+}
+
 import { addRawContext } from './raw';
-export { select, getContextNames, getActivitiesForContext, getAll, addRawContext, Context };
+export {
+  select,
+  getContextNames,
+  getActivitiesForContext,
+  getPlanListFromText,
+  addRawContext,
+  getActivityListForContext,
+  Context,
+};
