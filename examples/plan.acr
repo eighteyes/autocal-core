@@ -43,12 +43,14 @@ Emoji Support in Cyclic Selection !! ++
 add attribute weight to downstream tasks. rule. if dependent is important, antecedent is important
 in selection code, abstract sequence / sign / steps into state object
 x Option for no random
-dependencies work between contexts
-Support gtgt at line start for linking !!!
+contexts supports links
+Support = at line start for linking !!!
 Support : for explicit split point
-Add in progress to line start
+Support in progress notation (?) to line start
 Check if dependencies work with multiple activities tagged.
-
+Ensure  `+` algo = low availability of `+++` activities >
+Ensure `+++` algo = low avaiability of `+` activities 
+Add escapes on tilde ;)
 
 # Slack #slack !
 Action Handlers #action >> #action-refactor >> #crud
@@ -86,6 +88,8 @@ Slack Interfaces #screens
 = Settings Screen 4h #config
 Slack Modals #modals
 = Edit Raw !! #raw-modal
+= Get all: Step 2 Finish Formatting
+= Link Back / Row Modal  > #raw-modal
 Message Action 2h #action 
 = x n tasks 2h
 = ordered selection 2h
@@ -94,16 +98,18 @@ Message Action 2h #action
 = add context << #crud << #ac >> #tx
 = add activity >> #txt
 = edit activity >> #raw-modal
-Inputs #txt #action
+Input Blocks #txt #action
 = Add Context
+= Add RT Activity, use context:texts
 = Add Activity
+
 Slack AutoCal Gateway Alpha $! #bolt >> #slack-alpha
 CRUD Tasks 4h >> #slack-alpha #crud 
 Divide Userland Storage << #slack-alpha
 Launch Alpha #slack-alpha 2h >>>
 
 # Slack Beta
-Modularize Storage into Distinct Module
+Modularize Storage into Distinct Module autocal-store`
 
 # CLI
 Add act to context 4h << #cmds
@@ -115,6 +121,8 @@ Get task for time window << #sched
 Context == Channels 8h 
 Assignments 8h
 Post Acts as Reminder 4h 
+Add Tutorial Sections to Modal and Home 4h
+Add Tutorial Opt Out in Config
 Launch Beta !$ #slack-beta 4h
 
 # POC - #POC >> #NEXT 

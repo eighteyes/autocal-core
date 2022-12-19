@@ -59,7 +59,8 @@ export function processContext(ctx: Context): Context {
   // cycle through every event in the context
   ctx.raw.split('\n').forEach((ln, i) => {
     const e: Activity = parseLine(ln, ctx);
-    e.id = i.toString();
+    // so we can select by index
+    e.index = i;
     ctx.activities.push(e);
   });
 

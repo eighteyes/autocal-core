@@ -45,9 +45,8 @@ function getContextNames(text: string = readFile(fileName), id: boolean = false)
 
 function getActivitiesForContext(text: string = readFile(fileName), contextId: string): Activity[] {
   let ctxs = parseComplete(text);
-
   return ctxs.filter((c) => {
-    return c.id == contextId;
+    return c.index == parseInt(contextId);
   })[0].activities;
 }
 
