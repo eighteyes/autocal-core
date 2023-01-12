@@ -37,79 +37,60 @@ x make defaults into config object 2h >>
 x Modularize Core Runtime 4h !!!!
 
 # Extra Sparks -
+Support = at line start for linking !! +> 
+Contexts supports links
+Ensure  `+` algo = low availability of `+++` activities >
+Ensure `+++` algo = low avaiability of `+` activities 
 Links/Tags apply from context
 Support url in activity #url-on-content
 Emoji Support in Cyclic Selection !! ++
-add attribute weight to downstream tasks. rule. if dependent is important, antecedent is important
+add attribute weight to downstream tasks. rule. if dependent is important, antecedent is important. impl. add up total impact for all depentencies, then add to dependents. 
 in selection code, abstract sequence / sign / steps into state object
-x Option for no random
-contexts supports links
-Support = at line start for linking !!!
+x Selection Mechanisms, Random, Algo-Driven, Strict Sort
 Support : for explicit split point
+Support +> for context/concurrent +>> for must
 Support in progress notation (?) to line start
 Check if dependencies work with multiple activities tagged.
-Ensure  `+` algo = low availability of `+++` activities >
-Ensure `+++` algo = low avaiability of `+` activities 
+Accept defined tags inline w/ content. "Do #thing now" gets tagged w/ "thing" contenis "do thing now"
 Add escapes on tilde ;)
 
-# Slack #slack !
-Action Handlers #action >> #action-refactor >> #crud
-Text Blocks ! #block << #ctxact
-= x Render Activity
-= x Context Selection
-= Edit Act 8h
-= Delete Act 2h
-Action Blocks ! #block #action
-= Back Button
-= Action Input
-Design Commands / Actions / Messages 4h
-Design Home Screen Interface 2h << #block << #action
-Design User Communication Interface #message 2h
-Activity Selection #block
-Activity Edit #block
-Activity Edit Handler #action
-Context Selection #block
-Context Edit via Input #block
-Context Edit Handler #action
-Home Screen: Activity Show
-Home Screen: Activity Edit
-Home: Render View All
-Get Started Text #block
-Get Started Handler #action
-Implement Add Content Input / Action
-x Get All #action
-Persistance Layer + Adapter SQLLite #db >> #crud
-Move actions into handlers #action-refactor >> #bolt
-Load handlers on start >> #bolt
-Provider for AutoCal 2h #ac > #db
-Slack Interfaces #screens
-= Home, Contexts & Activities #ctxact
-= Help #block
+# Slack #slack-alpha !$
+Home Screen
+= Add Activity List after Context Selection #home >
+= Go to Activity Edit Modal on Select
+= Edit Raw Contexts #advanced
 = Settings Screen 4h #config
-Slack Modals #modals
-= Edit Raw !! #raw-modal
-= Get all: Step 2 Finish Formatting
-= Link Back / Row Modal  > #raw-modal
-Message Action 2h #action 
-= x n tasks 2h
-= ordered selection 2h
-= algo selection 2h < #config
-= n hours to fill << #sched
-= add context << #crud << #ac >> #tx
-= add activity >> #txt
-= edit activity >> #raw-modal
-Input Blocks #txt #action
-= Add Context
-= Add RT Activity, use context:texts
-= Add Activity
+Modal Buttons
+= Link Back
+x CRUD Tasks 4h >> #slack-alpha #crud 
+x Divide Userland Storage << #slack-alpha
+x Upgrade to sqlite3-better
+x Design Commands / Actions / Messages 4h
+x Design Home Screen Interface 2h << #block << #action
+x Activity Selection #block
+x Activity Edit #block
+x Activity Edit Handler #action
+x Context Selection #block
+x Context Edit via Dropdown #block
+x Home Screen: Activity Show
+x Home: Render View All
+x Implement Add Content Input / Action
+x Get All #action
+x Persistance Layer + Adapter SQLLite #db >> #crud
+x Provider for AutoCal 2h #ac > #db
+x Slack Modals #modals
+x = Get all: Step 2 Finish Formatting #modal
+x = Edit Activity Modal #phase3-modal
+x = Edit Raws Multiple #raw-modal
 
-Slack AutoCal Gateway Alpha $! #bolt >> #slack-alpha
-CRUD Tasks 4h >> #slack-alpha #crud 
-Divide Userland Storage << #slack-alpha
-Launch Alpha #slack-alpha 2h >>>
+# Slack #Onboarding << #slack-alpha
+Get Started / Help Screens 
+Syntax Explainer
+Config toggle
 
-# Slack Beta
-Modularize Storage into Distinct Module autocal-store`
+# Slack Beta #slack-beta
+Add Real Time Activity, use context:texts #v2
+Modularize Storage into Distinct Module autocal-store
 
 # CLI
 Add act to context 4h << #cmds

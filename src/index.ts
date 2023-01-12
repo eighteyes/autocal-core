@@ -1,5 +1,5 @@
 import { readFile } from './read';
-import { parseComplete, selectActivitiesUsingWeights } from './models/contextFn';
+import { parseComplete, selectActivitiesUsingWeights, renderContext } from './models/contextFn';
 import { Context } from './models/context';
 import { Activity } from './models/activity';
 import { doSelection } from './selection';
@@ -11,7 +11,7 @@ require('source-map-support').install();
 
 // whether we are running standalone or as a module
 const isLocal = require.main === module;
-const fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/plan.acr';
+let fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/simple.acr';
 
 // make some output from examples
 if (isLocal) {
@@ -27,9 +27,15 @@ if (isLocal) {
   });
 }
 
+// getAll
+
 // default to example
-function select(text: string = readFile(fileName), cfg: object = config) {
-  return doSelection(parseComplete(text));
+function select(text: string = readFile(fileName), count = 1, cfg: object = config) {
+  return doSelection(parseComplete(text), count);
+}
+
+function selectRandom(text: string = readFile(fileName), count = 1, cfg: object = config) {
+  return doSelection(parseComplete(text), count);
 }
 
 function getContextNames(text: string = readFile(fileName), id: boolean = false) {
@@ -43,10 +49,31 @@ function getContextNames(text: string = readFile(fileName), id: boolean = false)
   });
 }
 
-function getActivitiesForContext(text: string = readFile(fileName), contextId: string): Activity[] {
+// exposed / return rendered string from plan string input
+function addActivityToContext(text: string, ctx: number, new_activity: string): string {
+  let ctxs = parseComplete(text);
+  let resp = '';
+  ctxs.forEach((c) => {
+    resp += renderContext(c);
+    if (c.index == ctx) {
+      resp += '\n' + new_activity;
+    }
+  });
+  return resp;
+}
+
+function getActivitiesOnly(plan: string = readFile(fileName)) {
+  let ctxs = parseComplete(plan);
+
+  return ctxs.map((c) => {
+    return c.activities;
+  });
+}
+
+function getActivitiesForContext(text: string = readFile(fileName), contextId: number): Activity[] {
   let ctxs = parseComplete(text);
   return ctxs.filter((c) => {
-    return c.index == parseInt(contextId);
+    return c.index == contextId;
   })[0].activities;
 }
 
@@ -83,16 +110,22 @@ function getPlanListFromText(text: string = readFile(fileName)): string[][] {
 }
 
 export function defaultPlan(): string {
+  console.log('Loading... ', fileName);
+
   return readFile(fileName);
 }
 
 import { addRawContext } from './raw';
 export {
   select,
+  selectRandom,
   getContextNames,
+  getActivitiesOnly,
   getActivitiesForContext,
   getPlanListFromText,
   addRawContext,
   getActivityListForContext,
+  addActivityToContext,
   Context,
+  Activity,
 };

@@ -27,6 +27,9 @@ export interface Activity {
 
   // used for selection in text interfaces
   index?: number;
+
+  // so we can id the ctx from the activity
+  ctxIndex?: number;
 }
 
 export interface ActivityLink {

@@ -8,7 +8,7 @@ import { duration, cyclics } from '../../tests/inputs';
 
 export function parseComplete(input: string): Context[] {
   const ctxs: Context[] = parseTextIntoContexts(input);
-  ctxs.forEach((c) => processContext(c));
+  ctxs.forEach((c, i) => processContext(c, i));
 
   // after we have all contexts, process dependencies
   generateDependencies(ctxs);
@@ -53,8 +53,10 @@ export function parseTextIntoContexts(input: string) {
   return contexts;
 }
 
-export function processContext(ctx: Context): Context {
+export function processContext(ctx: Context, index: number): Context {
   // console.log('Processing', ctx.name);
+  // to reference contexts from activity via number
+  ctx.index = index;
 
   // cycle through every event in the context
   ctx.raw.split('\n').forEach((ln, i) => {
@@ -274,6 +276,7 @@ function findBlockers(ctxs: Context[]): Context[] {
 
 function applyContext(ctx: Context): Context {
   ctx.activities.forEach((act) => {
+    act.ctxIndex = ctx.index;
     act.links = [...act.links, ...ctx.links];
     act.input.attributes.push(...ctx.input.attributes);
     act.input.tags.push(...ctx.input.tags);
@@ -317,7 +320,7 @@ function calculateAttributeWeight(ctx: Context): Context {
 
 export function renderContext(ctx: Context) {
   let acts = ctx.activities.map((a) => {
-    return render(a);
+    return a.input.raw;
   });
   return ctx.input.raw + '\n' + acts.join('');
 }
