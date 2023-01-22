@@ -2,73 +2,78 @@ import { Context } from './models/context';
 import { Activity } from './models/activity';
 import config from './config';
 import { Config } from './types/config';
-import { selectActivitiesUsingWeights } from './models/contextFn';
-import { canBeSelected } from './models/activityFn';
+import { selectActivitiesUsingWeights, getActivitiesForContexts } from './models/contextFn';
+import { canBeSelected, sortActivityByWeight, sortActivityRandom } from './models/activityFn';
 import { logWeights } from './utils';
 
 // run selection process
-export function doSelection(
-  ctxs: Context[],
-  count: number = 1,
-  cfg: Config = config
-) {
+export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = config): Activity[] {
   // selecting from list
   let finalActs: Activity[] = [];
   let sequence = cfg.orderingAlgo.repeat(100);
   // for debugging
   let strengths = [];
 
-  // iterate through selection sequence steps
+  // replace defaults with params
+  cfg = { ...config, ...cfg };
 
-  for (let i = 0; i < count; i++) {
-    console.log('Start: ', sequence.slice(0, 6));
-    let selectedActs: Activity[] = [];
-    let signs = selectSignGroup(ctxs, sequence, cfg);
-
-    //expire non signs
-    let str = selectStrengthGroup(ctxs, sequence, signs.sign, cfg);
-    strengths.push(str.strength);
-
-    // if match, chop off n from sequence
-    if (signs.sign == sequence[0]) {
-      sequence = sequence.slice(Math.abs(parseInt(str.strength)));
+  // random or ordered
+  if (cfg.useAlgorithm === false) {
+    finalActs = getActivitiesForContexts(ctxs);
+    if (cfg.selectionType === 'ordered') {
+      finalActs = sortActivityByWeight(finalActs).slice(0, count);
+    } else if (cfg.selectionType === 'random') {
+      finalActs = sortActivityRandom(finalActs).slice(0, count);
     }
+  } else {
+    // iterate through selection sequence steps
+    for (let i = 0; i < count; i++) {
+      console.log('Start: ', sequence.slice(0, 6));
+      let selectedActs: Activity[] = [];
+      let signs = selectSignGroup(ctxs, sequence, cfg);
 
-    if (str.group) {
-      str.group.forEach((act: Activity) => {
-        act.available = true;
+      //expire non signs
+      let str = selectStrengthGroup(ctxs, sequence, signs.sign, cfg);
+      strengths.push(str.strength);
+
+      // if match, chop off n from sequence
+      if (signs.sign == sequence[0]) {
+        sequence = sequence.slice(Math.abs(parseInt(str.strength)));
+      }
+
+      if (str.group) {
+        str.group.forEach((act: Activity) => {
+          act.available = true;
+        });
+      } else {
+        console.debug('No Activities for ', str.strength);
+        break;
+      }
+
+      ctxs.forEach((c) => {
+        c.activities.forEach((act) => {
+          if (canBeSelected(act)) {
+            selectedActs.push(act);
+          }
+        });
       });
-    } else {
-      console.debug('No Activities for ', str.strength);
-      break;
-    }
 
-    ctxs.forEach((c) => {
-      c.activities.forEach((act) => {
-        if (canBeSelected(act)) {
-          selectedActs.push(act);
-        }
-      });
-    });
+      // console.log('');
+      finalActs.push(...selectActivitiesUsingWeights(selectedActs));
 
-    // console.log('');
-    finalActs.push(...selectActivitiesUsingWeights(selectedActs));
+      if (process.env.NODE_ENV !== 'test') {
+        console.debug(sequence);
+        console.debug('🎲', signs.seed.toFixed(4));
+        logWeights(signs.weights);
+        console.debug('Selected Sign: ', signs.sign);
 
-    if (process.env.NODE_ENV !== 'test') {
-      console.debug(sequence);
-      console.debug('🎲', signs.seed.toFixed(4));
-      logWeights(signs.weights);
-      console.debug('Selected Sign: ', signs.sign);
+        console.debug('🎲', str.seed.toFixed(4));
+        logWeights(str.weights);
+        console.debug('Selected Str:', str.strength);
+        console.log('ST: ', strengths);
 
-      console.debug('🎲', str.seed.toFixed(4));
-      logWeights(str.weights);
-      console.debug('Selected Str:', str.strength);
-      console.log('ST: ', strengths);
-
-      console.debug(
-        'Activities Available',
-        str.group.filter(canBeSelected).length
-      );
+        console.debug('Activities Available', str.group.filter(canBeSelected).length);
+      }
     }
   }
 
@@ -101,8 +106,7 @@ export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
   while (bySign[seqStep] && algo[signSteps] === seqStep) {
     signSteps++;
     // = step weight + multi * signsteps = 10 + i*5
-    let amtToAdd =
-      cfg.cyclicStepWeight + signSteps * cfg.cyclicStepWeightMultiplier;
+    let amtToAdd = cfg.cyclicStepWeight + signSteps * cfg.cyclicStepWeightMultiplier;
     values[seqStep] += amtToAdd;
     // remove this amount from others
     // for (const k in values) {
@@ -155,12 +159,7 @@ export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
 }
 
 // step 2 in selection, select inside sign
-export function selectStrengthGroup(
-  ctxs: Context[],
-  algo: string,
-  selectedSign: string,
-  cfg: Config
-) {
+export function selectStrengthGroup(ctxs: Context[], algo: string, selectedSign: string, cfg: Config) {
   //   let byStrength: { [index: string]: Activity[] };
   let { byStrength } = groupActivityByCyclic(ctxs);
   // mark activity as unavailable
@@ -178,8 +177,7 @@ export function selectStrengthGroup(
     while (algo[signSteps] === selectedSign) {
       signSteps++;
       // assign values as we go
-      let val =
-        cfg.baseStrengthWeight + signSteps * cfg.strengthSelectionMultiplier;
+      let val = cfg.baseStrengthWeight + signSteps * cfg.strengthSelectionMultiplier;
       // --- or +++ or ***
       algoKey = seqSign.repeat(signSteps);
       values[algoKey] = val;
@@ -247,8 +245,7 @@ function convertAlgoKeyToStrength(key: string): string {
   if (key.indexOf('0') !== -1) {
     strengthTarget = '0';
   } else {
-    const sign =
-      key.indexOf('-') !== -1 ? '-' : key.indexOf('+') !== -1 ? '+' : '';
+    const sign = key.indexOf('-') !== -1 ? '-' : key.indexOf('+') !== -1 ? '+' : '';
     strengthTarget = sign + key.length;
   }
   return strengthTarget;

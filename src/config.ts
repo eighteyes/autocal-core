@@ -27,14 +27,19 @@ let config: Config = {
     d: 'days',
     w: 'weeks',
   },
+  timeStep: 5,
+
+  // use algorithm at all
+  useAlgorithm: true,
+
+  // alternative to use if `useAlgo` above is false
+  selectionType: 'ordered',
 
   // more of a sequence
   orderingAlgo: '-+',
   integerWeightFactor: 4,
   startWeight: 0,
   positionWeight: 20,
-
-  timeStep: 5,
 
   algoStrength: 100,
   maxCyclicWalk: 5,
@@ -51,10 +56,7 @@ let regex = {
   duration: /\b\d*[mhdw]\b/g,
   content: /^([A-Za-z]\w+\s)$/,
   tag: /#([.\w-]+\S)/g,
-  attributes: new RegExp(
-    '\\B[' + config.attributeList.map((e) => e.symbol) + ']+',
-    'g'
-  ),
+  attributes: new RegExp('\\B[' + config.attributeList.map((e) => e.symbol) + ']+', 'g'),
   lettersOnly: /[^\w]/g,
   vowels: /[aeiou]/g,
   dependencies: /[<>]{1,}/g,

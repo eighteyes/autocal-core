@@ -1,5 +1,6 @@
 export interface Config {
   regex: ConfigRegex;
+  useAlgorithm: boolean;
   applyPositionWeight: boolean;
   randomSelection: boolean;
   attributeList: Attribute[];
@@ -37,6 +38,8 @@ export interface Config {
   // when selecting cyclic strength distribution, how much to favor bigger strengths
   // <1: favor smaller, >1: more, 0: equal distribution between strengths
   strengthSelectionMultiplier: number;
+
+  selectionType: string;
 }
 
 interface ConfigRegex {

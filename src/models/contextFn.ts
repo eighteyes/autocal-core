@@ -2,9 +2,10 @@ import config from '../config';
 import { Context } from './context';
 import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink, ActivityInput } from './activity';
-import { render, canBeSelected } from './activityFn';
+import { render, canBeSelected, sortActivityByWeight } from './activityFn';
 import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
 import { duration, cyclics } from '../../tests/inputs';
+import { getActivitiesForContext } from '../../index';
 
 export function parseComplete(input: string): Context[] {
   const ctxs: Context[] = parseTextIntoContexts(input);
@@ -51,6 +52,15 @@ export function parseTextIntoContexts(input: string) {
   });
 
   return contexts;
+}
+
+// recurse all, return only acts
+export function getActivitiesForContexts(ctxs: Context[]): Activity[] {
+  let acts: Activity[] = [];
+  for (const c of ctxs) {
+    acts.push(...c.activities);
+  }
+  return acts;
 }
 
 export function processContext(ctx: Context, index: number): Context {
@@ -187,15 +197,6 @@ export function generateWeights(ctx: Context) {
   });
 }
 
-export function sortActivityByWeight(acts: Activity[]) {
-  // inplace sort
-  return acts.sort((a: Activity, b: Activity) => {
-    if (a.weight < b.weight) return 1;
-    if (a.weight > b.weight) return -1;
-    if (a.weight === b.weight) return 0;
-  });
-}
-
 export function findActivitiesByTags(ctxs: Context[], tags: string[]): Activity[] {
   let acts: Activity[] = [];
 
@@ -322,5 +323,5 @@ export function renderContext(ctx: Context) {
   let acts = ctx.activities.map((a) => {
     return a.input.raw;
   });
-  return ctx.input.raw + '\n' + acts.join('');
+  return ctx.input.raw + '\n' + acts.join('\n') + '\n';
 }

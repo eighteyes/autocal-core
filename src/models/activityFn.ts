@@ -1,6 +1,24 @@
 import { Activity, ActivityLink } from './activity';
 import { Context } from './context';
 
+export function sortActivityByWeight(acts: Activity[]) {
+  // inplace sort
+  return acts.sort((a: Activity, b: Activity) => {
+    if (a.weight < b.weight) return 1;
+    if (a.weight > b.weight) return -1;
+    if (a.weight === b.weight) return 0;
+  });
+}
+
+export function sortActivityRandom(acts: Activity[]) {
+  return acts.sort((a: Activity, b: Activity) => {
+    const r = Math.random();
+    if (r < 0.5) return 1;
+    if (r > 0.5) return -1;
+    if (r === 0.5) return 0;
+  });
+}
+
 export function addDependentActivity(
   act: Activity,
   dep: Activity,
