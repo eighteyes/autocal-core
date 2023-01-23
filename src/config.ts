@@ -1,7 +1,7 @@
 import { Config } from './types/config';
 
 let config: Config = {
-  applyPositionWeight: true,
+  applyPositionWeight: false,
 
   // 0 tasks must be explicitly in the algo if false - doesn't work
   randomSelection: true,

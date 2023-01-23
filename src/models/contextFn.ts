@@ -6,6 +6,7 @@ import { render, canBeSelected, sortActivityByWeight } from './activityFn';
 import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
 import { duration, cyclics } from '../../tests/inputs';
 import { getActivitiesForContext } from '../../index';
+import { Attribute } from '../types/attribute';
 
 export function parseComplete(input: string): Context[] {
   const ctxs: Context[] = parseTextIntoContexts(input);

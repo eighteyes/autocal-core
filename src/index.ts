@@ -51,34 +51,6 @@ function selectRandom(text: string = readFile(fileName), count = 1, cfg: Config 
   return doSelection(parseComplete(text), count, cfg);
 }
 
-// return only context contents
-function getContextNames(text: string = readFile(fileName), id: boolean = false): (string | string[])[] {
-  let ctxs = parseComplete(text);
-
-  const r = ctxs.map((c) => {
-    if (id) {
-      return [c.input.content, c.id];
-    }
-    return c.input.content;
-  });
-
-  return r;
-}
-
-// exposed / return rendered string from plan string input
-function addActivityToContext(text: string, ctx: number, new_activity: string): string {
-  let ctxs = parseComplete(text);
-  let resp = '';
-  ctxs.forEach((c) => {
-    resp += renderContext(c);
-    if (c.index == ctx) {
-      resp += new_activity + '\n';
-    }
-    resp += '\n';
-  });
-  return resp;
-}
-
 // get all the Activity objects
 function getActivitiesOnly(plan: string = readFile(fileName)) {
   let ctxs = parseComplete(plan);
@@ -96,7 +68,45 @@ function getActivitiesForContext(text: string = readFile(fileName), contextId: n
   })[0].activities;
 }
 
-// return act list for a context
+//// TEXT PROCESSING STARTS
+
+// lookup names by id
+// return only context contents, or content with index for lookup on selection
+function getContextNames(text: string = readFile(fileName), index: boolean = false): (string | (string | number)[])[] {
+  let ctxs = parseComplete(text);
+
+  const r = ctxs.map((c) => {
+    if (index) {
+      return [c.input.content, c.index];
+    }
+    return c.input.content;
+  });
+
+  return r;
+}
+
+function lookupContextTextFromIndex(text: string = readFile(fileName), index: number): string {
+  // multiline between ctx
+  const ctxs = text.split('\n\n');
+
+  return ctxs[index] || '';
+}
+
+// exposed / return rendered string from plan string input
+function addActivityToContext(text: string, ctx: number, new_activity: string): string {
+  let ctxs = parseComplete(text);
+  let resp = '';
+  ctxs.forEach((c) => {
+    resp += renderContext(c);
+    if (c.index == ctx) {
+      resp += new_activity + '\n';
+    }
+    resp += '\n';
+  });
+  return resp;
+}
+
+// return act list for a context - useful for menus
 function getActivityListForContext(text: string = readFile(fileName), contextId: string): string[] {
   let ctxs: Context[] = parseComplete(text);
 
@@ -130,6 +140,8 @@ function getPlanListFromText(text: string = readFile(fileName)): string[][] {
   return out;
 }
 
+// Text Processing End
+
 export function defaultPlan(): string {
   console.log('Loading... ', fileName);
 
@@ -139,6 +151,7 @@ export function defaultPlan(): string {
 import { addRawContext } from './raw';
 import { Config } from './types/config';
 export {
+  lookupContextTextFromIndex,
   select,
   selectRandom,
   selectAlgo,

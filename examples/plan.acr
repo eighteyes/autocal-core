@@ -53,6 +53,7 @@ Support in progress notation (?) to line start
 Check if dependencies work with multiple activities tagged.
 Accept defined tags inline w/ content. "Do #thing now" gets tagged w/ "thing" contenis "do thing now"
 Add escapes on tilde ;)
+Remove cyclic indicators from content
 
 # Slack #slack-alpha !$
 Home Screen

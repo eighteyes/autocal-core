@@ -1,3 +1,5 @@
+import { Attribute } from './attribute';
+
 export interface Config {
   regex: ConfigRegex;
   useAlgorithm: boolean;
