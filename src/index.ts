@@ -68,78 +68,6 @@ function getActivitiesForContext(text: string = readFile(fileName), contextId: n
   })[0].activities;
 }
 
-//// TEXT PROCESSING STARTS
-
-// lookup names by id
-// return only context contents, or content with index for lookup on selection
-function getContextNames(text: string = readFile(fileName), index: boolean = false): (string | (string | number)[])[] {
-  let ctxs = parseComplete(text);
-
-  const r = ctxs.map((c) => {
-    if (index) {
-      return [c.input.content, c.index];
-    }
-    return c.input.content;
-  });
-
-  return r;
-}
-
-function lookupContextTextFromIndex(text: string = readFile(fileName), index: number): string {
-  // multiline between ctx
-  const ctxs = text.split('\n\n');
-
-  return ctxs[index] || '';
-}
-
-// exposed / return rendered string from plan string input
-function addActivityToContext(text: string, ctx: number, new_activity: string): string {
-  let ctxs = parseComplete(text);
-  let resp = '';
-  ctxs.forEach((c) => {
-    resp += renderContext(c);
-    if (c.index == ctx) {
-      resp += new_activity + '\n';
-    }
-    resp += '\n';
-  });
-  return resp;
-}
-
-// return act list for a context - useful for menus
-function getActivityListForContext(text: string = readFile(fileName), contextId: string): string[] {
-  let ctxs: Context[] = parseComplete(text);
-
-  let output: string[] = ctxs.map((c: Context) => {
-    if (c.index == parseInt(contextId)) {
-      return c.activities.map((a: Activity) => {
-        return a.input.content;
-      });
-    }
-  })[0];
-
-  return output;
-}
-
-// return nested array of context content
-function getPlanListFromText(text: string = readFile(fileName)): string[][] {
-  let ctxs = parseComplete(text);
-
-  let out: string[][] = [];
-
-  ctxs.forEach((ctx) => {
-    const a: string[] = [
-      ctx.input.content,
-      ...ctx.activities.map((act) => {
-        return act.input.content;
-      }),
-    ];
-    out.push(a);
-  });
-
-  return out;
-}
-
 // Text Processing End
 
 export function defaultPlan(): string {
@@ -148,6 +76,13 @@ export function defaultPlan(): string {
   return readFile(fileName);
 }
 
+import {
+  lookupContextTextFromIndex,
+  getContextNames,
+  getPlanListFromText,
+  getActivityListForContext,
+  addActivityToContext,
+} from './text';
 import { addRawContext } from './raw';
 import { Config } from './types/config';
 export {

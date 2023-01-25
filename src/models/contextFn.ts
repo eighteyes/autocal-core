@@ -71,6 +71,10 @@ export function processContext(ctx: Context, index: number): Context {
 
   // cycle through every event in the context
   ctx.raw.split('\n').forEach((ln, i) => {
+    // in case of empty context
+    if (ln.length === 0) {
+      return;
+    }
     const e: Activity = parseLine(ln, ctx);
     // so we can select by index
     e.index = i;
@@ -324,5 +328,6 @@ export function renderContext(ctx: Context) {
   let acts = ctx.activities.map((a) => {
     return a.input.raw;
   });
-  return ctx.input.raw + '\n' + acts.join('\n') + '\n';
+  let actString = acts.length > 0 ? acts.join('\n') + '\n' : '';
+  return ctx.input.raw + '\n' + actString;
 }

@@ -57,23 +57,16 @@ Remove cyclic indicators from content
 
 # Slack #slack-alpha !$
 Home Screen
-x = Add Activity List after Context Selection >
-x = Go to Activity Edit Modal on Select
+= x Add Activity List after Context Selection >
+= x Go to Activity Edit Modal on Select
 = Edit Context List >>
 = Context Edit Modal
 = Context Raw Edit
 = Settings Screen 4h #config
 Modal Buttons
 = Link Back
-Message Reactions
-= Add Counter
-= Remove
-= Complete
-= Accept
-= Capture Reactions
-= Update
 Messages
-= Clear all
+= x Clear all
 x CRUD Tasks 4h >> #slack-alpha #crud 
 x Divide Userland Storage << #slack-alpha
 x Upgrade to sqlite3-better
@@ -110,6 +103,13 @@ Move Activity between Context #trello
 Archive
 
 # Slack Beta << #slack
+Message Reactions
+= Add Counter
+= Remove
+= Complete
+= Accept
+= Capture Reactions
+= Update
 Get task for time window << #sched
 Context == Channels 8h
 = Design Workflow

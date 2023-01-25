@@ -5,6 +5,7 @@
   "main": "dist/src/index.js",
   "scripts": {
     "test": "jest --watch --silent",
+    "testlog": "jest --watch",
     "debugtest": "jest --watch --detect-open-handles",
     "start": "tsc-watch --onSuccess \"node dist/src/.\""
   },
