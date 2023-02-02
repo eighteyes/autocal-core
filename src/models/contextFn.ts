@@ -72,7 +72,7 @@ export function processContext(ctx: Context, index: number): Context {
   // cycle through every event in the context
   ctx.raw.split('\n').forEach((ln, i) => {
     // in case of empty context
-    if (ln.length === 0) {
+    if (ln.length === 0 || ln == '\n') {
       return;
     }
     const e: Activity = parseLine(ln, ctx);

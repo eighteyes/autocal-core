@@ -63,9 +63,16 @@ function getActivitiesOnly(plan: string = readFile(fileName)) {
 // pull Activity objects for a context
 function getActivitiesForContext(text: string = readFile(fileName), contextId: number): Activity[] {
   let ctxs = parseComplete(text);
-  return ctxs.filter((c) => {
+  let matchingCtx = ctxs.filter((c) => {
     return c.index == contextId;
-  })[0].activities;
+  })[0];
+
+  if (matchingCtx) {
+    return matchingCtx.activities;
+  } else {
+    // in case of empty context
+    return [];
+  }
 }
 
 // Text Processing End
