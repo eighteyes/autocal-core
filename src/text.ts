@@ -20,10 +20,7 @@ let fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/
  * @param opts.filterVal = what is the id or name?
  * @returns
  */
-export function processGet(
-  plan: string,
-  opts?: ProcessOptions
-): Activity | Activity[] | Context[] | (string | string[])[] | number {
+export function processGet(plan: string, opts?: ProcessOptions) {
   let ctxs: Context[] = parseComplete(plan);
 
   let resp, values;
@@ -56,6 +53,10 @@ export function processGet(
     if (Array.isArray(values[0])) {
       values = values.flat();
     }
+  } else if (opts.format === 'array2d') {
+    if (!Array.isArray(values[0])) {
+      throw new Error('Invalid Process');
+    }
   }
 
   // filter
@@ -68,6 +69,8 @@ export function processGet(
       }
       return v.input.content;
     });
+  } else {
+    resp = values;
   }
 
   return resp;
