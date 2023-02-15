@@ -4,6 +4,8 @@ import { Context } from './models/context';
 import { Activity } from './models/activity';
 import { doSelection } from './selection';
 
+import { processGet } from './text';
+
 import config from '../src/config';
 
 // point to TS in errors
@@ -93,6 +95,7 @@ import {
 import { addRawContext } from './raw';
 import { Config } from './types/config';
 export {
+  processGet as get,
   lookupContextTextFromIndex,
   select,
   selectRandom,

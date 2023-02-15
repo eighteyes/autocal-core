@@ -37,6 +37,11 @@ export const contexts = {
   basic: '# Context\nDo Thing !',
   long: ctx + Array(100).fill(makeTestRef(), 0, 100).join('\n'),
   actCtx: ctxa + ['One', 'Two', 'Three'].join('\n'),
+  many: [ctx, ctxa, ctxm, ctxp]
+    .map((c) => {
+      return c + ['One', 'Two', 'Three'].join('\n') + '\n';
+    })
+    .join('\n'),
 };
 
 export const deps = {

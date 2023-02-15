@@ -4,10 +4,74 @@ import { Activity } from './models/activity';
 import { Context } from './models/context';
 import { parseComplete, renderContext } from './models/contextFn';
 import { readFile } from './read';
+import { ProcessOptions } from './types/process';
 
 // whether we are running standalone or as a module
 const isLocal = require.main === module;
 let fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/simple.acr';
+
+/*
+ * processGet is exposed externally to the core module
+ * @param plan = raw text of plan
+ * @param opts.type = what entity to lookup
+ * @param opts.lookup = what information to return
+ * @param opts.format = how to format the return information
+ * @param opts.filter = what to lookup on, id or name
+ * @param opts.filterVal = what is the id or name?
+ * @returns
+ */
+export function processGet(
+  plan: string,
+  opts?: ProcessOptions
+): Activity | Activity[] | Context[] | (string | string[])[] | number {
+  let ctxs: Context[] = parseComplete(plan);
+
+  let resp, values;
+
+  // if no opts passed, return context objects
+  if (!opts) {
+    return ctxs;
+  }
+
+  // extract
+  if (opts.type === 'context') {
+    values = ctxs;
+  } else if (opts?.type === 'activity') {
+    if (opts.filter === 'ctx-index') {
+      ctxs = ctxs.filter((v) => {
+        return v.index === opts.filterVal;
+      });
+    }
+    values = ctxs.map((c) => {
+      return c.activities;
+    });
+  }
+
+  // transform
+  if (opts?.format == 'array') {
+    if (!Array.isArray(values)) {
+      throw new Error('Invalid Process');
+    }
+    // flatten if nested
+    if (Array.isArray(values[0])) {
+      values = values.flat();
+    }
+  }
+
+  // filter
+  if (opts.lookup === 'display') {
+    resp = values.map((v) => {
+      if (Array.isArray(v)) {
+        return v.map((v1) => {
+          return v1.input.content;
+        });
+      }
+      return v.input.content;
+    });
+  }
+
+  return resp;
+}
 
 // lookup names by id
 // return only context contents, or content with index for lookup on selection
