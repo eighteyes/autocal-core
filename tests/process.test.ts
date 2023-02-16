@@ -1,4 +1,5 @@
 import { Activity } from '../src/models/activity';
+import { Context } from '../src/models/context';
 import { processGet } from '../src/text';
 import { ProcessOptions } from '../src/types/process';
 import * as input from './inputs';
@@ -67,5 +68,28 @@ test('Can get all activities', () => {
   expect(r).toHaveLength(12);
   expect(r[0].input.content).toBe('One');
 });
-test.todo('Can get nested array of contexts and activities, plan list');
-test.todo('Can lookup context from id');
+
+test('Can get nested array of contexts and activities, plan list', () => {
+  const opts: ProcessOptions = {
+    type: 'plan',
+    format: 'array2d',
+    lookup: 'display',
+  };
+
+  const r = processGet(input.contexts.many, opts) as Activity[][];
+  expect(r).toHaveLength(4);
+  expect(r[0][1]).toBe('One');
+});
+
+test('Can lookup context from id', () => {
+  const opts: ProcessOptions = {
+    type: 'context',
+    format: 'object',
+    filter: 'id',
+    filterVal: 1,
+  };
+
+  const r = processGet(input.contexts.many, opts) as Context;
+  expect(r.activities).toHaveLength(3);
+  expect(r.name).toBe('Context');
+});

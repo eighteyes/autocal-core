@@ -42,6 +42,14 @@ export function processGet(plan: string, opts?: ProcessOptions) {
     values = ctxs.map((c) => {
       return c.activities;
     });
+  } else if (opts.type === 'plan') {
+    // build a plan list
+    values = [] as string[];
+
+    ctxs.forEach((ctx) => {
+      const a: object[] = [ctx, ...ctx.activities];
+      values.push(a);
+    });
   }
 
   // transform
@@ -57,18 +65,35 @@ export function processGet(plan: string, opts?: ProcessOptions) {
     if (!Array.isArray(values[0])) {
       throw new Error('Invalid Process');
     }
+  } else if (opts.format === 'object') {
+    if (Array.isArray(values)) {
+      values = values[0];
+    }
   }
 
   // filter
   if (opts.lookup === 'display') {
-    resp = values.map((v) => {
-      if (Array.isArray(v)) {
-        return v.map((v1) => {
-          return v1.input.content;
-        });
+    if (Array.isArray(values)) {
+      resp = values.map((v) => {
+        if (Array.isArray(v)) {
+          return v.map((v1) => {
+            return v1.input.content;
+          });
+        }
+        if (typeof v == 'string') {
+          return v;
+        } else {
+          return v.input.content;
+        }
+      });
+    } else {
+      if (typeof values == 'string') {
+        resp = values;
+      } else {
+        // if it's an object
+        resp = values.input.content;
       }
-      return v.input.content;
-    });
+    }
   } else {
     resp = values;
   }
