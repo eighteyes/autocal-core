@@ -120,6 +120,27 @@ describe('mutate - text processing', () => {
     let r = parseComplete(plan);
     expect(r).toHaveLength(5);
   });
-  test.todo('can remove an activity from a context');
-  test.todo('can remove a context');
+  test('can remove an activity from a context', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'activity',
+      op: 'remove',
+      targetContextIndex: 1,
+      targetActivityIndex: 1,
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r[1].activities).toHaveLength(2);
+  });
+  test('can remove a context', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'context',
+      op: 'remove',
+      targetContextIndex: 1,
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r).toHaveLength(3);
+  });
 });

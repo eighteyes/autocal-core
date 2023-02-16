@@ -131,8 +131,13 @@ export function processMutate(plan: string, opts: ProcessMutateOptions) {
       const addCtx = parseTextIntoContexts(opts.value);
       ctxs.push(...addCtx);
     }
+  } else if (opts.op == 'remove') {
+    if (opts.type === 'activity') {
+      ctxs[opts.targetContextIndex].activities.splice(opts.targetActivityIndex, 1);
+    } else if (opts.type === 'context') {
+      ctxs.splice(opts.targetContextIndex, 1);
+    }
   }
-
   resp = renderPlan(ctxs);
   return resp;
 }
