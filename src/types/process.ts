@@ -1,9 +1,17 @@
-export interface ProcessOptions {
+export interface ProcessOptionsBase {
   type: 'context' | 'activity' | 'plan';
-  format: 'object' | 'array' | 'array2d' | 'string' | 'number' | 'planlist';
+}
+
+export interface ProcessGetOptions extends ProcessOptionsBase {
+  format?: 'object' | 'array' | 'array2d' | 'string' | 'number' | 'planlist';
   filter?: 'index' | 'ctx-index';
   filterVal?: string | number;
   lookup?: string;
-  target?: 'index' | 'name';
-  targetVal?: number;
+}
+
+export interface ProcessMutateOptions extends ProcessOptionsBase {
+  targetContextIndex?: number;
+  targetActivityIndex?: number;
+  op: 'add' | 'remove' | 'replace';
+  value: string;
 }

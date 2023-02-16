@@ -2,9 +2,9 @@
 
 import { Activity } from './models/activity';
 import { Context } from './models/context';
-import { parseComplete, renderContext } from './models/contextFn';
+import { parseComplete, parseTextIntoContexts, renderContext } from './models/contextFn';
 import { readFile } from './read';
-import { ProcessOptions } from './types/process';
+import { ProcessGetOptions, ProcessMutateOptions } from './types/process';
 
 // whether we are running standalone or as a module
 const isLocal = require.main === module;
@@ -20,7 +20,7 @@ let fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/
  * @param opts.filterVal = what is the id or name?
  * @returns
  */
-export function processGet(plan: string, opts?: ProcessOptions) {
+export function processGet(plan: string, opts?: ProcessGetOptions) {
   let ctxs: Context[] = parseComplete(plan);
 
   let resp, values;
@@ -118,16 +118,18 @@ export function processGet(plan: string, opts?: ProcessOptions) {
  * value: string
  * output: planlist
  */
-export function processMutate(plan: string, opts: ProcessOptions) {
+export function processMutate(plan: string, opts: ProcessMutateOptions) {
   let ctxs: Context[] = parseComplete(plan);
 
   let values, resp;
 
-  if (opts.target === 'index') {
+  if (opts.op == 'add') {
     if (opts.type == 'context') {
-      values = ctxs.filter((c: Context) => {
-        return (c.index = opts.targetVal);
-      })[0];
+      if (opts.value[0] !== '#') {
+        opts.value = '# ' + opts.value;
+      }
+      const addCtx = parseTextIntoContexts(opts.value);
+      ctxs.push(...addCtx);
     }
   }
 

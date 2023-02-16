@@ -1,7 +1,8 @@
 import { Activity } from '../src/models/activity';
 import { Context } from '../src/models/context';
-import { processGet } from '../src/text';
-import { ProcessOptions } from '../src/types/process';
+import { parseComplete } from '../src/models/contextFn';
+import { processGet, processMutate } from '../src/text';
+import { ProcessGetOptions, ProcessMutateOptions } from '../src/types/process';
 import * as input from './inputs';
 
 describe('get - text processing', () => {
@@ -11,7 +12,7 @@ describe('get - text processing', () => {
   });
 
   test('Can get context names', () => {
-    const opts: ProcessOptions = {
+    const opts: ProcessGetOptions = {
       type: 'context',
       format: 'array',
       lookup: 'display',
@@ -22,7 +23,7 @@ describe('get - text processing', () => {
   });
 
   test('Can lookup activity string array for a context id', () => {
-    const opts: ProcessOptions = {
+    const opts: ProcessGetOptions = {
       type: 'activity',
       format: 'array',
       lookup: 'display',
@@ -35,7 +36,7 @@ describe('get - text processing', () => {
   });
 
   test('Can lookup activity object array for a context id', () => {
-    const opts: ProcessOptions = {
+    const opts: ProcessGetOptions = {
       type: 'activity',
       format: 'array',
       filter: 'ctx-index',
@@ -48,7 +49,7 @@ describe('get - text processing', () => {
   });
 
   test('Can get activity names in array', () => {
-    const opts: ProcessOptions = {
+    const opts: ProcessGetOptions = {
       type: 'activity',
       format: 'array2d',
       lookup: 'display',
@@ -60,7 +61,7 @@ describe('get - text processing', () => {
   });
 
   test('Can get all activities', () => {
-    const opts: ProcessOptions = {
+    const opts: ProcessGetOptions = {
       type: 'activity',
       format: 'array',
     };
@@ -71,7 +72,7 @@ describe('get - text processing', () => {
   });
 
   test('Can get nested array of contexts and activities, plan list', () => {
-    const opts: ProcessOptions = {
+    const opts: ProcessGetOptions = {
       type: 'plan',
       format: 'array2d',
       lookup: 'display',
@@ -83,7 +84,7 @@ describe('get - text processing', () => {
   });
 
   test('Can lookup context from id', () => {
-    const opts: ProcessOptions = {
+    const opts: ProcessGetOptions = {
       type: 'context',
       format: 'object',
       filter: 'index',
@@ -95,4 +96,30 @@ describe('get - text processing', () => {
   });
 });
 
-describe('mutate - text processing', () => {});
+describe('mutate - text processing', () => {
+  test('can add an empty context', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'context',
+      op: 'add',
+      value: 'test context',
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r).toHaveLength(5);
+  });
+  test('can add an activity to a context', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'context',
+      op: 'add',
+      targetContextIndex: 1,
+      value: 'test context',
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r).toHaveLength(5);
+  });
+  test.todo('can remove an activity from a context');
+  test.todo('can remove a context');
+});

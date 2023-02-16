@@ -19,6 +19,7 @@ export function parseComplete(input: string): Context[] {
   return ctxs;
 }
 
+// move into text
 export function parseTextIntoContexts(input: string) {
   let contextraws: string[] = [];
   let contexts: Context[] = [];
