@@ -33,6 +33,11 @@ export function processGet(plan: string, opts?: ProcessOptions) {
   // extract
   if (opts.type === 'context') {
     values = ctxs;
+    if (opts.filter === 'index') {
+      values = ctxs.filter((v) => {
+        return v.index === opts.filterVal;
+      });
+    }
   } else if (opts?.type === 'activity') {
     if (opts.filter === 'ctx-index') {
       ctxs = ctxs.filter((v) => {
@@ -99,6 +104,39 @@ export function processGet(plan: string, opts?: ProcessOptions) {
   }
 
   return resp;
+}
+
+/*
+*
+// mutate
+/**
+ * input: planlist
+ * type: context|activity|plan
+ * target: index, name
+ * targetVal: number
+ * op: add, remove, reindex, replace
+ * value: string
+ * output: planlist
+ */
+export function processMutate(plan: string, opts: ProcessOptions) {
+  let ctxs: Context[] = parseComplete(plan);
+
+  let values, resp;
+
+  if (opts.target === 'index') {
+    if (opts.type == 'context') {
+      values = ctxs.filter((c: Context) => {
+        return (c.index = opts.targetVal);
+      })[0];
+    }
+  }
+
+  resp = renderPlan(ctxs);
+  return resp;
+}
+
+export function renderPlan(ctxs: Context[]) {
+  return ctxs.map(renderContext).join('\n');
 }
 
 // lookup names by id
