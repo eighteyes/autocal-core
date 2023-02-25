@@ -11,14 +11,15 @@ const isLocal = require.main === module;
 let fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/simple.acr';
 
 /*
- * processGet is exposed externally to the core module
+ * processGet is exposed externally from the core module. within is a variety of collection options.
+ * note, not all possible permutations are implemented yet, just the ones we need. surely this will undergo revision.
  * @param plan = raw text of plan
  * @param opts.type = what entity to lookup
  * @param opts.lookup = what information to return
  * @param opts.format = how to format the return information
  * @param opts.filter = what to lookup on, id or name
  * @param opts.filterVal = what is the id or name?
- * @returns
+ * @returns ProcessGetOutput : having trouble with TS for this one
  */
 export function processGet(plan: string, opts?: ProcessGetOptions) {
   let ctxs: Context[] = parseComplete(plan);
@@ -110,6 +111,7 @@ export function processGet(plan: string, opts?: ProcessGetOptions) {
 *
 // mutate
 /**
+ * Return a processed plan. Centralizing this function here. 
  * input: planlist
  * type: context|activity|plan
  * target: index, name
