@@ -1,7 +1,7 @@
 import config from '../config';
-import { Context } from './context';
+import { Context } from '../types/context';
 import { generateDependencies } from './dependencies';
-import { Activity, ActivityLink, ActivityInput } from './activity';
+import { Activity, ActivityLink, ActivityInput } from '../types/activity';
 import { render, canBeSelected, sortActivityByWeight } from './activityFn';
 import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
 import { duration, cyclics } from '../../tests/inputs';

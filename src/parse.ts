@@ -1,5 +1,5 @@
 import config from './config';
-import { ActivityLink } from './models/activity';
+import { ActivityLink } from './types/activity';
 
 export function parseAttributes(ln: string) {
   let integerWeight = 0;
@@ -49,10 +49,7 @@ export function parseDependencies(ln: string) {
         // where is the tag in the string
         const depTagIndex = ln.indexOf('#', depIndex);
         // find end of tag, OR set index to end of string
-        const endTagIndex =
-          ln.indexOf(' ', depIndex + 3) !== -1
-            ? ln.indexOf(' ', depIndex + 2 + d.length)
-            : ln.length;
+        const endTagIndex = ln.indexOf(' ', depIndex + 3) !== -1 ? ln.indexOf(' ', depIndex + 2 + d.length) : ln.length;
         const tag = ln.slice(depTagIndex + 1, endTagIndex);
 
         let linkObj: ActivityLink = {

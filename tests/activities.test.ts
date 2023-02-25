@@ -1,6 +1,6 @@
 import { parseLine } from '../src/models/contextFn';
 import { content, deps } from './inputs';
-import { Activity } from '../src/models/activity';
+import { Activity } from '../src/types/activity';
 import { getDependencyTags, render } from '../src/models/activityFn';
 
 test('Can split content', () => {

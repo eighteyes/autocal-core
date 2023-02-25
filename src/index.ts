@@ -1,10 +1,10 @@
 import { readFile } from './read';
 import { parseComplete, selectActivitiesUsingWeights, renderContext } from './models/contextFn';
-import { Context } from './models/context';
-import { Activity } from './models/activity';
+import { Context } from './types/context';
+import { Activity } from './types/activity';
 import { doSelection } from './selection';
 
-import { processGet } from './text';
+import { processGet, processMutate } from './text';
 
 import config from '../src/config';
 
@@ -96,6 +96,7 @@ import { addRawContext } from './raw';
 import { Config } from './types/config';
 export {
   processGet as get,
+  processMutate as set,
   lookupContextTextFromIndex,
   select,
   selectRandom,

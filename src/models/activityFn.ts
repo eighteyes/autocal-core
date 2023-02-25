@@ -1,5 +1,7 @@
-import { Activity, ActivityLink } from './activity';
-import { Context } from './context';
+import { Activity, ActivityLink } from '../types/activity';
+import { Context } from '../types/context';
+
+/* Functions to apply to model objects */
 
 export function sortActivityByWeight(acts: Activity[]) {
   // inplace sort
@@ -59,10 +61,12 @@ export function getDependencyTags(act: Activity): string[] {
     .flat();
 }
 
+// Used during selection
 export function canBeSelected(act: Activity): boolean {
   return !act.done && !act.blocked && !act.selected && act.available;
 }
 
+// Canonical activity rendering
 export function render(act: Activity): string {
   return (
     [

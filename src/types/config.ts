@@ -9,7 +9,7 @@ export interface Config {
   cyclicList: Attribute[];
   times: object;
 
-  // sequence of cyclic selection
+  // sequence of pattern selection
   orderingAlgo: string;
 
   // adds granularity to weights, 10^n

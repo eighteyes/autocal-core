@@ -1,14 +1,18 @@
-import { Context } from './context';
+import { Context } from '../types/context';
 import { findActivitiesByTags } from './contextFn';
 import { addDependentActivity, getDependencyTags } from './activityFn';
-import { Activity, ActivityLink } from './activity';
+import { Activity, ActivityLink } from '../types/activity';
 import { makeTestRef } from '../../tests/utils';
 
+/** Processes a context to add dependency objects to contained activities
+ * Dependencies are provided via following tags and implicitly. This function deals with
+ * downstream/upstream dependencies which are targeted. The original activity has it's dependency generated on parse.
+ */
 export function generateDependencies(ctxs: Context[]): Context[] {
   ctxs.forEach((ctx) => {
     // cycle through activities for this context
     ctx.activities.forEach((act, i) => {
-      // start here, tag links hasn't been hydrated with refs yet
+      // start here, tagged links were supplied earlier and have not been supplied with refs yet
       if (act.links.length !== 0) {
         // dep activities for all the linked tags need to backlink
         act.links.forEach((link: ActivityLink) => {
@@ -17,13 +21,10 @@ export function generateDependencies(ctxs: Context[]): Context[] {
             return;
           }
 
-          // look up activities by tag
+          // look up activities by tag to use as dependencies for this activity
           if (link.hasOwnProperty('tags') && link.tags.length !== 0) {
-            let matchingActivities: Activity[] = findActivitiesByTags(
-              ctxs,
-              link.tags
-            );
-            matchingActivities.forEach((ma) => {
+            let matchingActivities: Activity[] = findActivitiesByTags(ctxs, link.tags);
+            matchingActivities.forEach((ma: Activity) => {
               let linkObj: ActivityLink = {
                 type: 'dependency-tagged',
                 // links to this act
@@ -46,7 +47,7 @@ export function generateDependencies(ctxs: Context[]): Context[] {
         });
       }
 
-      // link implicit references
+      // link implicit references where > terminates the activity line
       if (act.attachNext == '>') {
         addDependentActivity(act, ctx.activities[i + 1]);
       }

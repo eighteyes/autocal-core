@@ -1,5 +1,5 @@
-import { Activity } from '../src/models/activity';
-import { Context } from '../src/models/context';
+import { Activity } from '../src/types/activity';
+import { Context } from '../src/types/context';
 import { parseComplete } from '../src/models/contextFn';
 import { processGet, processMutate } from '../src/text';
 import { ProcessGetOptions, ProcessMutateOptions } from '../src/types/process';

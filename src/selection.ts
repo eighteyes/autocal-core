@@ -1,5 +1,5 @@
-import { Context } from './models/context';
-import { Activity } from './models/activity';
+import { Context } from './types/context';
+import { Activity } from './types/activity';
 import config from './config';
 import { Config } from './types/config';
 import { selectActivitiesUsingWeights, getActivitiesForContexts } from './models/contextFn';

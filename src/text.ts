@@ -1,7 +1,7 @@
 //// TEXT PROCESSING STARTS
 
-import { Activity } from './models/activity';
-import { Context } from './models/context';
+import { Activity } from './types/activity';
+import { Context } from './types/context';
 import { parseComplete, parseTextIntoContexts, renderContext } from './models/contextFn';
 import { readFile } from './read';
 import { ProcessGetOptions, ProcessMutateOptions } from './types/process';

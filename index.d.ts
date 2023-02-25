@@ -1,13 +1,14 @@
-import { Context } from './src/models/context';
-import { Activity } from './src/models/activity';
+import { Context } from './src/types/context';
+import { Activity } from './src/types/activity';
 import { Config } from './src/types/config';
-import { ProcessOptions } from './src/types/process';
+import { ProcessGetOptions, ProcessMutateOptions, ProcessGetOutput } from './src/types/process';
 
+// types
+export { ProcessGetOptions, ProcessMutateOptions, ProcessGetOutput, Activity, Config, Context };
 export function select(text: string, cfg: object): Activity[];
-export function get(
-  plan: string,
-  opts: ProcessOptions
-): Activity | Activity[] | Context[] | string[] | string[][] | number;
+export function get(plan: string, opts: ProcessGetOptions): ProcessGetOutput;
+
+export function set(plan: string, opts: ProcessMutateOptions): string;
 
 // select
 /**
@@ -39,17 +40,6 @@ export function get(
  * defaultPlan
  * defaultContext
  */
-
-export function getContextNames(text: string, id?: boolean): (string | string[])[];
-
-export function getActivitiesForContext(text: string, contextId: number): Activity[];
-export function getActivityListForContext(text: string, contextId: string): string[];
-export function getActivitiesOnly(plan: string): Activity[][];
-export function getPlanListFromText(text: string): string[][];
-export function lookupContextTextFromIndex(text: string, ctxId: number): string;
-
-export function addRawContext(text: string, context: string): string;
-export function addActivityToContext(text: string, ctx: number, new_activity: string): string;
 
 export function defaultPlan(): string;
 export function selectRandom(plan: string, count?: number, config?: Partial<Config>): Activity[];

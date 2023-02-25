@@ -1,5 +1,5 @@
 import { selectActivitiesUsingWeights, processContext, parseTextIntoContexts } from '../src/models/contextFn';
-import { Context } from '../src/models/context';
+import { Context } from '../src/types/context';
 import { contexts } from './inputs';
 import { doSelection } from '../src/selection';
 

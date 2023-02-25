@@ -1,3 +1,6 @@
+import { Activity } from './activity';
+import { Context } from './context';
+
 export interface ProcessOptionsBase {
   type: 'context' | 'activity' | 'plan';
 }
@@ -15,3 +18,5 @@ export interface ProcessMutateOptions extends ProcessOptionsBase {
   op: 'add' | 'remove' | 'replace';
   value?: string;
 }
+
+export type ProcessGetOutput = Activity | Activity[] | Context[] | string | string[] | string[][];
