@@ -1,4 +1,3 @@
-import { parseCyclics } from '../src/parse';
 import { groupActivityByCyclic } from '../src/selection';
 import * as inputs from './inputs';
 import { parseComplete } from '../src/parsers/parseComplete';

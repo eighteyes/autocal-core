@@ -1,7 +1,11 @@
 import config from '../config';
 import { Context } from '../types/context';
 import { Activity, ActivityInput } from '../types/activity';
-import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
+import { parseCyclics } from './parseCyclics';
+import { parseTags } from './parseTags';
+import { parseDependencies } from './parseDependencies';
+import { parseDurations } from './parseDurations';
+import { parseAttributes } from './parseAttributes';
 
 // tokenizer for activities and contexts
 
