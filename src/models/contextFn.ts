@@ -2,10 +2,9 @@ import config from '../config';
 import { Context } from '../types/context';
 import { generateDependencies } from './dependencies';
 import { Activity, ActivityLink, ActivityInput } from '../types/activity';
-import { render, canBeSelected, sortActivityByWeight } from './activityFn';
+import { canBeSelected, sortActivityByWeight } from './activityFn';
 import { parseAttributes, parseDurations, parseTags, parseDependencies, parseCyclics } from '../parse';
-import { duration, cyclics } from '../../tests/inputs';
-import { getActivitiesForContext } from '../../index';
+import { cyclics } from '../../tests/inputs';
 import { Attribute } from '../types/attribute';
 
 export function parseComplete(input: string): Context[] {

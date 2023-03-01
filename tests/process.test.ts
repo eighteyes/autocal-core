@@ -90,7 +90,6 @@ describe('get - text processing', () => {
       filter: 'index',
       filterVal: 1,
     };
-
     const r = processGet(input.contexts.many, opts) as Context;
     expect(r.index).toBe(1);
   });
@@ -110,15 +109,15 @@ describe('mutate - text processing', () => {
   });
   test('can add an activity to a context', () => {
     const opts: ProcessMutateOptions = {
-      type: 'context',
+      type: 'activity',
       op: 'add',
       targetContextIndex: 1,
-      value: 'test context',
+      value: 'test activity',
     };
 
     let plan = processMutate(input.contexts.many, opts);
     let r = parseComplete(plan);
-    expect(r).toHaveLength(5);
+    expect(r[1].activities).toHaveLength(4);
   });
   test('can remove an activity from a context', () => {
     const opts: ProcessMutateOptions = {

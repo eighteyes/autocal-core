@@ -2,7 +2,7 @@
 
 import { Activity } from './types/activity';
 import { Context } from './types/context';
-import { parseComplete, parseTextIntoContexts, renderContext } from './models/contextFn';
+import { parseComplete, parseLine, parseTextIntoContexts, renderContext } from './models/contextFn';
 import { readFile } from './read';
 import { ProcessGetOptions, ProcessMutateOptions } from './types/process';
 
@@ -113,13 +113,9 @@ export function processGet(plan: string, opts?: ProcessGetOptions) {
 /**
  * Return a processed plan. Centralizing this function here. 
  * input: planlist
- * type: context|activity|plan
- * target: index, name
- * targetVal: number
- * op: add, remove, reindex, replace
- * value: string
  * output: planlist
  */
+
 export function processMutate(plan: string, opts: ProcessMutateOptions) {
   let ctxs: Context[] = parseComplete(plan);
 
@@ -132,6 +128,10 @@ export function processMutate(plan: string, opts: ProcessMutateOptions) {
       }
       const addCtx = parseTextIntoContexts(opts.value);
       ctxs.push(...addCtx);
+    } else if (opts.type == 'activity') {
+      // add activity to context
+      const addAct = parseLine(opts.value);
+      ctxs[opts.targetContextIndex].activities.push(addAct);
     }
   } else if (opts.op == 'remove') {
     if (opts.type === 'activity') {
