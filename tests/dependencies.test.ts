@@ -1,4 +1,4 @@
-import { parseComplete } from '../src/models/contextFn';
+import { parseComplete } from '../src/parsers/parseComplete';
 import { deps } from './inputs';
 
 test('not include tag in activity if it is a dependency', () => {

@@ -1,6 +1,6 @@
 import * as inputs from './inputs';
 import config from '../src/config';
-import { parseComplete } from '../src/models/contextFn';
+import { parseComplete } from '../src/parsers/parseComplete';
 import { selectSignGroup, selectStrengthGroup } from '../src/selection';
 
 test('can select a sign using an algorithm', () => {

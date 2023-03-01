@@ -1,7 +1,7 @@
 import '../src/parse';
 import * as input from './inputs';
 import { parseCyclics } from '../src/parse';
-import { parseLine } from '../src/models/contextFn';
+import { parseLine } from '../src/parsers/parseLine';
 
 test('can parse cyclics', () => {
   const inputCyclics = parseCyclics(input.cyclics.basic);

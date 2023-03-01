@@ -2,7 +2,10 @@
 
 import { Activity } from './types/activity';
 import { Context } from './types/context';
-import { parseComplete, parseLine, parseTextIntoContexts, renderContext } from './models/contextFn';
+import { renderContext } from './models/context/renderContext';
+import { parseTextIntoContexts } from './parsers/parseTextIntoContexts';
+import { parseComplete } from './parsers/parseComplete';
+import { parseLine } from './parsers/parseLine';
 import { readFile } from './read';
 import { ProcessGetOptions, ProcessMutateOptions } from './types/process';
 

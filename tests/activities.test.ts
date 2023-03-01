@@ -1,7 +1,8 @@
-import { parseLine } from '../src/models/contextFn';
+import { parseLine } from '../src/parsers/parseLine';
 import { content, deps } from './inputs';
 import { Activity } from '../src/types/activity';
-import { getDependencyTags, render } from '../src/models/activityFn';
+import { render } from '../src/models/activity/render';
+import { getDependencyTags } from '../src/process/dependency/getDependencyTags';
 
 test('Can split content', () => {
   let e = parseLine(content.splitBasic);

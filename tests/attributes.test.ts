@@ -1,4 +1,5 @@
-import { parseComplete, parseLine } from '../src/models/contextFn';
+import { parseComplete } from '../src/parsers/parseComplete';
+import { parseLine } from '../src/parsers/parseLine';
 import config from '../src/config';
 import { attributes } from './inputs';
 

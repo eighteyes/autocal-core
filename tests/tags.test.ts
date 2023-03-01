@@ -1,4 +1,4 @@
-import { parseLine } from '../src/models/contextFn';
+import { parseLine } from '../src/parsers/parseLine';
 import { tags } from './inputs';
 
 test('an event tag can be parsed', () => {
