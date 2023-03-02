@@ -1,7 +1,8 @@
 import { Activity } from '../src/types/activity';
 import { Context } from '../src/types/context';
 import { parseComplete } from '../src/parsers/parseComplete';
-import { processGet, processMutate } from '../src/text';
+import { processMutate } from '../src/models/plan/set';
+import { processGet } from '../src/models/plan/get';
 import { ProcessGetOptions, ProcessMutateOptions } from '../src/types/process';
 import * as input from './inputs';
 

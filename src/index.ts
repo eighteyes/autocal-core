@@ -3,7 +3,8 @@ import { parseComplete } from './parsers/parseComplete';
 import { Context } from './types/context';
 import { Activity } from './types/activity';
 import { doSelection } from './selection';
-import { processGet, processMutate } from './text';
+import { processMutate } from './models/plan/set';
+import { processGet } from './models/plan/get';
 import { select, selectAlgo, selectOrdered, selectRandom } from './selection';
 
 // point to TS in errors

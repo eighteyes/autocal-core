@@ -1,4 +1,4 @@
-import * as renderContext from '../src/models/context/renderContext';
+import * as renderContext from '../src/models/context/render';
 import * as findActivitiesByTags from '../src/models/context/findActivitiesByTags';
 import * as parseComplete from '../src/parsers/parseComplete';
 import * as inputs from './inputs';
