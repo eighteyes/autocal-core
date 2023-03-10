@@ -143,4 +143,29 @@ describe('mutate - text processing', () => {
     let r = parseComplete(plan);
     expect(r).toHaveLength(3);
   });
+  test('can replace an activity', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'activity',
+      op: 'replace',
+      targetContextIndex: 1,
+      targetActivityIndex: 1,
+      value: 'replacement',
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r[1].activities[1].input.content).toEqual('replacement');
+  });
+  test('can replace an context', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'context',
+      op: 'replace',
+      targetContextIndex: 1,
+      value: 'replacement',
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r[1].name).toEqual('replacement');
+  });
 });

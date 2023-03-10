@@ -37,7 +37,21 @@ export function processMutate(plan: string, opts: ProcessMutateOptions) {
     } else if (opts.type === 'context') {
       ctxs.splice(opts.targetContextIndex, 1);
     }
+  } else if (opts.op == 'replace') {
+    if (opts.type === 'activity') {
+      ctxs[opts.targetContextIndex].activities[opts.targetActivityIndex] = parseLine(opts.value);
+    } else {
+      let ctx: Context = ctxs[opts.targetContextIndex];
+      // clone
+      let acts = [...ctx.activities];
+
+      let newCtx = parseTextIntoContexts('# ' + opts.value)[0];
+      newCtx.activities = acts;
+
+      ctxs[opts.targetContextIndex] = newCtx;
+    }
   }
+
   resp = renderPlan(ctxs);
   return resp;
 }

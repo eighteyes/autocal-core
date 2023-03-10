@@ -5,6 +5,7 @@ Rule The Day and turn Plans into Actions
 https://autocal.tech
 
 # Overview
+AutoCal is a system to help users collect, organize and select what's next from a list of things to do. AutoCal *Plans* are comprised of *Contexts*, each of which contain *Activities*. The heirarchy is `Plan > Context > Activities`. 
 
 Activities are collected into Contexts and Selected by the user when they want to have a machine tell them what to work on next. Selection chooses from these activites using a variety of mechanisms which are determined by the configuration passed to selection.
 Options for configuration can be found at `./src/types/config.ts`

@@ -29,7 +29,8 @@ if (isLocal) {
 
 export function defaultPlan(): string {
   console.log('Loading... ', fileName);
-  return readFile(fileName);
+  if (process) return readFile(fileName);
+  return 'default plan';
 }
 
 export { processGet as get, processMutate as set, select, selectRandom, selectAlgo, selectOrdered, Context, Activity };
