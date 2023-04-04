@@ -9,28 +9,27 @@ import { canBeSelected } from './selectors/canBeSelected';
 import { sortActivityRandom } from './models/activity/sortActivityRandom';
 import { sortActivityByWeight } from './models/activity/sortActivityByWeight';
 import { logWeights } from './utils';
-import { readFile } from './read';
 
 // whether we are running standalone or as a module
 const isLocal = require.main === module;
 let fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/simple.acr';
 
-export function select(text: string = readFile(fileName), count = 1, cfg: object = config) {
+export function select(text: string, count = 1, cfg: object = config) {
   return doSelection(parseComplete(text), count);
 }
 
-export function selectAlgo(text: string = readFile(fileName), count = 1, cfg: Config = config) {
+export function selectAlgo(text: string, count = 1, cfg: Config = config) {
   cfg = { ...config, ...cfg, ...{ useAlgorithm: true } };
   return doSelection(parseComplete(text), count, cfg);
 }
 
-export function selectOrdered(text: string = readFile(fileName), count = 1, cfg: Config = config) {
+export function selectOrdered(text: string, count = 1, cfg: Config = config) {
   // override defaults
   cfg = { ...config, ...cfg, ...{ useAlgorithm: false, selectionType: 'ordered' } };
   return doSelection(parseComplete(text), count, cfg);
 }
 
-export function selectRandom(text: string = readFile(fileName), count = 1, cfg: Config = config) {
+export function selectRandom(text: string, count = 1, cfg: Config = config) {
   // override defaults
   cfg = { ...config, ...cfg, ...{ useAlgorithm: false, selectionType: 'random' } };
   return doSelection(parseComplete(text), count, cfg);

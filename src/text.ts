@@ -4,13 +4,11 @@ import { Activity } from './types/activity';
 import { Context } from './types/context';
 import { renderContext } from './models/context/render';
 import { parseComplete } from './parsers/parseComplete';
-import { readFile } from './read';
-
 // whether we are running standalone or as a module
 const isLocal = require.main === module;
 export let fileName = isLocal ? './examples/plan.acr' : module.path + '/../../examples/simple.acr';
 
-export function lookupContextTextFromIndex(text: string = readFile(fileName), index: number): string {
+export function lookupContextTextFromIndex(text: string, index: number): string {
   // multiline between ctx
   const ctxs = text.split('\n\n');
 
@@ -32,7 +30,7 @@ export function addActivityToContext(text: string, ctx: number, new_activity: st
 }
 
 // return act list for a context - useful for menus
-export function getActivityListForContext(text: string = readFile(fileName), contextId: string): string[] {
+export function getActivityListForContext(text: string, contextId: string): string[] {
   let ctxs: Context[] = parseComplete(text);
 
   let output: string[] = ctxs.map((c: Context) => {
@@ -47,7 +45,7 @@ export function getActivityListForContext(text: string = readFile(fileName), con
 }
 
 // return nested array of context content
-export function getPlanListFromText(text: string = readFile(fileName)): string[][] {
+export function getPlanListFromText(text: string): string[][] {
   let ctxs = parseComplete(text);
 
   let out: string[][] = [];
