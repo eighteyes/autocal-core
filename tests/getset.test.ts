@@ -168,4 +168,28 @@ describe('mutate - text processing', () => {
     let r = parseComplete(plan);
     expect(r[1].name).toEqual('replacement');
   });
+  test('can mark an activity as done', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'activity',
+      op: 'finish',
+      targetContextIndex: 1,
+      targetActivityIndex: 1,
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r[1].activities[1].done).toEqual(true);
+  });
+  test('can mark an activity as not done', () => {
+    const opts: ProcessMutateOptions = {
+      type: 'activity',
+      op: 'unfinish',
+      targetContextIndex: 1,
+      targetActivityIndex: 1,
+    };
+
+    let plan = processMutate(input.contexts.many, opts);
+    let r = parseComplete(plan);
+    expect(r[1].activities[1].done).toEqual(false);
+  });
 });

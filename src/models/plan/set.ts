@@ -50,6 +50,21 @@ export function processMutate(plan: string, opts: ProcessMutateOptions) {
 
       ctxs[opts.targetContextIndex] = newCtx;
     }
+  } else if (opts.op == 'finish') {
+    if (opts.type === 'activity') {
+      ctxs[opts.targetContextIndex].activities[opts.targetActivityIndex].input.raw =
+        'x ' + ctxs[opts.targetContextIndex].activities[opts.targetActivityIndex].input.raw;
+    } else {
+      // finish context?
+    }
+  } else if (opts.op == 'unfinish') {
+    if (opts.type === 'activity') {
+      ctxs[opts.targetContextIndex].activities[opts.targetActivityIndex].input.raw = ctxs[
+        opts.targetContextIndex
+      ].activities[opts.targetActivityIndex].input.raw.replace('x ', '');
+    } else {
+      // unfinish context?
+    }
   }
 
   resp = renderPlan(ctxs);

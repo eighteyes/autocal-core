@@ -15,7 +15,7 @@ export interface ProcessGetOptions extends ProcessOptionsBase {
 export interface ProcessMutateOptions extends ProcessOptionsBase {
   targetContextIndex?: number;
   targetActivityIndex?: number;
-  op: 'add' | 'remove' | 'replace';
+  op: 'add' | 'remove' | 'replace' | 'finish' | 'unfinish';
   value?: string;
 }
 
