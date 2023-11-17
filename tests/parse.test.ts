@@ -17,3 +17,8 @@ test('can slice edge cases', () => {
   const act = parseLine(input.edgeCases.one);
   expect(act.input.splitPoint).toBe(33);
 });
+
+test('can parse context attributes', () => {
+ const ln = parseLine(input.contexts.ctx);
+ console.log(ln) 
+})

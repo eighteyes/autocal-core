@@ -54,7 +54,9 @@ export function parseLine(ln: string, ctx?: Context): Activity {
 
   // split out the content from the meta information
   let splitIndex = Math.min(...splitPoints);
-  let content = ln.slice(0, splitIndex).trim();
+  // capture ctx content correctly
+  let startContent = (ln[0]=='#') ? 1 : 0; 
+  let content = ln.slice(startContent, splitIndex).trim();
 
   // deprioritize done acts
   if (done) {

@@ -32,6 +32,12 @@ test('apply cyclics from context to activities', () => {
 
 test.todo('apply dependencies from context to activities');
 
+test('can store context content under input.content', () => {
+  let ctxs = parseComplete.parseComplete(inputs.contexts.basic);
+  expect(ctxs[0].input.content).toBe('Context');
+  
+})
+
 test('can render a context', () => {
   const c = renderContext.renderContext(parseComplete.parseComplete(inputs.contexts.actCtx)[0]);
 });

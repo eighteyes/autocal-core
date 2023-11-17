@@ -45,3 +45,4 @@ export function defaultPlan(): string;
 export function selectRandom(plan: string, count?: number, config?: Partial<Config>): Activity[];
 export function selectOrdered(plan: string, count?: number, config?: Partial<Config>): Activity[];
 export function selectAlgo(plan: string, count?: number, config?: Partial<Config>): Activity[];
+export function parse(plan: string): Context[];

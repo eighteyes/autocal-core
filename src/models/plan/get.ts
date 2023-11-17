@@ -5,7 +5,8 @@ import { ProcessGetOptions } from '../../types/process';
 /*
  * processGet is exposed externally from the core module. within is a variety of collection options.
  * note, not all possible permutations are implemented yet, just the ones we need. surely this will undergo revision.
- * @param plan = raw text of plan
+* by default, all Actitiies are returned if no context is passed 
+* @param plan = raw text of plan
  * @param opts.type = what entity to lookup
  * @param opts.lookup = what information to return
  * @param opts.format = how to format the return information

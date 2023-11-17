@@ -26,7 +26,8 @@ export function processMutate(plan: string, opts: ProcessMutateOptions) {
       }
       const addCtx = parseTextIntoContexts(opts.value);
       ctxs.push(...addCtx);
-    } else if (opts.type == 'activity') {
+    } else if
+    (opts.type == 'activity') {
       // add activity to context
       const addAct = parseLine(opts.value);
       ctxs[opts.targetContextIndex].activities.push(addAct);
