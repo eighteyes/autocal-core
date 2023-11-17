@@ -1,10 +1,37 @@
 # Cyclics
+Superpowered Symbols
+
+# Attributes
+## Weighting
+Add Weight ( ! $ 💪 ) 
+AND / OR
+## Selection
+Used For Selection ( + - 💻 ⛹️ )
+
+# Inputs
+SelectionAlgorithm - '+-⛹️'
+
+# Questions
+What is the default selection for Activities without an Selection attribute?
+0, select one of these when the algorithm repeats, option `includeNoneInSelection`.
+
+# Selection
+- Iterate through Selection Algorithm
+    - group like symbols `---` into distinct categories from `-`
+    - if there is no match for `---` try `--` then `-`
+- Group Activities by Selection Attribute. 
+- Return highest weighted Activity from each group.
+
+
+
+### RESET
 ## Seeding Algorithm
 ### Balanced
 +- = Add Up to Zero
 +++--- = Favors Larger Measures
 ### Unbalanced Algo
 ---+ = Adds up to -2
+Do either one --- task or three - tasks, pref the --- task. 
 
 ### Activities
 cyclicStrength = { -2, 1, 0, 3 }

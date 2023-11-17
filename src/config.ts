@@ -1,5 +1,6 @@
-import { Config } from './types/config';
+import { Config, ConfigRegex } from './types/config';
 
+let regex: ConfigRegex;
 let config: Config = {
   applyPositionWeight: false,
 
@@ -48,10 +49,11 @@ let config: Config = {
   cyclicStateMultiplier: 5,
   baseStrengthWeight: 10,
   strengthSelectionMultiplier: 2,
-  regex: {},
+  regex: regex,
 };
 
-let regex = {
+regex = {
+  flags: /^[#x]/,
   contextHashMatch: /^#*./,
   duration: /\b\d*[mhdw]\b/g,
   content: /^([A-Za-z]\w+\s)$/,

@@ -15,3 +15,11 @@ test('can group activity by cyclic indicators', () => {
   expect(g.bySign).toHaveProperty(['0']);
   expect(g.bySign).toHaveProperty(['+']);
 });
+
+
+test('can group activity by multiple cyclic indicators', () => {  
+    let g = groupActivityByCyclic(parseComplete(inputs.select.extrastrength));
+    expect(g.bySign).toHaveProperty(['---']);
+    expect(g.bySign).toHaveProperty(['0']);
+    expect(g.bySign).toHaveProperty(['+']);
+})

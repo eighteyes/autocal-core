@@ -12,10 +12,17 @@ import { parseAttributes } from './parseAttributes';
 export function parseLine(ln: string, ctx?: Context): Activity {
   let integerWeight = config.startWeight;
   let available = false;
+  let raw = ln+"";
 
   let done = ln[0] == 'x';
   if (done) {
     ln = ln.replace('x ', '');
+  }
+
+  let isContext = ln[0] == '#';
+  if ( isContext ){
+    // remove context hash
+    ln = ln.substr(1);
   }
 
   // just in case of whitespace
@@ -55,8 +62,7 @@ export function parseLine(ln: string, ctx?: Context): Activity {
   // split out the content from the meta information
   let splitIndex = Math.min(...splitPoints);
   // capture ctx content correctly
-  let startContent = (ln[0]=='#') ? 1 : 0; 
-  let content = ln.slice(startContent, splitIndex).trim();
+  let content = ln.slice(0, splitIndex).trim();
 
   // deprioritize done acts
   if (done) {
@@ -73,7 +79,7 @@ export function parseLine(ln: string, ctx?: Context): Activity {
     cyclics: cyclicTokens,
     tags: tags,
     content: content,
-    raw: ln,
+    raw
   };
 
   if (ctx) {

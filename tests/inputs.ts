@@ -4,6 +4,7 @@ const ctx = '# Context\n';
 const ctxa = '# ActContext !$+-\n';
 const ctxp = '# Plus +\n';
 const ctxm = '# Minus -\n';
+const ctx0 = '# None\n'
 
 export const tags = {
   single: 'Mow the lawn 1h #yardwork',
@@ -59,7 +60,7 @@ export const deps = {
 
 export const select = {
   equal:
-    ctx +
+    ctx0 +
     ['A', 'B', 'C', '', ''].join('\n') +
     ctxp +
     ['Ap', 'Bp', 'Cp', '', ''].join('\n') +

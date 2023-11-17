@@ -114,16 +114,19 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
  * @param ctxs  - all contexts
  * @param algo  - string from user, indicates what values to look for in inputs
  * @param cfg   - autocal config ( cyclicStepWeight, cyclicStepWeightMultiplier )
- * @returns 
+ * @returns  { group: bySign[currentSign], sign: currentSign, weights: relativeSignWeight, seed };
+
  */
 export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
+  // { "+": [ Activities ], "-": [ Activities ], "0": [ Activities ]}
   const { bySign } = groupActivityByCyclic(ctxs);
+
   let signCounts: { [index: string]: number } = {};
   let total = 0;
   let relativeSignWeight: { [index: string]: number } = {};
   let currentSign = '0';
 
-  // get values from context size
+  // get values from context size to use when calculating sign weight
   for (const key in bySign) {
     if (bySign[key]) {
       const acts = bySign[key];

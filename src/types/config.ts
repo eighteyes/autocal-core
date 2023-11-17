@@ -44,7 +44,8 @@ export interface Config {
   selectionType: string;
 }
 
-interface ConfigRegex {
+export interface ConfigRegex {
+  flags: RegExp;
   contextHashMatch?: RegExp;
   vowels?: RegExp;
   duration?: RegExp;

@@ -18,13 +18,13 @@ export function parseTextIntoContexts(input: string) {
     // trim in case of extra whitespace btwn contexts
     contextraws.push(c.trim());
   });
-
+  
   contextraws.forEach((c, i) => {
     // split along lines
     let line = c.split('\n');
     let head = line[0].toString();
     // shift mutates array
-    let name: string = line.shift().replace(config.regex.contextHashMatch, '');
+    let name: string = line.shift().replace(config.regex.flags, '').trim();
 
     let ctx: Context = {
       name,

@@ -132,6 +132,7 @@ describe('mutate - text processing', () => {
     let r = parseComplete(plan);
     expect(r[1].activities).toHaveLength(2);
   });
+
   test('can remove a context', () => {
     const opts: ProcessMutateOptions = {
       type: 'context',

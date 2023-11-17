@@ -3,6 +3,12 @@ import config from '../src/config';
 import { parseComplete } from '../src/parsers/parseComplete';
 import { selectSignGroup, selectStrengthGroup } from '../src/selection';
 
+test.todo('selection respects `includeNoneInSelection')
+
+test('can distinguish between selection attribute intensity', () => {
+  
+})
+
 test('can select a sign using an algorithm', () => {
   let ctxs = parseComplete(inputs.select.equal);
   let signs = [];
@@ -15,6 +21,7 @@ test('can select a sign using an algorithm', () => {
   }
   // de dupe
   let signsSet = new Set(signs);
+  // 3: -, 0, +
   expect(signsSet.size).toEqual(3);
 });
 
