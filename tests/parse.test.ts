@@ -1,4 +1,3 @@
-import '../src/parse';
 import * as input from './inputs';
 import { parseCyclics } from '../src/parsers/parseCyclics';
 import { parseLine } from '../src/parsers/parseLine';

@@ -109,19 +109,25 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
   return finalActs;
 }
 
-// step 1 in selection, figure out what sign to use
+/**
+ * step 1 in cyclic selection, figure out what sign to use 
+ * @param ctxs  - all contexts
+ * @param algo  - string from user, indicates what values to look for in inputs
+ * @param cfg   - autocal config ( cyclicStepWeight, cyclicStepWeightMultiplier )
+ * @returns 
+ */
 export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
   const { bySign } = groupActivityByCyclic(ctxs);
-  let values: { [index: string]: number } = {};
+  let signCounts: { [index: string]: number } = {};
   let total = 0;
-  let weights: { [index: string]: number } = {};
-  let sign = '0';
+  let relativeSignWeight: { [index: string]: number } = {};
+  let currentSign = '0';
 
   // get values from context size
   for (const key in bySign) {
     if (bySign[key]) {
       const acts = bySign[key];
-      values[key] = acts.length;
+      signCounts[key] = acts.length;
       total += acts.length;
     }
   }
@@ -136,7 +142,7 @@ export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
     signSteps++;
     // = step weight + multi * signsteps = 10 + i*5
     let amtToAdd = cfg.cyclicStepWeight + signSteps * cfg.cyclicStepWeightMultiplier;
-    values[seqStep] += amtToAdd;
+    signCounts[seqStep] += amtToAdd;
     // remove this amount from others
     // for (const k in values) {
     //   if (k !== seqStep) {
@@ -147,44 +153,46 @@ export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
   }
 
   // add up total of values for distribution
-  let valueTotal = Object.values(values).reduce((a: number, b: number) => {
+  let valueTotal = Object.values(signCounts).reduce((a: number, b: number) => {
     return a + b;
   }, 0);
 
+  if ( total !== valueTotal ){ console.warn('Missing Activities', total, valueTotal) }
+
   // calculate weights by relative size distribution with algo applied
-  for (const key in values) {
-    if (values[key]) {
-      const amt = values[key];
-      weights[key] = amt / valueTotal;
+  for (const key in signCounts) {
+    if (signCounts[key]) {
+      const amt = signCounts[key];
+      relativeSignWeight[key] = amt / valueTotal;
     }
   }
 
   // 3 +s
 
-  let weightKeys = Object.keys(weights).sort();
+  let weightKeys = Object.keys(relativeSignWeight).sort();
   let seed = Math.random();
   let weightTotal = 0;
   for (let i = 0; i < weightKeys.length; i++) {
     const key = weightKeys[i];
     // add value to total to check against for pass
-    weightTotal += weights[key];
+    weightTotal += relativeSignWeight[key];
     if (seed < weightTotal) {
       // all the object obnoxiousness above is for this, could use a tuple
-      sign = key;
+      currentSign = key;
       break;
     }
   }
 
-  if (sign == '') {
-    console.error('No sign selected', seed, weights);
+  if (currentSign == '') {
+    console.error('No sign selected', seed, relativeSignWeight);
   }
 
   if (config.randomSelection == false) {
     // override for deterministic operation
-    sign = seqStep;
+    currentSign = seqStep;
   }
 
-  return { group: bySign[sign], sign, weights, seed };
+  return { group: bySign[currentSign], sign: currentSign, weights: relativeSignWeight, seed };
 }
 
 // step 2 in selection, select inside sign
