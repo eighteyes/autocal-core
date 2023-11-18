@@ -6,7 +6,10 @@ export interface Config {
   applyPositionWeight: boolean;
   randomSelection: boolean;
   attributeList: Attribute[];
-  cyclicList: Attribute[];
+
+  // all attributes
+  attributes: string[];
+
   times: object;
 
   // sequence of pattern selection

@@ -7,7 +7,3 @@ export interface Attribute {
   name: string;
   weight: number;
 }
-
-interface Cyclic extends Attribute {
-  fn?: object;
-}

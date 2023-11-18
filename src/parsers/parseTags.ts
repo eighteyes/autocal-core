@@ -11,7 +11,7 @@ export function parseTags(ln: string, exclude: string[] = []) {
 
       // skip dependency tags
       if (exclude.indexOf(t) === -1) {
-        const tagIndex = ln.indexOf(t);
+        const tagIndex = ln.indexOf(t)-1;
         splitPoints.push(tagIndex);
         tags.push(t);
       }

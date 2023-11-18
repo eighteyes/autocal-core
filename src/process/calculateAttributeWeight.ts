@@ -1,8 +1,9 @@
 import config from '../config';
 import { Context } from '../types/context';
 import { Attribute } from '../types/attribute';
+import {Config} from '../types/config';
 
-export function calculateAttributeWeight(ctx: Context): Context {
+export function calculateAttributeWeight(ctx: Context, configuration: Config = config): Context {
   ctx.activities.forEach((act) => {
     act.integerWeight = config.startWeight;
     act.input.attributes.forEach((att) => {

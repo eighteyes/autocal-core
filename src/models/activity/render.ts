@@ -10,7 +10,7 @@ export function render(act: Activity): string {
       act.input.attributes.join(''),
       act.input.tags.join(' '),
       act.input.cyclics.join(''),
-      act.input.durations.join(' '),
+      // act.input.durations.join(' '),
       act.links.map((l) => {
         let count = l.required ? 2 : 1;
         let direction = l.downstream ? '>' : '<';

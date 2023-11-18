@@ -1,5 +1,6 @@
 import config from '../config';
 
+// TODO: Refactor cyclics into selection attributes driven by user config
 export function parseCyclics(ln: string) {
   const cyclicMatches = ln.match(config.regex.cyclics);
   let cyclics: string[] = [];

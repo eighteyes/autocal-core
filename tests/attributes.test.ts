@@ -5,7 +5,7 @@ import { attributes } from './inputs';
 
 test('collect raw attributes', () => {
   let e = parseLine(attributes.many);
-  expect(e.input.attributes).toHaveLength(3);
+  expect(e.input.attributes).toHaveLength(5);
 });
 
 test('weight activities based on attributes', () => {

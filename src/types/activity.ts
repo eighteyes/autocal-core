@@ -48,7 +48,7 @@ export interface ActivityInput {
   metas?: string[];
   attributes?: string[];
   cyclics?: string[];
-  durations?: string[];
+  // durations?: string[];
   raw?: string;
   // where raw becomes content
   splitPoint?: number;

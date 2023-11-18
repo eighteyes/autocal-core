@@ -22,6 +22,9 @@ What is the default selection for Activities without an Selection attribute?
 - Group Activities by Selection Attribute. 
 - Return highest weighted Activity from each group.
 
+# Random
+- Add some wiggle to Activity Weights on Parse
+
 
 
 ### RESET

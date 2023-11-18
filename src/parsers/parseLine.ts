@@ -1,6 +1,7 @@
 import config from '../config';
 import { Context } from '../types/context';
 import { Activity, ActivityInput } from '../types/activity';
+import { Config } from '../types/config';
 import { parseCyclics } from './parseCyclics';
 import { parseTags } from './parseTags';
 import { parseDependencies } from './parseDependencies';
@@ -9,8 +10,9 @@ import { parseAttributes } from './parseAttributes';
 
 // tokenizer for activities and contexts
 
-export function parseLine(ln: string, ctx?: Context): Activity {
-  let integerWeight = config.startWeight;
+export function parseLine(ln: string, ctx?: Context, configuration: Config = config): Activity {
+  let integerWeight = configuration.startWeight;
+  let integerWeightAdj = 0;
   let available = false;
   let raw = ln+"";
 
@@ -31,14 +33,16 @@ export function parseLine(ln: string, ctx?: Context): Activity {
   // start with length, so we have something in place in case of only content
   let splitPoints = [ln.length];
 
-  let attributeObj = parseAttributes(ln);
+  let attributeObj = parseAttributes(ln, configuration);
   let attributes: string[] = attributeObj.attributes;
   splitPoints.push(...attributeObj.splitPoints);
   integerWeight += attributeObj.integerWeight;
+  integerWeightAdj += attributeObj.integerWeight;
 
-  let durationObj = parseDurations(ln);
-  let durations: string[] = durationObj.durations;
-  splitPoints.push(...durationObj.splitPoints);
+  // duration push
+  // let durationObj = parseDurations(ln);
+  // let durations: string[] = durationObj.durations;
+  // splitPoints.push(...durationObj.splitPoints);
 
   let depObj = parseDependencies(ln);
   let links = depObj.links;
@@ -58,8 +62,9 @@ export function parseLine(ln: string, ctx?: Context): Activity {
 
   let cycObj = parseCyclics(ln);
   let cyclicTokens = cycObj.cyclics;
+  splitPoints.push(...cycObj.splitPoints);
 
-  // split out the content from the meta information
+  // split out the content from the signals
   let splitIndex = Math.min(...splitPoints);
   // capture ctx content correctly
   let content = ln.slice(0, splitIndex).trim();
@@ -71,10 +76,8 @@ export function parseLine(ln: string, ctx?: Context): Activity {
 
   // input should be the only output on this stage
   let input: ActivityInput = {
-    meta: ln.slice(splitIndex),
-    metas: ln.slice(splitIndex).split(' '),
     attributes: attributes,
-    durations: durations,
+    // durations: durations,
     splitPoint: splitIndex,
     cyclics: cyclicTokens,
     tags: tags,

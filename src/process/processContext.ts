@@ -14,8 +14,8 @@ export function processContext(ctx: Context, index: number): Context {
 
   // cycle through every event in the context
   ctx.raw.split('\n').forEach((ln, i) => {
-    // in case of empty context
-    if (ln.length === 0 || ln == '\n') {
+    // in case of empty context, skip first line
+    if (ln.length === 0 || ln == '\n' || i == 0) {
       return;
     }
     const e: Activity = parseLine(ln, ctx);
@@ -27,8 +27,8 @@ export function processContext(ctx: Context, index: number): Context {
   if (ctx.activities.length > 0) {
     // after all lines are parsed
     applyContext(ctx);
-    calculateCyclicWeight(ctx);
-    calculateAttributeWeight(ctx);
+    // calculateCyclicWeight(ctx);
+    // calculateAttributeWeight(ctx);
     generateTextReference(ctx);
     generateWeights(ctx);
   }

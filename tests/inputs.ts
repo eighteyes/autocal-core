@@ -7,8 +7,8 @@ const ctxm = '# Minus -\n';
 const ctx0 = '# None\n'
 
 export const tags = {
-  single: 'Mow the lawn 1h #yardwork',
-  multiple: 'Mow the lawn 1h #yardwork #hardwork',
+  single: 'Mow the lawn #yardwork',
+  multiple: 'Mow the lawn #yardwork #hardwork',
   ctxMultiple: ctx + ['Thing1 #tag1 #tag2', 'Thing2 #tag2', 'Thing3 #tag3'].join('\n'),
 };
 
@@ -24,20 +24,21 @@ export const duration = {};
 export const dependencies = {};
 
 export const attributes = {
-  many: 'Very Important 1h !*$^+-',
+  many: 'Very Important #tag !*$^+-',
   all: ctx + 'A thing! to do !*$`',
   multi: ctx + 'Super Important !!!',
 };
 
 export const content = {
-  splitBasic: 'Call Marcelo RE : Landing Page 1h',
-  splitComplex: 'Presents 4 Judy & Mark! // (and f) 4h',
+  splitBasic: 'Call Marcelo RE : Landing Page',
+  splitComplex: 'Presents 4 Judy & Mark! // (and f)',
 };
 
 export const contexts = {
   ctx: ctx,
+  ctxa,
   basic: '# Context\nDo Thing !',
-  nospace: "#Context\nDo Thing !",
+  nospacebad: "#Context\nDo Thing !",
   long: ctx + Array(100).fill(makeTestRef(), 0, 100).join('\n'),
   actCtx: ctxa + ['One', 'Two', 'Three'].join('\n'),
   many: [ctx, ctxa, ctxm, ctxp]

@@ -12,15 +12,11 @@ let config: Config = {
     { symbol: '$', name: 'Important', weight: 200 },
     { symbol: '*', name: 'Required', weight: 400 },
     { symbol: '`', name: 'Nudge', weight: 20 },
+    { symbol: '-', name: 'Drain', weight: -100 },
+    { symbol: '+', name: 'Boost', weight: 100 },
   ],
 
-  // { symbol: "+", name: 'Energizing', weight: 0 },
-  // { symbol: "-", name: 'Draining', weight: 0 },
-
-  cyclicList: [
-    { symbol: '-', name: 'Drain', weight: -1 },
-    { symbol: '+', name: 'Boost', weight: 1 },
-  ],
+  attributes: [],
 
   times: {
     m: 'months',
@@ -69,5 +65,6 @@ regex = {
 // b/c these values depend on other config
 config.regex = regex;
 config.startWeight = Math.pow(10, config.integerWeightFactor) / 2;
+config.attributes = config.attributeList.map((e) => e.symbol);
 
 export default config;
