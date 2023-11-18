@@ -60,9 +60,9 @@ export function parseLine(ln: string, ctx?: Context, configuration: Config = con
   let tags: string[] = tagObj.tags;
   splitPoints.push(...tagObj.splitPoints);
 
-  let cycObj = parseCyclics(ln);
-  let cyclicTokens = cycObj.cyclics;
-  splitPoints.push(...cycObj.splitPoints);
+  // let cycObj = parseCyclics(ln);
+  // let cyclicTokens = cycObj.cyclics;
+  // splitPoints.push(...cycObj.splitPoints);
 
   // split out the content from the signals
   let splitIndex = Math.min(...splitPoints);
@@ -79,7 +79,6 @@ export function parseLine(ln: string, ctx?: Context, configuration: Config = con
     attributes: attributes,
     // durations: durations,
     splitPoint: splitIndex,
-    cyclics: cyclicTokens,
     tags: tags,
     content: content,
     raw

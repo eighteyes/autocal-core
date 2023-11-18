@@ -1,4 +1,4 @@
-import { processContext } from '../src/process/processContext';
+import { processContextActivities } from '../src/process/processContextActivities';
 import { selectActivitiesUsingWeights } from '../src/selectors/selectActivitiesUsingWeights';
 import { parseTextIntoContexts } from '../src/parsers/parseTextIntoContexts';
 import { Context } from '../src/types/context';
@@ -9,7 +9,7 @@ let ctxs: Context[] = [];
 
 beforeAll(() => {
   ctxs = parseTextIntoContexts(contexts.long);
-  ctxs.forEach((c, i) => processContext(c, i));
+  ctxs.forEach((c, i) => processContextActivities(c, i));
   // weight distribution
   ctxs.forEach((c) => {
     // start weights around 50

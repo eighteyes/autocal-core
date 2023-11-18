@@ -1,7 +1,6 @@
 export interface Activity {
   id?: string;
-  input?: ActivityInput;
-  txtref?: string;
+  input?: ActivityInput; 
 
   // dependency is on next line
   attachNext: string;
@@ -11,7 +10,7 @@ export interface Activity {
   done: boolean;
   // can we select this one?
   available?: boolean;
-  
+
   // blocked by dependencies
   blocked?: boolean;
 
@@ -47,7 +46,7 @@ export interface ActivityLink {
 export interface ActivityInput {
   // what attribute strings are in the event
   attributes?: string[];
-  cyclics?: string[];
+  // cyclics?: string[];
   // durations?: string[];
   raw?: string;
   // where raw becomes content
