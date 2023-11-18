@@ -13,6 +13,9 @@ export interface Activity {
   available?: boolean;
   // blocked by dependencies
   blocked?: boolean;
+
+  // plus or minus the base weight
+  integerWeightAdj?: number;
   // before we get too far
   integerWeight?: number;
   // 0-1 number
@@ -44,8 +47,6 @@ export interface ActivityLink {
 }
 
 export interface ActivityInput {
-  meta?: string;
-  metas?: string[];
   attributes?: string[];
   cyclics?: string[];
   // durations?: string[];

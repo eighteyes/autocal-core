@@ -3,10 +3,13 @@ import { parseLine } from '../src/parsers/parseLine';
 import config from '../src/config';
 import { attributes } from './inputs';
 
-test('collect raw attributes', () => {
-  let e = parseLine(attributes.many);
-  expect(e.input.attributes).toHaveLength(5);
-});
+describe('parse attributes', () => {
+  test('collect raw attributes', () => {
+    let e = parseLine(attributes.many);
+    expect(e.input.attributes).toHaveLength(5);
+  });
+
+})
 
 test('weight activities based on attributes', () => {
   let ctx = parseComplete(attributes.all)[0];

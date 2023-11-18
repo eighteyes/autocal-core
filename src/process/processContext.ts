@@ -22,6 +22,7 @@ export function processContext(ctx: Context, index: number): Context {
     // so we can select by index
     e.index = i;
     ctx.activities.push(e);
+    // TODO propagate contexts attributes to activities
   });
 
   if (ctx.activities.length > 0) {
