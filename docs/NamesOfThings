@@ -1,0 +1,7 @@
+# Human Language
+Content = Event - Actions for user to undertake in plain language
+
+# Syntax - Machine Language
+Artifacts = Modifiers, Connectors, Attributes, Dependencies, Tags
+Flags = States, Done, Context 
+
