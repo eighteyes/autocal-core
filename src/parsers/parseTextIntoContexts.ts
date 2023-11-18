@@ -29,7 +29,8 @@ export function parseTextIntoContexts(input: string) {
     let ctx: Context = {
       name,
       activities: [],
-      raw: line.join('\n'),
+      // missing the context line
+      raw: c,
       input: {},
       index: i,
     };

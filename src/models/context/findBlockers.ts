@@ -1,7 +1,14 @@
 import { Context } from '../../types/context';
 import { Activity, ActivityLink } from '../../types/activity';
 
-// call this after dependencies are hydrated with refernce
+/**
+ * adds blocked: true to any dependency activity
+ * where activity.links[].required = true
+ * >> and << 
+ * call this after dependencies are hydrated with refernce
+ * @param ctxs : Context[] with processed activities 
+ * @returns ctxs
+ */
 
 export function findBlockers(ctxs: Context[]): Context[] {
   ctxs.forEach((ctx) => {
