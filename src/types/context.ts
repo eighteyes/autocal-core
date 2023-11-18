@@ -7,9 +7,14 @@ export interface Context {
   links?: ActivityLink[];
   raw?: string;
   // stores text - parseline only into input
-  input?: ActivityInput;
+  input?: ContextInput;
   tags?: string[];
 
   // used in text selection
   index?: number;
+}
+
+// Same surface area as ActivityInput
+interface ContextInput extends ActivityInput {
+
 }

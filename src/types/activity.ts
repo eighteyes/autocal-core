@@ -47,6 +47,7 @@ export interface ActivityLink {
 }
 
 export interface ActivityInput {
+  // what attribute strings are in the event
   attributes?: string[];
   cyclics?: string[];
   // durations?: string[];
