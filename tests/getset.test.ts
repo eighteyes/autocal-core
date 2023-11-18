@@ -46,7 +46,6 @@ describe('get - text processing', () => {
 
     const r = processGet(input.contexts.many, opts) as Activity[];
     expect(r).toHaveLength(3);
-    expect(r[0].ctxIndex).toBe(1);
   });
 
   test('Can get activity names in array', () => {

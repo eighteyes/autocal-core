@@ -11,6 +11,7 @@ export interface Activity {
   done: boolean;
   // can we select this one?
   available?: boolean;
+  
   // blocked by dependencies
   blocked?: boolean;
 
@@ -30,9 +31,6 @@ export interface Activity {
 
   // used for selection in text interfaces
   index?: number;
-
-  // so we can id the ctx from the activity
-  ctxIndex?: number;
 }
 
 export interface ActivityLink {
