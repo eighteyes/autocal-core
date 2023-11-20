@@ -49,7 +49,9 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
   // random or ordered
   if (cfg.useAlgorithm === false) {
     finalActs = getActivitiesForContexts(ctxs);
+    //TODO: incorporate canBeSelected check, move count inside sortActivity* fn
     if (cfg.selectionType === 'ordered') {
+      // add select using weights
       finalActs = sortActivityByWeight(finalActs).slice(0, count);
     } else if (cfg.selectionType === 'random') {
       finalActs = sortActivityRandom(finalActs).slice(0, count);
@@ -59,7 +61,7 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
     for (let i = 0; i < count; i++) {
       console.log('Start: ', sequence.slice(0, 6));
       let selectedActs: Activity[] = [];
-      let signs = selectSignGroup(ctxs, sequence, cfg);
+      let signs = getAttributeGroups(ctxs, sequence, cfg);
 
       //expire non signs
       let str = selectStrengthGroup(ctxs, sequence, signs.sign, cfg);
@@ -70,11 +72,7 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
         sequence = sequence.slice(Math.abs(parseInt(str.strength)));
       }
 
-      if (str.group) {
-        str.group.forEach((act: Activity) => {
-          act.available = true;
-        });
-      } else {
+      if (!str.group) {
         console.debug('No Activities for ', str.strength);
         break;
       }
@@ -117,9 +115,9 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
  * @returns  { group: bySign[currentSign], sign: currentSign, weights: relativeSignWeight, seed };
 
  */
-export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
+export function getAttributeGroups(ctxs: Context[], algo: string, cfg: Config) {
   // { "+": [ Activities ], "-": [ Activities ], "0": [ Activities ]}
-  const { bySign } = groupActivityByCyclic(ctxs);
+  const { bySign: byAttribute } = groupActivityByAttribute(ctxs);
 
   let signCounts: { [index: string]: number } = {};
   let total = 0;
@@ -127,9 +125,9 @@ export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
   let currentSign = '0';
 
   // get values from context size to use when calculating sign weight
-  for (const key in bySign) {
-    if (bySign[key]) {
-      const acts = bySign[key];
+  for (const key in byAttribute) {
+    if (byAttribute[key]) {
+      const acts = byAttribute[key];
       signCounts[key] = acts.length;
       total += acts.length;
     }
@@ -141,7 +139,7 @@ export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
 
   // does the ctx have this sequence step?
   // how many repetitions of seqStep? more means to favor this seqstep
-  while (bySign[seqStep] && algo[signSteps] === seqStep) {
+  while (byAttribute[seqStep] && algo[signSteps] === seqStep) {
     signSteps++;
     // = step weight + multi * signsteps = 10 + i*5
     let amtToAdd = cfg.cyclicStepWeight + signSteps * cfg.cyclicStepWeightMultiplier;
@@ -195,13 +193,13 @@ export function selectSignGroup(ctxs: Context[], algo: string, cfg: Config) {
     currentSign = seqStep;
   }
 
-  return { group: bySign[currentSign], sign: currentSign, weights: relativeSignWeight, seed };
+  return { group: byAttribute[currentSign], sign: currentSign, weights: relativeSignWeight, seed };
 }
 
 // step 2 in selection, select inside sign
 export function selectStrengthGroup(ctxs: Context[], algo: string, selectedSign: string, cfg: Config) {
   //   let byStrength: { [index: string]: Activity[] };
-  let { byStrength } = groupActivityByCyclic(ctxs);
+  let { byStrength } = groupActivityByAttribute(ctxs);
   // mark activity as unavailable
   let seqSign = algo[0];
   let signSteps = 0;
@@ -291,7 +289,7 @@ function convertAlgoKeyToStrength(key: string): string {
   return strengthTarget;
 }
 
-export function groupActivityByCyclic(ctxs: Context[]) {
+export function groupActivityByAttribute(ctxs: Context[]) {
   let bySign: { [index: string]: Activity[] } = {};
   // keyed by Activity cyclicStrength as string
   let byStrength: { [index: string]: Activity[] } = {};

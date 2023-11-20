@@ -35,6 +35,7 @@ export function parseTextIntoContexts(input: string) {
       index: i,
     };
 
+    // merge these objects
     contexts.push({ ...ctx, ...parseLine(head) });
   });
 

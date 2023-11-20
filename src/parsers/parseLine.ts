@@ -9,47 +9,49 @@ import { parseDurations } from './parseDurations';
 import { parseAttributes } from './parseAttributes';
 
 // tokenizer for activities and contexts
-
 export function parseLine(ln: string, ctx?: Context, configuration: Config = config): Activity {
   let integerWeight = configuration.startWeight;
   let integerWeightAdj = 0;
-  let available = false;
   let raw = ln+"";
 
-  let done = ln[0] == 'x';
+  let done = ln.substring(0,1) == 'x ';
   if (done) {
     ln = ln.replace('x ', '');
   }
 
-  let isContext = ln[0] == '#';
+  let isContext = ln.substring(0,1) == '#';
   if ( isContext ){
     // remove context hash
-    ln = ln.substr(1);
+    ln = ln.substring(1);
   }
 
-  // just in case of whitespace
+  // just in case of whitespace, especially for flags
   ln = ln.trim();
 
   // start with length, so we have something in place in case of only content
   let splitPoints = [ln.length];
 
+  // pull attributes, adj weights and split points
   let attributeObj = parseAttributes(ln, configuration);
   let attributes: string[] = attributeObj.attributes;
   splitPoints.push(...attributeObj.splitPoints);
   integerWeight += attributeObj.integerWeight;
   integerWeightAdj += attributeObj.integerWeight;
+  
+  // make links, adj split points
+  let depObj = parseDependencies(ln);
+  let links = depObj.links;
+  splitPoints.push(...depObj.splitPoints);
+
+  // infer a dependency to the subsequent activity, used after ctx processing
+  let attachNext: string = depObj.attachNext;
 
   // duration push
   // let durationObj = parseDurations(ln);
   // let durations: string[] = durationObj.durations;
   // splitPoints.push(...durationObj.splitPoints);
 
-  let depObj = parseDependencies(ln);
-  let links = depObj.links;
-  splitPoints.push(...depObj.splitPoints);
-  let attachNext: string = depObj.attachNext;
-
-  // don't include link tags in act tags
+  // don't include link tags in activity tags
   const excludeTags = links
     .map((l) => {
       return l.tags;
@@ -84,6 +86,10 @@ export function parseLine(ln: string, ctx?: Context, configuration: Config = con
     raw
   };
 
+  if ( splitIndex !== content.length ){
+    console.warn('Split point issue.', ln, splitIndex, content)
+  }
+
   if (ctx) {
     input.contextName = ctx.input.content;
   }
@@ -93,7 +99,6 @@ export function parseLine(ln: string, ctx?: Context, configuration: Config = con
     input,
     done,
     integerWeight,
-    available,
     attachNext,
   };
 }

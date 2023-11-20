@@ -1,7 +1,21 @@
 # Human Language
 Content = Event - Actions for user to undertake in plain language
+Selection = Asking autocal for a series of activities to undertake
+- Selection Algorithm - A sequence of symbols to indicate which groups of activities to select from. Use `0` or ` ` to indicate none. Example:
+- `+ -` - Do a charging act, then a none, then a draining. If no 'none's are indicated, then one will be inserted when the algorithm is repeated. 
 
 # Syntax - Machine Language
 Artifacts = Modifiers, Connectors, Attributes, Dependencies, Tags
 Flags = States, Done, Context 
+
+
+# Attributes
+Defined in configuration. Apply weights to activities for differentiating selection.
+
+# Selector Attributes
+Defined by Selection Algorithm.
+
+
+
+- 
 

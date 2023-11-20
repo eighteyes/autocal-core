@@ -8,8 +8,6 @@ export interface Activity {
   links: ActivityLink[];
 
   done: boolean;
-  // can we select this one?
-  available?: boolean;
 
   // blocked by dependencies
   blocked?: boolean;

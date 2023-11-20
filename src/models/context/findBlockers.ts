@@ -20,7 +20,6 @@ export function findBlockers(ctxs: Context[]): Context[] {
             return;
           }
           let ref = l.reference;
-          // expire anything downstream not available
           // availability is determined as part of selection
           if (!act.done && l.downstream) {
             ref.blocked = true;
