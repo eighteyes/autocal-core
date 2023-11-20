@@ -1,7 +1,7 @@
 import * as inputs from './inputs';
 import config from '../src/config';
 import { parseComplete } from '../src/parsers/parseComplete';
-import { getAttributeGroups, selectStrengthGroup } from '../src/selection';
+import { selectByAttribute, selectStrengthGroup } from '../src/selection';
 
 test.todo('selection respects `includeNoneInSelection')
 
@@ -14,7 +14,7 @@ test('can select a sign using an algorithm', () => {
   let signs = [];
   let algo: string = '+-'.repeat(10);
   for (let i = 0; i <= 10; i++) {
-    let { sign } = getAttributeGroups(ctxs, algo, config);
+    let { sign } = selectByAttribute(ctxs, algo, config);
     // advance algo
     algo = algo.split('').slice(1).join('');
     signs.push(sign);
