@@ -39,7 +39,7 @@ export function selectRandom(text: string, count = 1, cfg: Config = config) {
 export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = config): Activity[] {
   // selecting from list
   let finalActs: Activity[] = [];
-  let sequence = cfg.orderingAlgo.repeat(100);
+  let sequence: string = cfg.orderingAlgo.repeat(100);
   // for debugging
   let strengths = [];
 
@@ -66,6 +66,12 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
       // remove first from sequence for next iteration
       sequence = sequence.slice(1);
 
+      if ( cfg.insertNoAttrActivities ){
+        // prepend a 0 for no attribute activities
+        sequence = '0' + sequence;
+      }
+      
+
       if (selectedActs.length === 0) {
         console.debug('No Activities for ', stepAttribute);
         break;
@@ -79,12 +85,11 @@ export function doSelection(ctxs: Context[], count: number = 1, cfg: Config = co
 }
 
 /**
- * step 1 in cyclic selection, figure out what sign to use 
+ * attribute selection, return acts for a attribute 
  * @param ctxs  - all contexts
  * @param algo  - string from user, indicates what values to look for in inputs
  * @param cfg   - autocal config ( cyclicStepWeight, cyclicStepWeightMultiplier )
- * @returns  { selection: Activity[], sign: currentSign, weights: relativeSignWeight };
-
+ * @returns  Activity[] - all activities with the same attribute
  */
 export function selectByAttribute(ctxs: Context[], stepAttribute: string) {
   // { "+": [ Activities ], "-": [ Activities ], "0": [ Activities ]}
@@ -92,22 +97,8 @@ export function selectByAttribute(ctxs: Context[], stepAttribute: string) {
   return byAttribute[stepAttribute]
 }
 
-function convertAlgoKeyToStrength(key: string): string {
-  let strengthTarget: string;
-  // convert key ( +++ ) to weight ( 3 ) --- = -3
-  if (key.indexOf('0') !== -1) {
-    strengthTarget = '0';
-  } else {
-    const sign = key.indexOf('-') !== -1 ? '-' : key.indexOf('+') !== -1 ? '+' : '';
-    strengthTarget = sign + key.length;
-  }
-  return strengthTarget;
-}
-
 export function groupActivityByAttribute(ctxs: Context[]) {
   let byAttribute: { [index: string]: Activity[] } = {};
-  // keyed by Activity cyclicStrength as string
-  let byStrength: { [index: string]: Activity[] } = {};
 
   // all the activities
   let acts: Activity[] = [];
@@ -117,25 +108,16 @@ export function groupActivityByAttribute(ctxs: Context[]) {
 
   // iterate through each for sorting
   acts.forEach((a) => {
-    let k = a.cyclicStrength;
-    // used to key byAttribute obj { -, 0, + }
-    let sign: string = k > 0 ? '+' : k < 0 ? '-' : '0';
-    // used to key byStr obj { -1, 0, +1 }
-    let posneg: string = k > 0 ? '+' : k < 0 ? '-' : '';
-    // '-1', '0', '+1'
-    let ks: string = posneg + Math.abs(a.cyclicStrength).toString();
-
-    if (ks == '') {
-      console.error('No KS Here');
-      debugger;
+    let attrs: string[] = a.input.attributes;
+    if (attrs.length === 0) {
+      // no attributes
+      (byAttribute['0'] = byAttribute['0'] || []).push(a);
     }
-
-    // add/create strength groups
-    (byStrength[ks] = byStrength[ks] || []).push(a);
-
-    // add/create signed groups
-    (byAttribute[sign] = byAttribute[sign] || []).push(a);
+    attrs.forEach((attr) => {
+      // init or add to array
+      (byAttribute[attr] = byAttribute[attr] || []).push(a);
+    });
   });
 
-  return { byAttribute, byStrength };
+  return { byAttribute };
 }

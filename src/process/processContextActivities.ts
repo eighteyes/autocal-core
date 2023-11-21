@@ -7,8 +7,9 @@ import { calculateAttributeWeight } from './calculateAttributeWeight';
 import { generateTextReference } from './generateTextReference';
 import { applyContext } from './applyContext';
 import config from '../config';
+import {Config} from '../types/config';
 
-export function processContextActivities(ctx: Context, index: number): Context {
+export function processContextActivities(ctx: Context, index: number, cfg: Config = config): Context {
   // console.log('Processing', ctx.name);
   // to reference contexts from activity via number
   ctx.index = index;
@@ -19,6 +20,7 @@ export function processContextActivities(ctx: Context, index: number): Context {
     if (ln.length === 0 || ln == '\n' || i == 0) {
       return;
     }
+    // need to restore the newline for modifying raws later
     const act: Activity = parseLine(ln, ctx);
     // so we can select by index
     act.index = i;
@@ -30,12 +32,12 @@ export function processContextActivities(ctx: Context, index: number): Context {
 
     // set up weights 
     // make items closer to the top of the list more important
-    if ( !act.done ){
-      act.integerWeight -= i * config.positionWeight;
+    if ( !act.done && cfg.positionWeight > 0 ){
+      act.integerWeight -= i * cfg.positionWeight;
     }
     
     // turn integer into float - important to know about for selection
-    act.weight = Math.min(act.integerWeight / Math.pow(10, config.integerWeightFactor), 1);
+    act.weight = Math.min(act.integerWeight / Math.pow(10, cfg.integerWeightFactor), 1);
     
     ctx.activities.push(act);
   });

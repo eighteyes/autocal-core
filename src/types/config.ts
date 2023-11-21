@@ -29,6 +29,10 @@ export interface Config {
 
   // how firmly do we adhere to the cyclic algoritm 0: cyclics aren't considered
   algoStrength: number;
+
+  // on pattern selection, between each step, insert a no-attribute activity
+  insertNoAttrActivities: boolean;
+
   // how far does the cyclic random walk go before it forces a reverse?
   maxCyclicWalk: number;
   // base value of a cyclic indicator

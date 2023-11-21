@@ -9,8 +9,12 @@ export function selectActivitiesUsingWeights(acts: Activity[], count: number = 1
 
   for (let i = 0; i < input.length; i++) {
     const act = input[i];
-    // crux of selection, use weight as % chance
-    if (config.randomSelection && canBeSelected(act) && Math.random() > act.weight) {
+    // no randomness
+    if (!config.randomSelection && canBeSelected(act)) {
+      act.selected = true;
+      output.push(act)
+    } else if (config.randomSelection && canBeSelected(act) && Math.random() > act.weight) {
+      // crux of selection, use weight as % chance
       //so we don't reselect
       act.selected = true;
       output.push(act);

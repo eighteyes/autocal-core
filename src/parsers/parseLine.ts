@@ -14,7 +14,7 @@ export function parseLine(ln: string, ctx?: Context, configuration: Config = con
   let integerWeightAdj = 0;
   let raw = ln+"";
 
-  let done = ln.substring(0,1) == 'x ';
+  let done = ln.substring(0,2) == 'x ';
   if (done) {
     ln = ln.replace('x ', '');
   }

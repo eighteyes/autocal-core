@@ -32,11 +32,13 @@ let config: Config = {
   // alternative to use if `useAlgo` above is false
   selectionType: 'ordered',
 
+  insertNoAttrActivities: true,
+
   // more of a sequence
   orderingAlgo: '-+',
   integerWeightFactor: 4,
   startWeight: 0,
-  positionWeight: 20,
+  positionWeight: 0,
 
   algoStrength: 100,
   maxCyclicWalk: 5,

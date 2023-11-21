@@ -1,10 +1,11 @@
 import config from '../config';
+import {Config} from '../types/config';
 import { Context } from '../types/context';
 import { parseLine } from './parseLine';
 
 // move into text
 
-export function parseTextIntoContexts(input: string) {
+export function parseTextIntoContexts(input: string, cfg: Config = config) {
   let contextraws: string[] = [];
   let contexts: Context[] = [];
 
@@ -24,7 +25,7 @@ export function parseTextIntoContexts(input: string) {
     let line = c.split('\n');
     let head = line[0].toString();
     // shift mutates array
-    let name: string = line.shift().replace(config.regex.flags, '').trim();
+    let name: string = line.shift().replace(cfg.regex.flags, '').trim();
 
     let ctx: Context = {
       name,
@@ -36,7 +37,7 @@ export function parseTextIntoContexts(input: string) {
     };
 
     // merge these objects
-    contexts.push({ ...ctx, ...parseLine(head) });
+    contexts.push({ ...ctx, ...parseLine(head, null, cfg) });
   });
 
   return contexts;

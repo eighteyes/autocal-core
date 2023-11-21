@@ -25,7 +25,7 @@ export const dependencies = {};
 
 export const attributes = {
   many: 'Very Important #tag !*$^+-',
-  all: ctx + 'A thing! to do !*$`',
+  all: ctx + 'A thing to do !*$`-+',
   multi: ctx + 'Super Important !!!',
 };
 
@@ -82,5 +82,5 @@ export const text = {
 };
 
 export const edgeCases = {
-  one: 'make defaults into config object 2h >>',
+  one: 'make defaults into config object >>',
 };
