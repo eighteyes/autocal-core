@@ -7,6 +7,7 @@ import { parseTags } from './parseTags';
 import { parseDependencies } from './parseDependencies';
 import { parseDurations } from './parseDurations';
 import { parseAttributes } from './parseAttributes';
+import {parseFlags, flagsMutateLine} from './parseFlags';
 
 // tokenizer for activities and contexts
 export function parseLine(ln: string, ctx?: Context, configuration: Config = config): Activity {
@@ -14,21 +15,15 @@ export function parseLine(ln: string, ctx?: Context, configuration: Config = con
   let integerWeightAdj = 0;
   let raw = ln+"";
 
-  let done = ln.substring(0,2) == 'x ';
-  if (done) {
-    ln = ln.replace('x ', '');
-  }
+  let { done, isContext } = parseFlags(ln, configuration);
 
-  let isContext = ln.substring(0,1) == '#';
-  if ( isContext ){
-    // remove context hash
-    ln = ln.substring(1);
-  }
+  ln = flagsMutateLine(ln);
 
   // just in case of whitespace, especially for flags
   ln = ln.trim();
 
   // start with length, so we have something in place in case of only content
+  // TODO: use ln object for this
   let splitPoints = [ln.length];
 
   // pull attributes, adj weights and split points
